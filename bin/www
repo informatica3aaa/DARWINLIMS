@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+// use babel
+require('babel-register');
+require('./app.es6.js');
