@@ -9,12 +9,13 @@ import logger from 'morgan';
 import path from 'path';
 import useragent from 'express-useragent';
 import numeral from 'numeral';
+import testConnection from './lib/db/test_connection';
 
 import ApiRouter from './routes/api';
 
 class App {
   constructor(config) {
-    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 1;
     const cors = require('cors');
     const bodyParser = require('body-parser');
     this.port = config.port;
@@ -28,6 +29,7 @@ class App {
   start() {
     return this.express.listen(this.port, function () {
       console.log('Minerals API iniciada en puerto ' + this.port);
+      testConnection();
     }.bind(this));
   }
 
@@ -82,6 +84,8 @@ class App {
     res.status(err.status || 500);
     res.render('error');
   }
+
+  
 
 
 }
