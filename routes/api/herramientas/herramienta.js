@@ -6,6 +6,7 @@ import mensajes from '../../../lib/helpers/mensajes';
 class Herramienta{
     constructor(){
         const api = Router();
+        api.get('/getpais/:id', this.getPais); 
         api.get('/getregiones/:id', this.getregiones); 
         api.get('/getcomunas/:id', this.getComunas); 
         api.post('/addregpais', this.addRegionPais); 
@@ -13,7 +14,17 @@ class Herramienta{
         api.post('/activaregion', this.activarRegionPais); 
         return api;
     };
-    
+
+    async getPais (req, res){
+        try {
+            const validacion = await CoreHerramienta.validaActive(req.params);
+            console.log("validacion", validacion);
+            const paises = await CoreHerramienta.getPaises(Number(req.params.id));
+            return res.status(200).json({ ok: true, data: paises }); 
+        } catch (error) {
+            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+        }
+    }
 
     async activarRegionPais (req, res){
         try {

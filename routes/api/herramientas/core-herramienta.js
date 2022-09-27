@@ -55,6 +55,15 @@ export const validaIdPais = async (data)=>{
        return v.ok;
 }
 
+export const validaActive = async (data)=>{
+    let v = await validateAll(data, {
+        id:'required|in:0,1'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número o número fuera de rango, revise su información') });
+  
+       return v.ok;
+}
+
 export const validaAddRegion = async (data)=>{
     let v = await validateAll(data, {
         country_id:'required|integer',
@@ -219,4 +228,15 @@ export const editarPais = async (data)=>{
         throw new Error('No se logro la editar el pais, revise su información')  
     }
     return pais;
+}
+
+export const getPaises = async(active)=>{
+    const paises = await Herramienta.getPaises(active);
+    
+    if(paises.length == 0){
+        throw new Error('No se encontraron paises, revise su información')  
+    }
+
+
+    return paises; 
 }
