@@ -57,9 +57,12 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        id:'required|in:0,1'
+        tipo:'required|in:tecnica,elemento_tipo,digestiones',
+        active:'required|in:0,1',
+        offset:'required|integer',
+        limit:'required|integer'
         },
-       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número o número fuera de rango, revise su información') });
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada fuera de rango, revise su información') });
   
        return v.ok;
 }
@@ -251,9 +254,10 @@ export const getTecnicas = async(active)=>{
     return tecnicas; 
 }
 
+
 export const validaEditTools = async(data)=>{
     let v = await validateAll(data, {
-        tipo:'required|string|in:tecnica',
+        tipo:'required|string|in:tecnica,elemento_tipo,digestiones',
         id:'required|integer',
         user_id:'required|integer',
         active:'required|in:0,1',
@@ -262,18 +266,35 @@ export const validaEditTools = async(data)=>{
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada debe no son validos, revise su información') });
 
       let consul;
-        if(data.tipo=='tecnicas'){
+      switch(data.tipo){
+        case 'tecnica':
             consul = await Herramienta.getTecnicasId(data);
             if(consul.length == 0){
-                throw new Error('Tecnica no existe, revise su información')  
+                throw new Error('Techniques no existe, revise su información')  
             } 
-        }
+        break;
+        case 'elemento_tipo':
+            consul = await Herramienta.getElemento_tipoId(data);
+            console.log("consul::::", consul);
+            if(consul.length == 0){
+                throw new Error('Element_type no existe, revise su información')  
+            } 
+        break;
+        case 'digestiones':
+            consul = await Herramienta.getDigestionId(data);
+            console.log("consul::::", consul);
+            if(consul.length == 0){
+                throw new Error('Digestions no existe, revise su información')  
+            } 
+        break;
+        default:
+            throw new Error('No existe el tipo en validación, revise su información')  
 
+        }
        return v.ok;  
 }
 
 export const editTools = async (data)=>{
-    console.log("data tools" ,data );
     let tool;
     switch(data.tipo){
         case 'tecnica':
@@ -282,9 +303,51 @@ export const editTools = async (data)=>{
                 throw new Error('No se logro la tecnica, revise su información')  
             }
         break;
+        case 'elemento_tipo':
+            tool = await Herramienta.editarElemento_tipo(data);
+            if(tool.length == 0){
+                throw new Error('No se logro la tecnica, revise su información')  
+            }
+        break;
+        case 'digestiones':
+            tool = await Herramienta.editarDigestiones(data);
+            if(tool.length == 0){
+                throw new Error('No se logro la tecnica, revise su información')  
+            }
+        break;
         default:
-        throw new Error('No existe el tipo, revise su información')  
+        throw new Error('No existe el tipo en editar, revise su información')  
     }
 
+    return tool;
+}
+
+export const getTools = async (data)=>{
+    console.log("data::::",data);
+    let tool;
+    switch(data.tipo){
+        case 'tecnica':
+            tool = await Herramienta.getTecnicas(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron tecnicas, revise su información')  
+            }
+            break;
+        case 'elemento_tipo':
+            tool = await Herramienta.getElementotipo(data);
+            console.log("tools:::::", tool);
+                if(tool.length == 0){
+                throw new Error('No se encontraron elemento_tipo, revise su información')  
+            }
+            break;
+        case 'digestiones':
+            tool = await Herramienta.getDigestiones(data);
+   
+            if(tool.length == 0){
+                throw new Error('No se encontraron digestiones, revise su información')  
+            }
+            break;
+        default:
+            throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
+    }
     return tool;
 }

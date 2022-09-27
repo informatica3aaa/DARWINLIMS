@@ -12,7 +12,7 @@ class Herramienta{
         api.post('/addregpais', this.addRegionPais); 
         api.post('/editregpais', this.editarRegionPais); 
         api.post('/activaregion', this.activarRegionPais); 
-        api.get('/gettech/:id', this.getTechniques); 
+        api.post('/gettool', this.getTools); 
         api.post('/edittools', this.editTools);
         return api;
     };
@@ -20,11 +20,22 @@ class Herramienta{
 async editTools (req, res){
     try {
         let result;
+        let validacion
         switch(req.body.tipo){
             case 'tecnica':
-            const validacion = await CoreHerramienta.validaEditTools(req.body);
-            const result = await CoreHerramienta.editTools(req.body);
+             validacion = await CoreHerramienta.validaEditTools(req.body);
+             result = await CoreHerramienta.editTools(req.body);
             return res.status(200).json({ ok: true, data: result }); 
+            break;
+            case 'elemento_tipo':
+             validacion = await CoreHerramienta.validaEditTools(req.body);
+            result = await CoreHerramienta.editTools(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
+            break;
+            case 'digestiones':
+                validacion = await CoreHerramienta.validaEditTools(req.body);
+                result = await CoreHerramienta.editTools(req.body);
+               return res.status(200).json({ ok: true, data: result }); 
             break;
             default:
             throw new Error('No existe el tipo, revise su información')  
@@ -37,11 +48,30 @@ async editTools (req, res){
     }
 }
 
-async getTechniques (req, res){
+async getTools (req, res){
     try {
-        const validacion = await CoreHerramienta.validaActive(req.params);
-        const result = await CoreHerramienta.getTecnicas(Number(req.params.id));
-        return res.status(200).json({ ok: true, data: result }); 
+        let result;
+        let validacion;
+        switch(req.body.tipo){
+            case 'tecnica':
+                 validacion = await CoreHerramienta.validaActive(req.body);
+                 result = await CoreHerramienta.getTools(req.body);
+                return res.status(200).json({ ok: true, data: result }); 
+            break;
+            case 'elemento_tipo':
+                validacion = await CoreHerramienta.validaActive(req.body);
+                result = await CoreHerramienta.getTools(req.body);
+                return res.status(200).json({ ok: true, data: result }); 
+            break;
+            case 'digestiones':
+                validacion = await CoreHerramienta.validaActive(req.body);
+                result = await CoreHerramienta.getTools(req.body);
+                return res.status(200).json({ ok: true, data: result }); 
+            break;
+            default:
+                throw new Error('No existe el tipo, revise su información')  
+        }
+
     } catch (error) {
         return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
     }
