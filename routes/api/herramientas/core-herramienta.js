@@ -46,7 +46,7 @@ export const validaIdPais = async (data)=>{
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número, revise su información') });
   
        const pais  = await Herramienta.getContryId(data.id);
-       console.log("pais", pais);
+
        if(pais.length == 0){
            throw new Error('El pais no existe o está inactivo, revise su información')  
        }
@@ -94,20 +94,28 @@ export const validaEditRegion = async (data)=>{
 
 export const addRegion = async (data)=>{
     const region = await Herramienta.addRegion(data);
-    console.log("region", region);
-    if(!region){
+
+    if(region.length == 0){
         throw new Error('No se logro la creación de la region, revise su información')  
     }
     return region;
 
 }
 
+export const addPais = async (data)=>{
+    const pais = await Herramienta.addPais(data);
+    if(pais.length == 0){
+        throw new Error('No se logro la creación del pais, revise su información')  
+    }
+    return pais;
+
+}
+
+
 export const editarRegion = async (data)=>{
 
     const region = await Herramienta.editarRegion(data);
-    console.log("region::::", region);
-   
-    if(!region){
+    if(region.length == 0){
         throw new Error('No se logro la editar de la region, revise su información')  
     }
     return region;
@@ -132,7 +140,7 @@ export const validaDelRegion = async (data)=>{
 }
 
 export const validaDelPais = async (data)=>{
-    console.log("data", data);
+
     let v = await validateAll(data, {
         country_id:'required|integer',
         user_id:'required|integer',
@@ -140,10 +148,27 @@ export const validaDelPais = async (data)=>{
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada debe no son validos, revise su información') });
   
-       const pais  = await Herramienta.getContryId(data.country_id, data.active );
-       console.log("pais::::::", pais);
+       const pais  = await Herramienta.getContry(data.country_id );
+
        if(pais.length == 0){
            throw new Error('El pais no existe, revise su información')  
+       }
+
+
+       return v.ok;
+}
+
+export const validaAddPais = async (data)=>{
+    let v = await validateAll(data, {
+        user_id:'required|integer',
+        name:'required|string|max:70'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada debe no son validos, revise su información') });
+  
+       const pais  = await Herramienta.getContryName(data.name );
+
+       if(pais.length != 0){
+           throw new Error('El pais existe, revise su información')  
        }
 
 
@@ -153,7 +178,7 @@ export const validaDelPais = async (data)=>{
 export const delRegion = async (data)=>{
     const region = await Herramienta.delRegion(data);
    
-    if(!region){
+    if(region.length == 0){
         throw new Error('No se logro la editar de la region, revise su información')  
     }
     return region;
@@ -161,12 +186,37 @@ export const delRegion = async (data)=>{
 }
 
 export const delPais = async (data)=>{
-    const region = await Herramienta.delPais(data);
-   
-    if(!region){
-        throw new Error('No se logro la editar de la region, revise su información')  
+    const pais = await Herramienta.delPais(data);
+    if(pais.length == 0){
+        throw new Error('No se logro la actulaización de  pais, revise su información')  
     }
-    return region;
+    return pais;
 
 }
 
+export const validaEditPais = async (data)=>{
+    let v = await validateAll(data, {
+        country_id:'required|integer',
+        user_id:'required|integer',
+        active:'required|in:0,1',
+        name:'required|string|max:70'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada debe no son validos, revise su información') });
+  
+       const pais  = await Herramienta.getContry(data.country_id );
+
+       if(pais.length == 0){
+           throw new Error('El pais no existe, revise su información')  
+       }
+
+
+       return v.ok;   
+}
+
+export const editarPais = async (data)=>{
+    const pais = await Herramienta.editarPais(data);
+    if(pais.length == 0){
+        throw new Error('No se logro la editar el pais, revise su información')  
+    }
+    return pais;
+}

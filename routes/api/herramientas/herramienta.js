@@ -8,23 +8,24 @@ class Herramienta{
         const api = Router();
         api.get('/getregiones/:id', this.getregiones); 
         api.get('/getcomunas/:id', this.getComunas); 
-        api.post('/addreg', this.addRegion); 
-        api.post('/editreg', this.editarRegion); 
+        api.post('/addregpais', this.addRegionPais); 
+        api.post('/editregpais', this.editarRegionPais); 
         api.post('/activaregion', this.activarRegionPais); 
         return api;
     };
     
+
     async activarRegionPais (req, res){
         try {
             let result;
             console.log(req.body);
              if(req.body.tipo=='region'){
                 const validacion = await CoreHerramienta.validaDelRegion(req.body);
-                const result = await CoreHerramienta.delRegion(req.body);
+                result = await CoreHerramienta.delRegion(req.body);
              }
              if(req.body.tipo=='pais'){
                        const validacion = await CoreHerramienta.validaDelPais(req.body);
-                const result = await CoreHerramienta.delPais(req.body);
+                result = await CoreHerramienta.delPais(req.body);
              }
 
             return res.status(200).json({ ok: true, data: result }); 
@@ -34,22 +35,38 @@ class Herramienta{
 
     }
 
-    async editarRegion (req, res){
+    async editarRegionPais (req, res){
         try {
-            const validacion = await CoreHerramienta.validaEditRegion(req.body);
-             const region = await CoreHerramienta.editarRegion(req.body);
-            return res.status(200).json({ ok: true, data: region }); 
+            let result;
+            if(req.body.tipo =="region"){
+                const validacion = await CoreHerramienta.validaEditRegion(req.body);
+                result = await CoreHerramienta.editarRegion(req.body);
+            }
+            if(req.body.tipo =="pais"){
+                const validacion = await CoreHerramienta.validaEditPais(req.body);
+                result = await CoreHerramienta.editarPais(req.body);
+            }
+
+            return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
         }
 
     }
     
-    async addRegion (req, res){
+    async addRegionPais (req, res){
         try {
-            const validacion = await CoreHerramienta.validaDelPais(req.body);
-            const region = await CoreHerramienta.addRegion(req.body);
-            return res.status(200).json({ ok: true, data: region }); 
+            let resultado;
+            if(req.body.tipo=='region'){
+                const validacion = await CoreHerramienta.validaDelPais(req.body);
+                resultado = await CoreHerramienta.addRegion(req.body);
+            }
+            if(req.body.tipo=='pais'){
+                const validacion = await CoreHerramienta.validaAddPais(req.body);
+                resultado = await CoreHerramienta.addPais(req.body); 
+            }
+
+            return res.status(200).json({ ok: true, data: resultado }); 
         } catch (error) {
             return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
         }
