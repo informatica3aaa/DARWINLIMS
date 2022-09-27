@@ -240,3 +240,51 @@ export const getPaises = async(active)=>{
 
     return paises; 
 }
+//TECNICAS
+export const getTecnicas = async(active)=>{
+    const tecnicas = await Herramienta.getTecnicas(active);
+    
+    if(tecnicas.length == 0){
+        throw new Error('No se encontraron tecnicas, revise su información')  
+    }
+
+    return tecnicas; 
+}
+
+export const validaEditTools = async(data)=>{
+    let v = await validateAll(data, {
+        tipo:'required|string|in:tecnica',
+        id:'required|integer',
+        user_id:'required|integer',
+        active:'required|in:0,1',
+        name:'required|string|max:70'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada debe no son validos, revise su información') });
+
+      let consul;
+        if(data.tipo=='tecnicas'){
+            consul = await Herramienta.getTecnicasId(data);
+            if(consul.length == 0){
+                throw new Error('Tecnica no existe, revise su información')  
+            } 
+        }
+
+       return v.ok;  
+}
+
+export const editTools = async (data)=>{
+    console.log("data tools" ,data );
+    let tool;
+    switch(data.tipo){
+        case 'tecnica':
+            tool = await Herramienta.editarTecnica(data);
+            if(tool.length == 0){
+                throw new Error('No se logro la tecnica, revise su información')  
+            }
+        break;
+        default:
+        throw new Error('No existe el tipo, revise su información')  
+    }
+
+    return tool;
+}

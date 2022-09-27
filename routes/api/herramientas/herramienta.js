@@ -12,9 +12,44 @@ class Herramienta{
         api.post('/addregpais', this.addRegionPais); 
         api.post('/editregpais', this.editarRegionPais); 
         api.post('/activaregion', this.activarRegionPais); 
+        api.get('/gettech/:id', this.getTechniques); 
+        api.post('/edittools', this.editTools);
         return api;
     };
+//TECNICAS
+async editTools (req, res){
+    try {
+        let result;
+        switch(req.body.tipo){
+            case 'tecnica':
+            const validacion = await CoreHerramienta.validaEditTools(req.body);
+            const result = await CoreHerramienta.editTools(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
+            break;
+            default:
+            throw new Error('No existe el tipo, revise su información')  
+            
+            
+        } 
 
+    } catch (error) {
+        return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+    }
+}
+
+async getTechniques (req, res){
+    try {
+        const validacion = await CoreHerramienta.validaActive(req.params);
+        const result = await CoreHerramienta.getTecnicas(Number(req.params.id));
+        return res.status(200).json({ ok: true, data: result }); 
+    } catch (error) {
+        return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+    }
+}
+
+
+
+//PAIS , REGION, COMUNAS
     async getPais (req, res){
         try {
             const validacion = await CoreHerramienta.validaActive(req.params);
@@ -29,7 +64,6 @@ class Herramienta{
     async activarRegionPais (req, res){
         try {
             let result;
-            console.log(req.body);
              if(req.body.tipo=='region'){
                 const validacion = await CoreHerramienta.validaDelRegion(req.body);
                 result = await CoreHerramienta.delRegion(req.body);
