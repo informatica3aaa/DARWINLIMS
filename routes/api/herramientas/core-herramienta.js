@@ -57,7 +57,7 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
@@ -334,7 +334,7 @@ export const getTools = async (data)=>{
             break;
         case 'elemento_tipo':
             tool = await Herramienta.getElementotipo(data);
-            console.log("tools:::::", tool);
+
                 if(tool.length == 0){
                 throw new Error('No se encontraron elemento_tipo, revise su información')  
             }
@@ -346,6 +346,13 @@ export const getTools = async (data)=>{
                 throw new Error('No se encontraron digestiones, revise su información')  
             }
             break;
+        case 'tipos_de_unidad':
+                tool = await Herramienta.getTipoUnidad(data);
+                console.log("tools:::::", tool);
+                if(tool.length == 0){
+                    throw new Error('No se encontraron digestiones, revise su información')  
+                }
+             break;
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }

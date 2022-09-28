@@ -33,12 +33,12 @@ async editTools (req, res){
             return res.status(200).json({ ok: true, data: result }); 
             break;
             case 'digestiones':
-                validacion = await CoreHerramienta.validaEditTools(req.body);
-                result = await CoreHerramienta.editTools(req.body);
-               return res.status(200).json({ ok: true, data: result }); 
+            validacion = await CoreHerramienta.validaEditTools(req.body);
+            result = await CoreHerramienta.editTools(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
             break;
             default:
-            throw new Error('No existe el tipo, revise su información')  
+            throw new Error('No existe el tipo de herramienta, revise su información')  
             
             
         } 
@@ -64,6 +64,11 @@ async getTools (req, res){
                 return res.status(200).json({ ok: true, data: result }); 
             break;
             case 'digestiones':
+                validacion = await CoreHerramienta.validaActive(req.body);
+                result = await CoreHerramienta.getTools(req.body);
+                return res.status(200).json({ ok: true, data: result }); 
+            break;
+            case 'tipos_de_unidad':
                 validacion = await CoreHerramienta.validaActive(req.body);
                 result = await CoreHerramienta.getTools(req.body);
                 return res.status(200).json({ ok: true, data: result }); 
