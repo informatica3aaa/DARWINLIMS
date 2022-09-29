@@ -57,7 +57,7 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_solicitud,estado_de_cita,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
@@ -324,6 +324,7 @@ export const editTools = async (data)=>{
 
 export const getTools = async (data)=>{
     let tool;
+    let direccion;
     switch(data.tipo){
         case 'tecnica':
             tool = await Herramienta.getTecnicas(data);
@@ -378,7 +379,83 @@ export const getTools = async (data)=>{
                 if(tool.length == 0){
                     throw new Error('No se encontraron Unidades, revise su información')  
                 }
-        break;            
+        break;       
+        case 'estados':
+                tool = await Herramienta.getEstados(data);
+                if(tool.length == 0){
+                    throw new Error('No se encontraron estados, revise su información')  
+                }
+        break;      
+        case 'escalas':
+                tool = await Herramienta.getEscalas(data);
+                if(tool.length == 0){
+                    throw new Error('No se encontraron escalas, revise su información')  
+                }
+        break;      
+        case 'etapas_de_solicitud':
+                tool = await Herramienta.getEtapaSolicitud(data);
+                if(tool.length == 0){
+                    throw new Error('No se encontraron etapas_de_solicitud, revise su información')  
+                }
+        break;
+        case 'estado_de_cita':
+            tool = await Herramienta.getEstadoCita(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron estado_de_cita, revise su información')  
+            }
+        break ;     
+        case 'formulas':
+            tool = await Herramienta.getFormulas(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron formulas, revise su información')  
+            }
+        break ;    
+        case 'mallas':
+            tool = await Herramienta.getMallas(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron mallas, revise su información')  
+            }
+        break ; 
+        case 'estado_material':
+            tool = await Herramienta.getEstadoMaterial(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron estado_material, revise su información')  
+            }
+        break ; 
+        case 'monedas':
+            tool = await Herramienta.getMonedas(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron monedas, revise su información')  
+            }
+        break ;   
+        case 'elementos_quimicos':
+            tool = await Herramienta.getElementosQuimicos(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron elementos_quimicos, revise su información')  
+            }
+        break ; 
+        case 'tipo_de_direccion':
+            tool = await Herramienta.getTipoDireccion(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron tipo_de_direccion, revise su información')  
+            }
+        break ; 
+        case 'compañias':
+            tool = await Herramienta.getCompanias(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron compañias, revise su información')  
+            }
+            for(let index = 0; index < tool.length; index++){
+                    console.log("entro en ", tool[index].id);
+                    direccion= await Herramienta.getDireccion(data,tool[index].id );
+                    console.log("direccion", direccion);
+                    // if(direccion.length == 0){
+                    //     throw new Error('No se encontraron compañias, revise su información')  
+                    // }
+                    tool[index].direccion= direccion;
+
+            }
+        break ;                                 
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }

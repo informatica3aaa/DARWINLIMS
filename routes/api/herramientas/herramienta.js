@@ -100,7 +100,61 @@ async getTools (req, res){
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;
-
+            case 'estados':
+                validacion = await CoreHerramienta.validaActive(req.body);//[states]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+            case 'escalas':
+                validacion = await CoreHerramienta.validaActive(req.body);//[scales]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+            case 'etapas_de_solicitud':
+                validacion = await CoreHerramienta.validaActive(req.body);//[requisition_stages]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;            
+            case 'estado_de_cita':
+                validacion = await CoreHerramienta.validaActive(req.body);//[quotation_states]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;            
+            case 'formulas':
+                validacion = await CoreHerramienta.validaActive(req.body);//[formulas]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break; 
+            case 'mallas':
+                validacion = await CoreHerramienta.validaActive(req.body);//[meshes]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;  
+            case 'estado_material':
+                validacion = await CoreHerramienta.validaActive(req.body);//[estado_material]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;     
+            case 'monedas':
+                validacion = await CoreHerramienta.validaActive(req.body);//[currencies]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;    
+            case 'elementos_quimicos':
+                validacion = await CoreHerramienta.validaActive(req.body);//[chemical_elements]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;  
+            case 'tipo_de_direccion':
+                validacion = await CoreHerramienta.validaActive(req.body);//[address_types]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;  
+            case 'compañias':
+                validacion = await CoreHerramienta.validaActive(req.body);//[[companies]]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;                                
             default:
                 throw new Error('No existe el tipo, revise su información')  
         }
