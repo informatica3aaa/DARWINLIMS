@@ -57,7 +57,7 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
@@ -323,7 +323,6 @@ export const editTools = async (data)=>{
 }
 
 export const getTools = async (data)=>{
-    console.log("data::::",data);
     let tool;
     switch(data.tipo){
         case 'tecnica':
@@ -334,27 +333,65 @@ export const getTools = async (data)=>{
             break;
         case 'elemento_tipo':
             tool = await Herramienta.getElementotipo(data);
-
                 if(tool.length == 0){
                 throw new Error('No se encontraron elemento_tipo, revise su información')  
             }
             break;
         case 'digestiones':
             tool = await Herramienta.getDigestiones(data);
-   
             if(tool.length == 0){
                 throw new Error('No se encontraron digestiones, revise su información')  
             }
             break;
         case 'tipos_de_unidad':
                 tool = await Herramienta.getTipoUnidad(data);
-                console.log("tools:::::", tool);
                 if(tool.length == 0){
-                    throw new Error('No se encontraron digestiones, revise su información')  
+                    throw new Error('No se encontraron tipo de unidad, revise su información')  
                 }
              break;
+        case 'tipos_de_ensayo':
+                tool = await Herramienta.getTipoEnsayo(data);
+                if(tool.length == 0){
+                    throw new Error('No se encontraron tipo de ensayo, revise su información')  
+                }
+        break;
+        case 'metodos':
+            tool = await Herramienta.getMetodos(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron metodos, revise su información')  
+            }
+    break;
+        case 'estandares':
+        tool = await Herramienta.getEstandares(data);
+        if(tool.length == 0){
+            throw new Error('No se encontraron estandares, revise su información')  
+        }
+        break;
+        case 'transporte_tipo':
+            tool = await Herramienta.getTransporteTipo(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron trasportes tipo, revise su información')  
+            }
+            break;
+        case 'unidades':
+                tool = await Herramienta.getUnidades(data);
+                if(tool.length == 0){
+                    throw new Error('No se encontraron Unidades, revise su información')  
+                }
+        break;            
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }
     return tool;
+}
+
+export const getContadores = async(data)=>{
+    const contador = await Herramienta.ContTools(data);
+    console.log("contador", contador);
+    
+    if(contador.length == 0){
+        throw new Error('No se pudo contar registros, revise su información')  
+    }
+
+    return contador[0].total; 
 }

@@ -52,31 +52,59 @@ async getTools (req, res){
     try {
         let result;
         let validacion;
+        let contador;
         switch(req.body.tipo){
             case 'tecnica':
-                 validacion = await CoreHerramienta.validaActive(req.body);
+                 validacion = await CoreHerramienta.validaActive(req.body);//[techniques]
                  result = await CoreHerramienta.getTools(req.body);
-                return res.status(200).json({ ok: true, data: result }); 
+                 contador = await CoreHerramienta.getContadores(req.body); 
             break;
             case 'elemento_tipo':
-                validacion = await CoreHerramienta.validaActive(req.body);
+                validacion = await CoreHerramienta.validaActive(req.body);//[element_types]
                 result = await CoreHerramienta.getTools(req.body);
-                return res.status(200).json({ ok: true, data: result }); 
+                contador = await CoreHerramienta.getContadores(req.body)
             break;
             case 'digestiones':
-                validacion = await CoreHerramienta.validaActive(req.body);
+                validacion = await CoreHerramienta.validaActive(req.body);//[digestions]
                 result = await CoreHerramienta.getTools(req.body);
-                return res.status(200).json({ ok: true, data: result }); 
+                contador = await CoreHerramienta.getContadores(req.body)
             break;
             case 'tipos_de_unidad':
-                validacion = await CoreHerramienta.validaActive(req.body);
+                validacion = await CoreHerramienta.validaActive(req.body);//[unit_types]
                 result = await CoreHerramienta.getTools(req.body);
-                return res.status(200).json({ ok: true, data: result }); 
+                contador = await CoreHerramienta.getContadores(req.body)
+
             break;
+            case 'tipos_de_ensayo':
+                validacion = await CoreHerramienta.validaActive(req.body);//assay_types
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+            case 'metodos':
+                validacion = await CoreHerramienta.validaActive(req.body);//[methods]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+            case 'estandares':
+                validacion = await CoreHerramienta.validaActive(req.body);//[[standards]]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+            case 'transporte_tipo':
+                validacion = await CoreHerramienta.validaActive(req.body);//[transport_types]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+            case 'unidades':
+                validacion = await CoreHerramienta.validaActive(req.body);//[unit]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;
+
             default:
                 throw new Error('No existe el tipo, revise su información')  
         }
-
+        return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
     } catch (error) {
         return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
     }
