@@ -155,8 +155,8 @@ async getTools (req, res){
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;  
-            case 'clientes':
-                validacion = await CoreHerramienta.validaActive(req.body);//[[companies]]
+            case 'cotizaciones':
+                validacion = await CoreHerramienta.validaActive(req.body);//[quotations]
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;                               

@@ -57,7 +57,7 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_solicitud,estado_de_cita,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_solicitud,estado_de_cita,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,cotizaciones',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
@@ -327,6 +327,7 @@ export const getTools = async (data)=>{
     let direccion;
     let emails;
     let proyectos;
+    let contizaciones;
     switch(data.tipo){
         case 'tecnica':
             tool = await Herramienta.getTecnicas(data);
@@ -447,22 +448,43 @@ export const getTools = async (data)=>{
             if(tool.length == 0){
                 throw new Error('No se encontraron compañias, revise su información')  
             }
+            // for(let index = 0; index < tool.length; index++){
+            //         direccion= await Herramienta.getDireccion(data,tool[index].id );
+            //         tool[index].direccion= direccion;
+            // }
+            // for(let index = 0; index < tool.length; index++){
+            //         emails= await Herramienta.getMails(data, tool[index].id );
+            //           tool[index].emails= emails;
+            // }
+            // for(let index = 0; index < tool.length; index++){
+            //         proyectos= await Herramienta.getProyectos(data, tool[index].id );
+            //         tool[index].proyectos= proyectos;
+            // }
             for(let index = 0; index < tool.length; index++){
-                    direccion= await Herramienta.getDireccion(data,tool[index].id );
-                    tool[index].direccion= direccion;
-            }
-            for(let index = 0; index < tool.length; index++){
-                    emails= await Herramienta.getMails(data, tool[index].id );
-                      tool[index].emails= emails;
-            }
-            for(let index = 0; index < tool.length; index++){
-                    proyectos= await Herramienta.getProyectos(data, tool[index].id );
-                    tool[index].proyectos= proyectos;
-            }
-            for(let index = 0; index < tool.length; index++){
-                proyectos= await Herramienta.getProyectos(data, tool[index].id );
-                tool[index].proyectos= proyectos;
+                    contizaciones= await Herramienta.getCotizaciones(data, tool[index].id );
+                    tool[index].contizaciones= contizaciones;
         }
+        case 'cotizaciones':
+            tool = await Herramienta.getCotizaciones(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron compañias, revise su información')  
+            }
+            // for(let index = 0; index < tool.length; index++){
+            //         direccion= await Herramienta.getDireccion(data,tool[index].id );
+            //         tool[index].direccion= direccion;
+            // }
+            // for(let index = 0; index < tool.length; index++){
+            //         emails= await Herramienta.getMails(data, tool[index].id );
+            //           tool[index].emails= emails;
+            // }
+            // for(let index = 0; index < tool.length; index++){
+            //         proyectos= await Herramienta.getProyectos(data, tool[index].id );
+            //         tool[index].proyectos= proyectos;
+            // }
+        //     for(let index = 0; index < tool.length; index++){
+        //             contizaciones= await Herramienta.getCotizaciones(data, tool[index].id );
+        //             tool[index].contizaciones= contizaciones;
+        // }
         break ;                                 
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
