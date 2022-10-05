@@ -325,6 +325,8 @@ export const editTools = async (data)=>{
 export const getTools = async (data)=>{
     let tool;
     let direccion;
+    let emails;
+    let proyectos;
     switch(data.tipo){
         case 'tecnica':
             tool = await Herramienta.getTecnicas(data);
@@ -446,15 +448,21 @@ export const getTools = async (data)=>{
                 throw new Error('No se encontraron compañias, revise su información')  
             }
             for(let index = 0; index < tool.length; index++){
-                    console.log("entro en ", tool[index].id);
                     direccion= await Herramienta.getDireccion(data,tool[index].id );
-                    console.log("direccion", direccion);
-                    // if(direccion.length == 0){
-                    //     throw new Error('No se encontraron compañias, revise su información')  
-                    // }
                     tool[index].direccion= direccion;
-
             }
+            for(let index = 0; index < tool.length; index++){
+                    emails= await Herramienta.getMails(data, tool[index].id );
+                      tool[index].emails= emails;
+            }
+            for(let index = 0; index < tool.length; index++){
+                    proyectos= await Herramienta.getProyectos(data, tool[index].id );
+                    tool[index].proyectos= proyectos;
+            }
+            for(let index = 0; index < tool.length; index++){
+                proyectos= await Herramienta.getProyectos(data, tool[index].id );
+                tool[index].proyectos= proyectos;
+        }
         break ;                                 
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  

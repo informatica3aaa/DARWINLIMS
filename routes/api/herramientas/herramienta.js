@@ -154,7 +154,12 @@ async getTools (req, res){
                 validacion = await CoreHerramienta.validaActive(req.body);//[[companies]]
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
-            break;                                
+            break;  
+            case 'clientes':
+                validacion = await CoreHerramienta.validaActive(req.body);//[[companies]]
+                result = await CoreHerramienta.getTools(req.body);
+                contador = await CoreHerramienta.getContadores(req.body)
+            break;                               
             default:
                 throw new Error('No existe el tipo, revise su información')  
         }

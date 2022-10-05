@@ -29,36 +29,62 @@ SELECT ad.[id],
   order by company_id desc
 
 
-  /****** QUOTACION ******/
-SELECT TOP (1000) [id]
-      ,[user_id]
-      ,[active]
-      ,[quotation_number]
-      ,[start_date]
-      ,[expiration_date]
-      ,[company_id]
-      ,[estimated_days]
-      ,[project_id]
-      ,[parent_id]
-      ,[version]
-      ,[state_id]
-      ,[currency_id]
-      ,[specific_condition]
-      ,[general_condition_id]
-      ,[user_creator_id]
-      ,[user_modifier_id]
-      ,[created]
-      ,[modified]
-      ,[adjunto]
-      ,[for]
-      ,[quotation_comment]
-      ,[quotation_state_id]
-      ,[ap_ventas]
-      ,[ap_prod]
-      ,[ap_ven_user_id]
-      ,[ap_prod_user_id]
-      ,[reject_comment]
-      ,[reject_user_id]
-      ,[ap_ven_date]
-      ,[ap_prod_date]
-  FROM [lims01].[dbo].[quotations]
+/****** cotizaciones ******/
+SELECT quo.[id]
+      ,quo.[user_id]
+	  ,us.[username]
+      ,quo.[active]
+      ,quo.[quotation_number]
+      ,quo.[start_date]
+      ,quo.[expiration_date]
+      ,quo.[company_id]
+      ,quo.[estimated_days]
+      ,quo.[project_id]
+      ,quo.[parent_id]
+      ,quo.[version]
+      ,quo.[state_id]
+	  ,st.[name]
+      ,quo.[currency_id]
+	  ,cu.[name]
+      ,quo.[specific_condition]
+      ,quo.[general_condition_id]
+      ,gc.[paragraph_1] 
+      ,gc.[paragraph_2]             
+      ,gc.[paragraph_3]
+      ,gc.[paragraph_4]
+      ,gc.[title]
+      ,quo.[user_creator_id]
+	  ,us1.[username] as user_creator
+      ,quo.[user_modifier_id]
+	  ,us2.[username] as user_modifier
+      ,quo.[created]
+      ,quo.[modified]
+      ,quo.[adjunto]
+      ,quo.[for]
+      ,quo.[quotation_comment]
+      ,quo.[quotation_state_id]
+	  ,qs.[name]
+      ,qs.[quotation_class]
+      ,qs.[description]
+      ,quo.[ap_ventas]
+      ,quo.[ap_prod]
+      ,quo.[ap_ven_user_id]
+	  ,us4.[username] as ap_ven_user
+      ,quo.[ap_prod_user_id]
+	  ,us5.[username] as ap_prod_user
+      ,quo.[reject_comment]
+      ,quo.[reject_user_id]
+	  ,us3.[username] as reject_user
+      ,quo.[ap_ven_date]
+      ,quo.[ap_prod_date]
+  FROM [quotations] quo 
+  INNER JOIN users us  ON quo.id = us.id 
+  INNER JOIN states st ON quo.state_id = st.id
+  INNER JOIN currencies cu ON quo.currency_id = cu.id
+  INNER JOIN general_conditions gc ON quo.general_condition_id = gc.id
+  INNER JOIN users us1  ON quo.user_creator_id = us1.id
+  LEFT JOIN users us2  ON quo.user_modifier_id = us2.id
+  LEFT JOIN users us3  ON quo.reject_user_id = us3.id
+  LEFT JOIN users us4  ON quo.ap_ven_user_id = us4.id
+  LEFT JOIN users us5  ON quo.ap_prod_user_id = us5.id
+  INNER JOIN quotation_states qs ON quo.quotation_state_id = qs.id
