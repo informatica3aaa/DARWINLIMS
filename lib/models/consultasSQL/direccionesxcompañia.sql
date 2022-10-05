@@ -27,3 +27,38 @@ SELECT ad.[id],
   [users] us ON ad.user_creator_id = us.id INNER JOIN 
   [users] us2 ON ad.user_modifier_id = us2.id 
   order by company_id desc
+
+
+  /****** QUOTACION ******/
+SELECT TOP (1000) [id]
+      ,[user_id]
+      ,[active]
+      ,[quotation_number]
+      ,[start_date]
+      ,[expiration_date]
+      ,[company_id]
+      ,[estimated_days]
+      ,[project_id]
+      ,[parent_id]
+      ,[version]
+      ,[state_id]
+      ,[currency_id]
+      ,[specific_condition]
+      ,[general_condition_id]
+      ,[user_creator_id]
+      ,[user_modifier_id]
+      ,[created]
+      ,[modified]
+      ,[adjunto]
+      ,[for]
+      ,[quotation_comment]
+      ,[quotation_state_id]
+      ,[ap_ventas]
+      ,[ap_prod]
+      ,[ap_ven_user_id]
+      ,[ap_prod_user_id]
+      ,[reject_comment]
+      ,[reject_user_id]
+      ,[ap_ven_date]
+      ,[ap_prod_date]
+  FROM [lims01].[dbo].[quotations]
