@@ -155,11 +155,7 @@ async getTools (req, res){
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;  
-            case 'cotizaciones':
-                validacion = await CoreHerramienta.validaActive(req.body);//[quotations]
-                result = await CoreHerramienta.getTools(req.body);
-                contador = await CoreHerramienta.getContadores(req.body)
-            break;                               
+                             
             default:
                 throw new Error('No existe el tipo, revise su información')  
         }
