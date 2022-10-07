@@ -45,8 +45,8 @@ export const validaIdPais = async (data)=>{
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número, revise su información') });
   
-       const pais  = await Herramienta.getContryId(data.id);
-
+       const pais  = await Herramienta.getContryId(data.id, 1);
+        console.log("PAIS::::", data.id);
        if(pais.length == 0){
            throw new Error('El pais no existe o está inactivo, revise su información')  
        }
@@ -57,7 +57,7 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_solicitud,estado_de_cita,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,cotizaciones',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
@@ -395,13 +395,13 @@ export const getTools = async (data)=>{
                     throw new Error('No se encontraron escalas, revise su información')  
                 }
         break;      
-        case 'etapas_de_solicitud':
+        case 'etapas_de_requisicion':
                 tool = await Herramienta.getEtapaSolicitud(data);
                 if(tool.length == 0){
                     throw new Error('No se encontraron etapas_de_solicitud, revise su información')  
                 }
         break;
-        case 'estado_de_cita':
+        case 'estado_de_cotizacion':
             tool = await Herramienta.getEstadoCita(data);
             if(tool.length == 0){
                 throw new Error('No se encontraron estado_de_cita, revise su información')  
@@ -460,11 +460,11 @@ export const getTools = async (data)=>{
             //         proyectos= await Herramienta.getProyectos(data, tool[index].id );
             //         tool[index].proyectos= proyectos;
             // }
-            for(let index = 0; index < tool.length; index++){
-                    contizaciones= await Herramienta.getCotizaciones(data, tool[index].id );
-                    tool[index].contizaciones= contizaciones;
-        }
-;                                 
+        //     for(let index = 0; index < tool.length; index++){
+        //             contizaciones= await Herramienta.getCotizaciones(data, tool[index].id );
+        //             tool[index].contizaciones= contizaciones;
+        // }
+        break;                                 
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }

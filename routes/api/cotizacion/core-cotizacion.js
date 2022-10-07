@@ -29,6 +29,13 @@ export const validaActive = async (data)=>{
           mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número y es requerido, revise su información') });
       }
 
+      if(data.tipo =='por_aprobar'){
+        v = await validateAll(data, {
+            quotation_state_id:'required|integer'         
+        },
+          mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número y es requerido, revise su información') });
+      }
+
        return v.ok;
 }
 
@@ -42,7 +49,6 @@ export const getContadores = async(data)=>{
     return contador[0].total; 
 }
 
-
 export const getCotizacion = async (data)=>{
     let tool;
     let condicionesEspecificas;
@@ -51,11 +57,10 @@ export const getCotizacion = async (data)=>{
     let contizaciones;
     switch(data.tipo){
         case 'cotizaciones':
-            tool = await Cotizaciones.getCotizaciones(data, query);
+            tool = await Cotizaciones.getCotizaciones(data);
             if(tool.length == 0){
                 throw new Error('No se encontraron cotizaciones, revise su información')  
             }
-
         break ;
         case 'cotizacion':
             tool = await Cotizaciones.getCotizacionesId(data);
@@ -115,7 +120,13 @@ export const getCotizacion = async (data)=>{
             }
 
     break ;                               
-        default:
+        case 'por_aprobar':
+            tool = await Cotizaciones.getCotizaciones(data);
+            if(tool.length == 0){
+                throw new Error('No se encontraron cotizaciones, revise su información')  
+            }
+        break ;   
+    default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }
     return tool;
@@ -137,4 +148,44 @@ export const getCotizacionFiltros = async (data)=>{
     if(data.creador) where += ` and us.[username] like '%${ data.creador}%'`
     // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
     return where;
+}
+
+export const validaAccion = async (data)=>{
+    let v = await validateAll(data, {
+        accion:'required|in:aprobar_venta,aprobar_produccion,rechazar'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Tipo de accion fuera de rango, revise su información') });
+        
+       switch(data.accion){
+        case 'aprobar_venta':
+
+        break;
+        case 'aprobar_produccion':
+
+        break;
+        case 'rechazar':
+
+        break;
+        default:
+            throw new Error('No existe el tipo acción, revise su información')  
+    }
+
+       return v.ok;
+}
+
+
+export const cotizacionAccion = async (data)=>{
+       switch(data.accion){
+        case 'aprobar_venta':
+
+        break;
+        case 'aprobar_produccion':
+
+        break;
+        case 'rechazar':
+
+        break;
+        default:
+            throw new Error('No existe el tipo acción, revise su información')  
+    }
 }

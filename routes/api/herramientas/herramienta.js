@@ -110,12 +110,12 @@ async getTools (req, res){
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;
-            case 'etapas_de_solicitud':
+            case 'etapas_de_requisicion':
                 validacion = await CoreHerramienta.validaActive(req.body);//[requisition_stages]
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;            
-            case 'estado_de_cita':
+            case 'estado_de_cotizacion':
                 validacion = await CoreHerramienta.validaActive(req.body);//[quotation_states]
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
@@ -170,8 +170,8 @@ async getTools (req, res){
 //PAIS , REGION, COMUNAS
     async getPais (req, res){
         try {
-            const validacion = await CoreHerramienta.validaActive(req.params);
-            console.log("validacion", validacion);
+            // const validacion = await CoreHerramienta.validaActive(req.params);
+            // console.log("validacion", validacion);
             const paises = await CoreHerramienta.getPaises(Number(req.params.id));
             return res.status(200).json({ ok: true, data: paises }); 
         } catch (error) {
