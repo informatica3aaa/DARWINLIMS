@@ -24,7 +24,9 @@ export const validaActive = async (data)=>{
 }
 
 export const getContadores = async(data)=>{
-    const contador = await Cotizaciones.ContTools(data);
+    const query = await getCotizacionFiltros(data);
+    const contador = await Cotizaciones.ContTools(data, query);
+    console.log("cont:::", contador);
     if(contador.length == 0){
         throw new Error('No se pudo contar registros, revise su información')  
     }
@@ -41,7 +43,7 @@ export const getCotizacion = async (data)=>{
     let contizaciones;
     switch(data.tipo){
         case 'cotizaciones':
-            tool = await Cotizaciones.getCotizaciones(data);
+            tool = await Cotizaciones.getCotizaciones(data, query);
             if(tool.length == 0){
                 throw new Error('No se encontraron cotizaciones, revise su información')  
             }
