@@ -6,7 +6,7 @@ import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:cotizaciones,cotizacion,filtros',
+        tipo:'required|in:cotizaciones,cotizacion,filtros,historial',
         active:'required|in:0,1,2',
         offset:'required|integer',
         limit:'required|integer'
@@ -20,13 +20,21 @@ export const validaActive = async (data)=>{
            mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número y es requerido, revise su información') });
        }
 
+       if(data.tipo =='historial'){
+        v = await validateAll(data, {
+            company_id:'required|integer',
+            project_id:'required|integer'
+         
+        },
+          mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número y es requerido, revise su información') });
+      }
+
        return v.ok;
 }
 
 export const getContadores = async(data)=>{
     const query = await getCotizacionFiltros(data);
     const contador = await Cotizaciones.ContTools(data, query);
-    console.log("cont:::", contador);
     if(contador.length == 0){
         throw new Error('No se pudo contar registros, revise su información')  
     }
@@ -99,7 +107,14 @@ export const getCotizacion = async (data)=>{
                     throw new Error('No se encontraron cotizaciones según los filtros ingresados, revise su información')  
                 }
 
-        break ;                                  
+        break ;    
+        case 'historial':
+            tool = await Cotizaciones.getCotizacionesHistorial(data)
+            if(tool.length == 0){
+                throw new Error('No se encontraron cotizaciones según los filtros ingresados, revise su información')  
+            }
+
+    break ;                               
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }

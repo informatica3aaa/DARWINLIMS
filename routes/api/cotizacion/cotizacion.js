@@ -37,6 +37,11 @@ class Cotizacion{
                         result = await CoreCotizacion.getCotizacion(req.body);
                         contador = await CoreCotizacion.getContadores(req.body)
                 break; 
+                case 'historial':
+                    validacion = await CoreCotizacion.validaActive(req.body);//[historial]
+                    result = await CoreCotizacion.getCotizacion(req.body);
+                    contador = await CoreCotizacion.getContadores(req.body)
+            break; 
                 default:
                     throw new Error('No existe el tipo, revise su información')  
             }
