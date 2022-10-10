@@ -152,19 +152,35 @@ export const getCotizacionFiltros = async (data)=>{
 
 export const validaAccion = async (data)=>{
     let v = await validateAll(data, {
-        accion:'required|in:aprobar_venta,aprobar_produccion,rechazar'
+        accion:'required|in:aprobar_venta,aprobar_produccion,rechazar',
+        active:'required|in:0,1'
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Tipo de accion fuera de rango, revise su información') });
         
        switch(data.accion){
         case 'aprobar_venta':
-
+            v = await validateAll(data, {
+                id:'required|integer',
+                state:'required|in:2',
+                ap_ventas:'required|in:1'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada aprobar_venta fuera de rango, revise su información') });
         break;
         case 'aprobar_produccion':
-
+            v = await validateAll(data, {
+                id:'required|integer',
+                state:'required|in:2',
+                ap_prod:'required|in:1'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada aprobar_produccion fuera de rango, revise su información') });
         break;
         case 'rechazar':
-
+            v = await validateAll(data, {
+                id:'required|integer',
+                state:'required|in:3',
+                comentario:"required|requiered"
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada rechazar fuera de rango, revise su información') });
         break;
         default:
             throw new Error('No existe el tipo acción, revise su información')  
@@ -173,19 +189,26 @@ export const validaAccion = async (data)=>{
        return v.ok;
 }
 
-
 export const cotizacionAccion = async (data)=>{
+let accion;
+let estado;
        switch(data.accion){
         case 'aprobar_venta':
+            accion= await Cotizaciones.updateAccion(data, usuario);
+            estado = await Cotizaciones.consultaEstadoCotizacion(data);
+            if(estado.length == 1){ let cambiarEstado = Cotizaciones.cambiarEstado(data, usuario) }
 
         break;
         case 'aprobar_produccion':
-
+            accion= await Cotizaciones.updateAccion(data, usuario);
+            estado = await Cotizaciones.consultaEstadoCotizacion(data);
+            if(estado.length == 1){ let cambiarEstado = Cotizaciones.cambiarEstado(data, usuario) }
         break;
         case 'rechazar':
-
+            accion= await Cotizaciones.updateAccion(data, usuario);
         break;
         default:
             throw new Error('No existe el tipo acción, revise su información')  
     }
+    return accion;
 }

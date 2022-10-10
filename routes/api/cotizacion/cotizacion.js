@@ -56,20 +56,8 @@ class Cotizacion{
         let validacion;
         let contador;
         try {
-            switch(req.body.accion){
-                case 'aprobar_venta':
-                    validacion = await CoreCotizacion.validaAccion(req.body);
-                    result = await CoreCotizacion.cotizacionAccion(req.body);
-                break;
-                case 'aprobar_produccion':
-
-                break;
-                case 'rechazar':
-
-                break;
-                default:
-                    throw new Error('No existe tipo de acción, revise su información')  
-            }
+            validacion = await CoreCotizacion.validaAccion(req.body);
+            result = await CoreCotizacion.cotizacionAccion(req.body);
                 return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
         } catch (error) {
             return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
