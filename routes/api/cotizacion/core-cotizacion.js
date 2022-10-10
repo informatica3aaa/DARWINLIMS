@@ -152,8 +152,7 @@ export const getCotizacionFiltros = async (data)=>{
 
 export const validaAccion = async (data)=>{
     let v = await validateAll(data, {
-        accion:'required|in:aprobar_venta,aprobar_produccion,rechazar',
-        active:'required|in:0,1'
+        accion:'required|in:aprobar_venta,aprobar_produccion,rechazar,nueva_cotizacion,detalle_cotizacion'
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Tipo de accion fuera de rango, revise su información') });
         
@@ -161,27 +160,53 @@ export const validaAccion = async (data)=>{
         case 'aprobar_venta':
             v = await validateAll(data, {
                 id:'required|integer',
-                state:'required|in:2',
-                ap_ventas:'required|in:1'
+                state_id:'required|in:2',
+                active:'required|in:1'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada aprobar_venta fuera de rango, revise su información') });
         break;
         case 'aprobar_produccion':
             v = await validateAll(data, {
                 id:'required|integer',
-                state:'required|in:2',
-                ap_prod:'required|in:1'
+                state_id:'required|in:2',
+                active:'required|in:1'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada aprobar_produccion fuera de rango, revise su información') });
         break;
         case 'rechazar':
             v = await validateAll(data, {
                 id:'required|integer',
-                state:'required|in:3',
-                comentario:"required|requiered"
+                state_id:'required|in:3',
+                comentario:"required|required",
+                active:'required|in:1'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada rechazar fuera de rango, revise su información') });
         break;
+        case 'nueva_cotizacion':
+            v = await validateAll(data, {
+                active:'required|in:0',
+                quotation_number:'required|string',
+                start_date:'required',
+                expiration_date:'required|date',
+                company_id:'required|integer',
+                estimated_days:'required|integer',
+                destinatario:'required|string',
+                general_condition_id:'required|integer',
+                specific_condition:'required|string',               
+                currency_id:'required|integer',
+                quotation_state_id:'required|integer'             
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+        break;
+        case 'detalle_cotizacion':
+            v = await validateAll(data, {
+                active:'required|in:1',
+                quotation_id:'required|integer',
+                assay_id:'required|integer',
+                price:'required|integer'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información') });
+        break
         default:
             throw new Error('No existe el tipo acción, revise su información')  
     }
@@ -190,6 +215,9 @@ export const validaAccion = async (data)=>{
 }
 
 export const cotizacionAccion = async (data)=>{
+const usuario ={
+    user_id:533
+}; 
 let accion;
 let estado;
        switch(data.accion){
@@ -206,6 +234,18 @@ let estado;
         break;
         case 'rechazar':
             accion= await Cotizaciones.updateAccion(data, usuario);
+        break;
+        case 'nueva_cotizacion':
+            accion= await Cotizaciones.addCotizacion(data, usuario);
+            if(!accion)  throw new Error('No se logro crear la cotización, revise su información')   ;
+            if(accion.length ==0)  throw new Error('No se logro crear la nueva cotización, revise su información')   ;
+            console.log("RETORNO DE BD", accion);
+        break;
+        case 'detalle_cotizacion':
+            accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
+            if(!accion)  throw new Error('No se logro crear detalle de  cotización, revise su información')   ;
+            if(accion.length ==0)  throw new Error('No se logro crear la nueva cotización, revise su información')   ;
+            console.log("RETORNO DE BD", accion);
         break;
         default:
             throw new Error('No existe el tipo acción, revise su información')  

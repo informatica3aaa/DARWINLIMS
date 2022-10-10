@@ -54,11 +54,10 @@ class Cotizacion{
     async acciones(req, res){
         let result;
         let validacion;
-        let contador;
         try {
             validacion = await CoreCotizacion.validaAccion(req.body);
             result = await CoreCotizacion.cotizacionAccion(req.body);
-                return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
+                return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
         }  
