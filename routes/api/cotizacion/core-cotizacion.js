@@ -207,6 +207,13 @@ export const validaAccion = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información') });
         break
+        case 'nueva_cotizacion_fin':
+            v = await validateAll(data, {
+                active:'required|in:1',
+                quotation_id:'required|integer'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información') });
+        break
         default:
             throw new Error('No existe el tipo acción, revise su información')  
     }
@@ -242,6 +249,12 @@ let estado;
             console.log("RETORNO DE BD", accion);
         break;
         case 'detalle_cotizacion':
+            accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
+            if(!accion)  throw new Error('No se logro crear detalle de  cotización, revise su información')   ;
+            if(accion.length ==0)  throw new Error('No se logro crear la nueva cotización, revise su información')   ;
+            console.log("RETORNO DE BD", accion);
+        break;
+        case 'nueva_cotizacion_fin':
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
             if(!accion)  throw new Error('No se logro crear detalle de  cotización, revise su información')   ;
             if(accion.length ==0)  throw new Error('No se logro crear la nueva cotización, revise su información')   ;
