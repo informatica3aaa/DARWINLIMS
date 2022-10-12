@@ -6,12 +6,13 @@ import compression from 'compression';
 import favicon from 'serve-favicon';
 import flash from 'connect-flash';
 import logger from 'morgan';
-import path from 'path';
+import passport from 'passport';
 import useragent from 'express-useragent';
 import numeral from 'numeral';
 import testConnection from './lib/db/test_connection';
 
 import ApiRouter from './routes/api';
+
 
 class App {
   constructor(config) {
@@ -58,33 +59,35 @@ class App {
     expressApp.use(useragent.express());
 
     expressApp.use(this.errorHandler);
+    //expressApp.use(this.catch404);
   }
 
   configureRoutes() {
     var expressApp = this.express;
     expressApp.use('/api', new ApiRouter());
+    
   }
 
   shouldUseCompressMiddleware(req, res) {
-    //return false;
     if (req.headers['x-no-compression']) {
-      // don't compress responses with this request header
       return false
     }
-    // fallback to standard filter function
     return compression.filter(req, res);
   }
 
   errorHandler(err, req, res, next) {
-    // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
     res.status(err.status || 500);
     res.render('error');
   }
-
+  
+  catch404(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  };
   
 
 
