@@ -44,7 +44,7 @@ async editTools (req, res){
         } 
 
     } catch (error) {
-        return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+        return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });   
     }
 }
 
@@ -155,13 +155,21 @@ async getTools (req, res){
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;  
-                             
+            case 'compañia':
+                validacion = await CoreHerramienta.validaActive(req.body);//[[companies x ID]]
+                result = await CoreHerramienta.getTools(req.body);
+            break;                              
             default:
-                throw new Error('No existe el tipo, revise su información')  
+                throw new Error(`No existe el tipo ${ req.body.tipo}, revisar el listado valido`)  
         }
+
+        // if(result.length == 0 ){
+        //     return res.status(204).json({ ok: false, total_registros: contador, data: result }); 
+        // }
+
         return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
     } catch (error) {
-        return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+        return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
     }
 }
 
@@ -175,7 +183,7 @@ async getTools (req, res){
             const paises = await CoreHerramienta.getPaises(Number(req.params.id));
             return res.status(200).json({ ok: true, data: paises }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
         }
     }
 
@@ -193,7 +201,7 @@ async getTools (req, res){
 
             return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });   
         }
 
     }
@@ -212,7 +220,7 @@ async getTools (req, res){
 
             return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
         }
 
     }
@@ -231,7 +239,7 @@ async getTools (req, res){
 
             return res.status(200).json({ ok: true, data: resultado }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });    
         }
 
     }
@@ -242,7 +250,7 @@ async getTools (req, res){
               const regiones = await CoreHerramienta.getRegiones(req.params.id);
             return res.status(200).json({ ok: true, data: regiones }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
         }
 
     }
@@ -253,7 +261,7 @@ async getTools (req, res){
                 const comunas = await CoreHerramienta.getComunas(Number(req.params.id));
                 return res.status(200).json({ ok: true, data: comunas }); 
             } catch (error) {
-                return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+                return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
             }
     }
 

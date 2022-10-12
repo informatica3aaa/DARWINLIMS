@@ -20,20 +20,17 @@ class Cotizacion{
             let contador;
             switch(req.body.tipo){
                 case 'cotizaciones':
-                    validacion = await CoreCotizacion.validaActive(req.body);//[quotations]
-                    result = await CoreCotizacion.getCotizacion(req.body);
-                    contador = await CoreCotizacion.getContadores(req.body)
+                        validacion = await CoreCotizacion.validaActive(req.body);//[quotations]
+                        result = await CoreCotizacion.getCotizacion(req.body);
+                        contador = await CoreCotizacion.getContadores(req.body)
                 break;  
                 case 'cotizacion':
-                    if(!req.body.id){
-                        throw new Error('ID es necesario, revise su información')  
-                    }
-                        validacion = await CoreCotizacion.validaActive(req.body);//[detalle_compañia]
+                        validacion = await CoreCotizacion.validaActive(req.body);//[quotations_con_detalles]
                         result = await CoreCotizacion.getCotizacion(req.body);
                         contador = await CoreCotizacion.getContadores(req.body)
                 break; 
                 case 'filtros':
-                        validacion = await CoreCotizacion.validaActive(req.body);//[detalle_compañia]
+                        validacion = await CoreCotizacion.validaActive(req.body);//[busqueda de cotizacion por filtros dinamicos]
                         result = await CoreCotizacion.getCotizacion(req.body);
                         contador = await CoreCotizacion.getContadores(req.body)
                 break; 
@@ -41,13 +38,18 @@ class Cotizacion{
                         validacion = await CoreCotizacion.validaActive(req.body);//[historial]
                         result = await CoreCotizacion.getCotizacion(req.body);
                         contador = await CoreCotizacion.getContadores(req.body)
-                break; 
+                break;
+                case 'proyectos':
+                        validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
+                        result = await CoreCotizacion.getCotizacion(req.body);
+                        contador = await CoreCotizacion.getContadores(req.body)
+                break;  
                 default:
-                    throw new Error('No existe el tipo, revise su información')  
+                    throw new Error(`No existe el tipo acción ${ req.body.tipo}, consulte listado valido`)  
             }
             return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
         }
     }
 
@@ -59,7 +61,7 @@ class Cotizacion{
             result = await CoreCotizacion.cotizacionAccion(req.body);
                 return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
-            return res.status(401).json({ ok: false ,msg: JSON.stringify(error.message) });  
+            return res.status(401).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
         }  
     }
 

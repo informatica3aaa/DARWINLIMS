@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Herramienta from '../../../lib/models/herramienta/herramienta';
+import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 import { validateAll } from 'indicative';
 import mensajes from '../../../lib/helpers/mensajes';
 
@@ -46,7 +47,7 @@ export const validaIdPais = async (data)=>{
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada debe ser número, revise su información') });
   
        const pais  = await Herramienta.getContryId(data.id, 1);
-        console.log("PAIS::::", data.id);
+
        if(pais.length == 0){
            throw new Error('El pais no existe o está inactivo, revise su información')  
        }
@@ -57,13 +58,31 @@ export const validaIdPais = async (data)=>{
 
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,compañia',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
         },
-       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Dato de entrada fuera de rango, revise su información') });
-  
+       mensajes).then(d => {return  {ok: true, d}}).catch( e => { throw new Error(`Error en los datos de entrada, revise su información`) });
+
+       switch(data.tipo){
+        case 'compañias':
+            v = await validateAll(data, {
+                id:'required|integer',
+                todas:'required|in:si,no',
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada fuera de rango, revise su información') });
+        break;
+        case 'compañia':
+            v = await validateAll(data, {
+                id:'required|integer'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada fuera de rango, revise su información') });
+        break;
+        default:
+            throw new Error('No existe el tipo para realizar la consulta, revise su información')  
+        }  
+
        return v.ok;
 }
 
@@ -122,7 +141,6 @@ export const addPais = async (data)=>{
     return pais;
 
 }
-
 
 export const editarRegion = async (data)=>{
 
@@ -330,141 +348,133 @@ export const getTools = async (data)=>{
     let contizaciones;
     switch(data.tipo){
         case 'tecnica':
-            tool = await Herramienta.getTecnicas(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron tecnicas, revise su información')  
-            }
+                tool = await Herramienta.getTecnicas(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
             break;
         case 'elemento_tipo':
             tool = await Herramienta.getElementotipo(data);
-                if(tool.length == 0){
-                throw new Error('No se encontraron elemento_tipo, revise su información')  
-            }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
             break;
         case 'digestiones':
-            tool = await Herramienta.getDigestiones(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron digestiones, revise su información')  
-            }
+                tool = await Herramienta.getDigestiones(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
             break;
         case 'tipos_de_unidad':
                 tool = await Herramienta.getTipoUnidad(data);
-                if(tool.length == 0){
-                    throw new Error('No se encontraron tipo de unidad, revise su información')  
-                }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
              break;
         case 'tipos_de_ensayo':
                 tool = await Herramienta.getTipoEnsayo(data);
-                if(tool.length == 0){
-                    throw new Error('No se encontraron tipo de ensayo, revise su información')  
-                }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break;
         case 'metodos':
-            tool = await Herramienta.getMetodos(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron metodos, revise su información')  
-            }
-    break;
+                tool = await Herramienta.getMetodos(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+        break;
         case 'estandares':
-        tool = await Herramienta.getEstandares(data);
-        if(tool.length == 0){
-            throw new Error('No se encontraron estandares, revise su información')  
-        }
+                tool = await Herramienta.getEstandares(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break;
         case 'transporte_tipo':
-            tool = await Herramienta.getTransporteTipo(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron trasportes tipo, revise su información')  
-            }
-            break;
+                tool = await Herramienta.getTransporteTipo(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+                break;
         case 'unidades':
                 tool = await Herramienta.getUnidades(data);
-                if(tool.length == 0){
-                    throw new Error('No se encontraron Unidades, revise su información')  
-                }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break;       
         case 'estados':
                 tool = await Herramienta.getEstados(data);
-                if(tool.length == 0){
-                    throw new Error('No se encontraron estados, revise su información')  
-                }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break;      
         case 'escalas':
                 tool = await Herramienta.getEscalas(data);
-                if(tool.length == 0){
-                    throw new Error('No se encontraron escalas, revise su información')  
-                }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break;      
         case 'etapas_de_requisicion':
                 tool = await Herramienta.getEtapaSolicitud(data);
-                if(tool.length == 0){
-                    throw new Error('No se encontraron etapas_de_solicitud, revise su información')  
-                }
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break;
         case 'estado_de_cotizacion':
-            tool = await Herramienta.getEstadoCita(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron estado_de_cita, revise su información')  
-            }
+                tool = await Herramienta.getEstadoCita(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ;     
         case 'formulas':
-            tool = await Herramienta.getFormulas(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron formulas, revise su información')  
-            }
+                tool = await Herramienta.getFormulas(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ;    
         case 'mallas':
-            tool = await Herramienta.getMallas(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron mallas, revise su información')  
-            }
+                tool = await Herramienta.getMallas(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ; 
         case 'estado_material':
-            tool = await Herramienta.getEstadoMaterial(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron estado_material, revise su información')  
-            }
+                tool = await Herramienta.getEstadoMaterial(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ; 
         case 'monedas':
-            tool = await Herramienta.getMonedas(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron monedas, revise su información')  
-            }
+                tool = await Herramienta.getMonedas(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ;   
         case 'elementos_quimicos':
-            tool = await Herramienta.getElementosQuimicos(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron elementos_quimicos, revise su información')  
-            }
+                tool = await Herramienta.getElementosQuimicos(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ; 
         case 'tipo_de_direccion':
-            tool = await Herramienta.getTipoDireccion(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron tipo_de_direccion, revise su información')  
-            }
+                tool = await Herramienta.getTipoDireccion(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
         break ; 
         case 'compañias':
-            tool = await Herramienta.getCompanias(data);
-            if(tool.length == 0){
-                throw new Error('No se encontraron compañias, revise su información')  
+            if(data.todas =='si'){
+                tool = await Herramienta.getCompaniasAll(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+            }else{
+                tool = await Herramienta.getCompanias(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
             }
-            // for(let index = 0; index < tool.length; index++){
-            //         direccion= await Herramienta.getDireccion(data,tool[index].id );
-            //         tool[index].direccion= direccion;
-            // }
-            // for(let index = 0; index < tool.length; index++){
-            //         emails= await Herramienta.getMails(data, tool[index].id );
-            //           tool[index].emails= emails;
-            // }
-            // for(let index = 0; index < tool.length; index++){
-            //         proyectos= await Herramienta.getProyectos(data, tool[index].id );
-            //         tool[index].proyectos= proyectos;
-            // }
-        //     for(let index = 0; index < tool.length; index++){
-        //             contizaciones= await Herramienta.getCotizaciones(data, tool[index].id );
-        //             tool[index].contizaciones= contizaciones;
-        // }
-        break;                                 
+        break; 
+        case 'compañia':
+                tool = await Herramienta.getCompaniaId(data);
+                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
+                    if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+
+                for(let index = 0; index < tool.length; index++){
+                            direccion= await Herramienta.getDireccion(data,tool[index].id );
+                            tool[index].direccion= direccion;
+                }
+                for(let index1 = 0; index1 < tool.length; index1++){
+                        emails= await Herramienta.getMails(data, tool[index1].id );
+                        tool[index1].emails= emails;2
+                }
+                for(let index2 = 0; index2 < tool.length; index2++){
+                        proyectos= await Herramienta.getProyectos(data, tool[index2].id );
+                        tool[index2].proyectos= proyectos;
+                }
+                    // for(let index3 = 0; index3 < tool.length; index3++){
+                    //     contizaciones= await Cotizaciones.getCotizacionesId(data, tool[index3].id );
+                    //     tool[index3].contizaciones= contizaciones;
+                    // }
+        break; 
         default:
             throw new Error('No existe el tipo para realizar la busqueda, revise su información')  
     }
@@ -472,12 +482,13 @@ export const getTools = async (data)=>{
 }
 
 export const getContadores = async(data)=>{
+    let cont=0;
     const contador = await Herramienta.ContTools(data);
-    console.log("contador", contador);
-    
+        if(!contador)  throw new Error('Error no se logro contar, revise su información');
+        cont = contador[0].total;
     if(contador.length == 0){
-        throw new Error('No se pudo contar registros, revise su información')  
+        cont = 0;
     }
 
-    return contador[0].total; 
+    return cont; 
 }
