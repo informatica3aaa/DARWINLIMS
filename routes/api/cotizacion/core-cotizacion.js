@@ -53,6 +53,19 @@ export const validaActive = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
         break;
+        case 'servicios':
+            v = await validateAll(data, {
+                active:'required|in:0,1'       
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+        break;
+        case 'servicio':
+            v = await validateAll(data, {
+                active:'required|in:0,1',
+                assay_id:'required|integer'         
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+        break;
         default:
             throw new Error(`No existe el tipo acción ${ data.tipo}, revise su información`)  
     }
@@ -68,7 +81,7 @@ export const getContadores = async(data)=>{
     const query = await getCotizacionFiltros(data);
     const contador = await Cotizaciones.ContTools(data, query);
     if(!contador)  throw new Error( `Error no se logra contar ${ data.tipo}, revise su información`);
-   
+    console.log("contado", contador);
     return contador[0].total; 
 }
 
@@ -157,7 +170,23 @@ export const getCotizacion = async (data)=>{
         //     if(tool.length == 0){
         //         throw new Error('No se encontraron cotizaciones, revise su información')  
         //     }
-        // break ;   
+        // break ; 
+        case 'servicios':
+            tool= await Cotizaciones.getServiciosAnaliticosAll(data);
+            if(!tool)  throw new Error('Error no se logro encontrar los todos servicios, revise su información');
+            if(tool.length ==0)  throw new Error('No se logro encontrar todos servicios, revise su información');
+
+        break;  
+        case 'servicio':
+            tool= await Cotizaciones.getServiciosAnaliticos(data);
+            if(!tool)  throw new Error('Error no se logro encontrar el servicio, revise su información')   ;
+            if(tool.length ==0)  throw new Error('No se logro encontrar el servicio, revise su información');
+              for(let index = 0; index < tool.length; index++){
+                    let fases= await Cotizaciones.getFasesServiciosAnaliticos(tool[index] );
+                    tool[index].fases= fases;
+             }
+
+        break;
     default:
             throw new Error(`No existe el tipo ${ data.tipo} para realizar la busqueda, revise su información`)  
     }
@@ -177,17 +206,14 @@ export const getCotizacionFiltros = async (data)=>{
     if(data.estado) where += ` and quo.[state_id] =${data.state_id}`
     if(data.cliente) where += ` and com.[name] like '%${data.cliente}%'`
     if(data.quotation_state_id) where += ` and quo.[quotation_state_id] = ${ data.quotation_state_id}`
+    if(data.state_id) where += ` and quo.[state_id] = ${ data.state_id}`
     if(data.creador) where += ` and us.[username] like '%${ data.creador}%'`
     // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
     return where;
 }
 
 export const validaAccion = async (data)=>{
-    let v = await validateAll(data, {
-        accion:'required|in:aprobar_venta,aprobar_produccion,rechazar,nueva_cotizacion,detalle_cotizacion,nueva_version,servicio,servicios'
-        },
-       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Tipo de accion fuera de rango, revise su información') });
-        
+    let v ;
        switch(data.accion){
         case 'aprobar_venta':
             v = await validateAll(data, {
@@ -264,19 +290,6 @@ export const validaAccion = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
         break;
-        case 'servicio':
-            v = await validateAll(data, {
-                active:'required|in:0,1',
-                assay_id:'required|integer'         
-                },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
-        break;
-        case 'servicios':
-            v = await validateAll(data, {
-                active:'required|in:0,1'       
-                },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
-        break;
         default:
             throw new Error('No existe el tipo acción, revise su información')  
     }
@@ -344,22 +357,7 @@ export const cotizacionAccion = async (data)=>{
             if(accion.length ==0)  throw new Error('No se logro crear la nueva version de la cotización, revise su información')   ;
 
         break;
-        case 'servicio':
-            accion= await Cotizaciones.getServiciosAnaliticos(data);
-            if(!accion)  throw new Error('Error no se logro encontrar el servicio, revise su información')   ;
-            if(accion.length ==0)  throw new Error('No se logro encontrar el servicio, revise su información');
-              for(let index = 0; index < accion.length; index++){
-                    let fases= await Cotizaciones.getFasesServiciosAnaliticos(accion[index] );
-                    accion[index].fases= fases;
-             }
 
-        break;
-        case 'servicios':
-            accion= await Cotizaciones.getServiciosAnaliticosAll(data);
-            if(!accion)  throw new Error('Error no se logro encontrar los todos servicios, revise su información');
-            if(accion.length ==0)  throw new Error('No se logro encontrar todos servicios, revise su información');
-
-        break;
         default:
             throw new Error(`No existe el tipo acción ${ data.tipo}, revise su información`)  
     }

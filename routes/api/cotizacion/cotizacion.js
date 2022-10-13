@@ -44,6 +44,14 @@ class Cotizacion{
                         result = await CoreCotizacion.getCotizacion(req.body);
                         contador = await CoreCotizacion.getContadores(req.body)
                 break;  
+                case 'servicios':
+                    validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
+                    result = await CoreCotizacion.getCotizacion(req.body);
+                break; 
+                case 'servicio':
+                    validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
+                    result = await CoreCotizacion.getCotizacion(req.body);
+                break;   
                 default:
                     throw new Error(`No existe el tipo acción ${ req.body.tipo}, consulte listado valido`)  
             }
