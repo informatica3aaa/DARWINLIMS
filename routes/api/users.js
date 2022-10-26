@@ -1,7 +1,4 @@
 import { Router } from 'express';
-import _ from 'lodash';
-
-import passwordHelper from './../../lib/helpers/password';
 import User from './../../lib/models/user';
 
 class APIUsersRouter {
@@ -21,7 +18,6 @@ class APIUsersRouter {
   }
 
   getUser(req, res) {
-    const current_application = req.current_application;
     const current_user = req.current_user
     const current_application_user = req.current_application_user;
 

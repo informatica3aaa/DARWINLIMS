@@ -8,7 +8,6 @@ import Herramientas from './api/herramientas/route-herramienta';
 import Pagos from './api/pagos/route-pago';
 import Xml from './api/xml/route-xml'
 import AuthRouter from './api/auth';
-import passport from './../lib/services/passport';
 
 class ApiRouter {
 
@@ -23,7 +22,8 @@ class ApiRouter {
     api.use('/pagos', new Pagos());
     api.use('/trabajos', new Trabajo());
     api.use('/xml', new Xml());
-    api.use('/auth', passport.authenticate('local', { session: false }), new AuthRouter());
+    //api.use('/auth', new AuthRouter());
+    api.use('/user', new AuthRouter());
     return api;
   }
 
