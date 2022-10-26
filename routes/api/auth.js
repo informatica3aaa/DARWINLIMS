@@ -1,17 +1,22 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../lib/models/user';
-import passport from './../../lib/services/passport';
-
 
 class AuthRouter {
 
   constructor(){
     const api = Router();
-    api.post('/login',  passport.authenticate('local', { session: false }), async (req, res, next) => {
-      const user = await User.getByUsername(req.body.username);
-      const token = jwt.sign(user, process.env.SESSION_SECRET, { expiresIn: process.env.TOKEN_EXPIREIN });
-      return res.json({user, token});
+    api.post('/login', async (req, res) => {
+      const validPassword = await User.verifyPassword(req.body.username, req.body.password);
+      if (validPassword) {
+        const user = await User.getByUsername(req.body.username);
+        await User.registerLastLogin(user.id);
+        const token = jwt.sign(user, process.env.SESSION_SECRET, { expiresIn: process.env.TOKEN_EXPIREIN });
+        return res.status(200).json({ ok: true, user, token });
+      } else {
+        return res.status(200).json({ ok: false });
+      }
+      
     });
 
     api.post('/setpassword',  async (req, res, next) => {
