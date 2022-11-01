@@ -1,18 +1,16 @@
 import express from 'express';
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import favicon from 'serve-favicon';
 import flash from 'connect-flash';
 import logger from 'morgan';
-import passport from 'passport';
 import useragent from 'express-useragent';
 import numeral from 'numeral';
 import testConnection from './lib/db/test_connection';
-
+import verificaToken from './lib/helpers/verificatoken';
 import ApiRouter from './routes/api';
-
+import AuthRouter from './routes/api/auth';
+import dotenv from 'dotenv';
 
 class App {
   constructor(config) {
@@ -25,6 +23,7 @@ class App {
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(bodyParser.json());
     this.express.use(cors());
+    dotenv.config();
   }
 
   start() {
@@ -48,23 +47,17 @@ class App {
     expressApp.use(cookieParser());
     expressApp.use(bodyParser.urlencoded({extended: true, limit:'20mb', parameterLimit: 20000}));
     expressApp.use(bodyParser.json({limit:'20mb'}));
-    var MssqlStore = require('mssql-session-store')(session);
-    expressApp.use(session({
-      secret: '901238SSDKF9844HFSDFK9243JSD',
-      resave: false,
-      saveUninitialized: false,
-      store: new MssqlStore({ reapInterval: 10, ttl: 10 })
-    }));
     expressApp.use(flash());
     expressApp.use(useragent.express());
 
     expressApp.use(this.errorHandler);
-    //expressApp.use(this.catch404);
+
   }
 
   configureRoutes() {
     var expressApp = this.express;
-    expressApp.use('/api', new ApiRouter());
+    expressApp.use('/api', verificaToken, new ApiRouter());
+    expressApp.use('/auth', new AuthRouter());
     
   }
 

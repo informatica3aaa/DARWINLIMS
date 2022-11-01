@@ -3,7 +3,7 @@ import App from '../app';
 import debug from 'debug';
 
 dotenv.config();
-debug('integracion-tgr:server');
+debug('minerals:server');
 
 
 const port = normalizePort(process.env.PORT || '3001');
