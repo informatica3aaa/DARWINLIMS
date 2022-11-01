@@ -1,19 +1,13 @@
 import { Router } from 'express';
 import  Cotizacion from './api/cotizacion/cotizacion'
 import Analisis from './api/analisis/analisis';
-import Cliente from './api/cliente/cliente';
-import Bodega from './api/bodega/bodega';
 import Trabajo from './api/trabajos/trabajo';
 import Herramientas from './api/herramientas/herramienta';
 import Pagos from './api/pagos/pago';
 import Xml from './api/xml/xml'
-import APIToken from './api/token';
-import Cliente from './api/cliente/route-cliente';
-import Bodega from './api/bodega/route-bodega';
-import Trabajo from './api/trabajos/route-trabajo';
-import Herramientas from './api/herramientas/route-herramienta';
-import Pagos from './api/pagos/route-pago';
-import Xml from './api/xml/route-xml'
+// import APIToken from './api/token';
+import Cliente from './api/cliente/cliente';
+import Bodega from './api/bodega/bodega';
 import AuthRouter from './api/auth';
 
 class ApiRouter {
