@@ -8,6 +8,7 @@ class AuthRouter {
     const api = Router();
     api.post('/login', async (req, res) => {
       const validPassword = await User.verifyPassword(req.body.username, req.body.password);
+      console.log("valid::", validPassword);
       if (validPassword) {
         const user = await User.getByUsername(req.body.username);
         await User.registerLastLogin(user.id);
@@ -21,6 +22,7 @@ class AuthRouter {
 
     api.post('/setpassword',  async (req, res, next) => {
       const result = await User.setNewPassword(req.body.username,req.body.password);
+      console.log("resultado:::", result);
       return res.json(result);
     });
 

@@ -8,6 +8,7 @@ import Xml from './api/xml/xml'
 // import APIToken from './api/token';
 import Cliente from './api/cliente/cliente';
 import Bodega from './api/bodega/bodega';
+import Log from './api/log/log';
 import AuthRouter from './api/auth';
 
 class ApiRouter {
@@ -23,6 +24,7 @@ class ApiRouter {
     api.use('/pagos', new Pagos());
     api.use('/trabajos', new Trabajo());
     api.use('/xml', new Xml());
+    api.use('/log', new Log)
     // api.use('/auth', passport.authenticate('local', { session: false }), new AuthRouter());
     //api.use('/auth', new AuthRouter());
     api.use('/user', new AuthRouter());
