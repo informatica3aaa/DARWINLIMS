@@ -15,7 +15,7 @@ class Log{
             return res.status(200).json({ ok: true, data: result });   
         } catch (error) {
             console.log("error", error);
-            return res.status(204).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });   
+            return res.status(204).json({ ok: false ,msg:error.message });   
         }
 
     }
