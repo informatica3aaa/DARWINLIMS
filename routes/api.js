@@ -22,7 +22,6 @@ class ApiRouter {
     api.use('/pagos', new Pagos());
     api.use('/trabajos', new Trabajo());
     api.use('/xml', new Xml());
-    //api.use('/auth', new AuthRouter());
     api.use('/user', new AuthRouter());
     return api;
   }
