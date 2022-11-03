@@ -297,8 +297,8 @@ export const validaAccion = async (data)=>{
        return v.ok;
 }
 
-export const cotizacionAccion = async (data)=>{
-        const usuario ={user_id:533 }; 
+export const cotizacionAccion = async (data, usuario)=>{
+        // const usuario ={user_id:533 }; 
         let accion;
         let estado;
        switch(data.accion){

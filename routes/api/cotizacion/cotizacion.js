@@ -66,7 +66,7 @@ class Cotizacion{
         let validacion;
         try {
             validacion = await CoreCotizacion.validaAccion(req.body);
-            result = await CoreCotizacion.cotizacionAccion(req.body);
+            result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
                 return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(204).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
