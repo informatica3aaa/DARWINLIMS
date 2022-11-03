@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as CoreCotizacion from './core-cotizacion';
+import * as CoreLog from '../log/core-log'
 
 class Cotizacion{
     constructor(){
@@ -15,6 +16,7 @@ class Cotizacion{
     async listar(req, res) {
 
         try {
+            const log = CoreLog.addHistory(req, req.user)
             let result;
             let validacion;
             let contador;
@@ -65,6 +67,7 @@ class Cotizacion{
         let result;
         let validacion;
         try {
+            const log = CoreLog.addHistory(req, req.user)
             validacion = await CoreCotizacion.validaAccion(req.body);
             result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
                 return res.status(200).json({ ok: true, data: result }); 

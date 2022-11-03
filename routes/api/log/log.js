@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as CoreLog from './core-log';
+import axios from 'axios';
 
 class Log{
     constructor(){
@@ -15,7 +16,7 @@ class Log{
             return res.status(200).json({ ok: true, data: result });   
         } catch (error) {
             console.log("error", error);
-            return res.status(204).json({ ok: false ,msg:error.message });   
+            return res.status(200).json({ ok: false ,msg:error.message });   
         }
 
     }
