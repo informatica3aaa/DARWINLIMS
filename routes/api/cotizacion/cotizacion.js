@@ -57,7 +57,7 @@ class Cotizacion{
             }
             return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
         } catch (error) {
-            return res.status(204).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
+            return res.status(200).json({ ok: false ,msg: error.message });  
         }
     }
 
@@ -69,7 +69,7 @@ class Cotizacion{
             result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
                 return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
-            return res.status(204).json({ ok: false ,msg: JSON.parse(JSON.stringify(error.message)) });  
+            return res.status(200).json({ ok: false ,msg: error.message });  
         }  
     }
 

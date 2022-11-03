@@ -13,14 +13,14 @@ export const validaActive = async (data)=>{
                 offset:'required|integer',
                 limit:'required|integer'      
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'cotizacion':
             v = await validateAll(data, {
                 id:'required|integer',
                 active:'required|in:0,1'     
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'filtros':
             v = await validateAll(data, {
@@ -28,14 +28,14 @@ export const validaActive = async (data)=>{
                 offset:'required|integer',
                 limit:'required|integer'   
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'historial':
             v = await validateAll(data, {
                 company_id:'required|integer',
                 project_id:'required|integer'      
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         // case 'por_aprobar':
         //     v = await validateAll(data, {
@@ -44,30 +44,30 @@ export const validaActive = async (data)=>{
         //         limit:'required|integer',
         //         quotation_state_id:'required|integer'       
         //         },
-        //        mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+        //        mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         // break;
         case 'proyectos':
             v = await validateAll(data, {
                 active:'required|in:0,1', 
                 company_id:'required|integer'      
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'servicios':
             v = await validateAll(data, {
                 active:'required|in:0,1'       
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'servicio':
             v = await validateAll(data, {
                 active:'required|in:0,1',
                 assay_id:'required|integer'         
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         default:
-            throw new Error(`No existe el tipo acción ${ data.tipo}, revise su información`)  
+            throw  { message : `No existe el tipo acción ${ data.tipo}, revise su información` };
     }
 
 
@@ -80,7 +80,7 @@ export const validaActive = async (data)=>{
 export const getContadores = async(data)=>{
     const query = await getCotizacionFiltros(data);
     const contador = await Cotizaciones.ContTools(data, query);
-    if(!contador)  throw new Error( `Error no se logra contar ${ data.tipo}, revise su información`);
+    if(!contador)  throw  { message : `Error no se logra contar ${ data.tipo}, revise su información`};
     console.log("contado", contador);
     return contador[0].total; 
 }
@@ -95,19 +95,19 @@ export const getCotizacion = async (data)=>{
         case 'cotizaciones':
             if(data.todas =='no'){
                 tool = await Cotizaciones.getCotizaciones(data);
-                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
-                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+                if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+                if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
             }
             if(data.todas =='si'){
                 tool = await Cotizaciones.getCotizacionesAll(data);
-                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
-                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+                if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+                if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
             }
         break ;
         case 'cotizacion':
             tool = await Cotizaciones.getCotizacionesId(data);
-            if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
-            if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+            if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
             for(let index = 0; index < tool.length; index++){
                 let elemento=[];
                 let etapa=[];
@@ -149,38 +149,38 @@ export const getCotizacion = async (data)=>{
         case 'filtros':
                 let where = await getCotizacionFiltros(data);
                 tool = await Cotizaciones.getCotizacionesCondicional(where, data)
-                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
-                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+                if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+                if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
         break ;    
         case 'historial':
                 tool = await Cotizaciones.getCotizacionesHistorial(data)
-                if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
-                if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+                if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+                if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
          break ;  
         case 'proyectos':
             tool = await Cotizaciones.getProjectIdCompany(data)
-            if(!tool)  throw new Error( `Error no se logra consultar por ${ data.tipo}, revise su información`);
-            if(tool.length == 0){ throw new Error(`Sin resultados para ${ data.tipo}, revise su información`)}
+            if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
      break ;                                
         // case 'por_aprobar':
         //     tool = await Cotizaciones.getCotizaciones(data);
         //     if(tool.length == 0){
-        //         throw new Error('No se encontraron cotizaciones, revise su información')  
+        //         throw  { message : 'No se encontraron cotizaciones, revise su información') };
         //     }
         // break ; 
         case 'servicios':
             tool= await Cotizaciones.getServiciosAnaliticosAll(data);
-            if(!tool)  throw new Error('Error no se logro encontrar los todos servicios, revise su información');
-            if(tool.length ==0)  throw new Error('No se logro encontrar todos servicios, revise su información');
+            if(!tool)  throw  { message : 'Error no se logro encontrar los todos servicios, revise su información'};
+            if(tool.length ==0)  throw  { message : 'No se logro encontrar todos servicios, revise su información'};
 
         break;  
         case 'servicio':
             tool= await Cotizaciones.getServiciosAnaliticos(data);
-            if(!tool)  throw new Error('Error no se logro encontrar el servicio, revise su información')   ;
-            if(tool.length ==0)  throw new Error('No se logro encontrar el servicio, revise su información');
+            if(!tool)  throw  { message : 'Error no se logro encontrar el servicio, revise su información' };
+            if(tool.length ==0)  throw  { message : 'No se logro encontrar el servicio, revise su información'};
               for(let index = 0; index < tool.length; index++){
                     let fases= await Cotizaciones.getFasesServiciosAnaliticos(tool[index] );
                     tool[index].fases= fases;
@@ -188,7 +188,7 @@ export const getCotizacion = async (data)=>{
 
         break;
     default:
-            throw new Error(`No existe el tipo ${ data.tipo} para realizar la busqueda, revise su información`)  
+            throw  { message : `No existe el tipo ${ data.tipo} para realizar la busqueda, revise su información`};
     }
     return tool;
 }
@@ -221,7 +221,7 @@ export const validaAccion = async (data)=>{
                 state_id:'required|in:2',
                 active:'required|in:1'
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada aprobar_venta fuera de rango, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_venta fuera de rango, revise su información' }});
         break;
         case 'aprobar_produccion':
             v = await validateAll(data, {
@@ -229,7 +229,7 @@ export const validaAccion = async (data)=>{
                 state_id:'required|in:2',
                 active:'required|in:1'
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada aprobar_produccion fuera de rango, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_produccion fuera de rango, revise su información'}});
         break;
         case 'rechazar':
             v = await validateAll(data, {
@@ -238,7 +238,7 @@ export const validaAccion = async (data)=>{
                 comentario:"required|required",
                 active:'required|in:1'
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw new Error('Datos de entrada rechazar fuera de rango, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada rechazar fuera de rango, revise su información'}});
         break;
         case 'nueva_cotizacion':
             v = await validateAll(data, {
@@ -254,7 +254,7 @@ export const validaAccion = async (data)=>{
                 currency_id:'required|integer',
                 quotation_state_id:'required|integer'             
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'detalle_cotizacion':
             v = await validateAll(data, {
@@ -263,14 +263,14 @@ export const validaAccion = async (data)=>{
                 assay_id:'required|integer',
                 price:'required|integer'
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
         break;
         case 'nueva_cotizacion_fin':
             v = await validateAll(data, {
                 active:'required|in:1',
                 quotation_id:'required|integer'
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
         break;
         case 'nueva_version':
             v = await validateAll(data, {
@@ -288,10 +288,10 @@ export const validaAccion = async (data)=>{
                 quotation_state_id:'required|integer',
                 parent_id:"required|integer"           
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw new Error('Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información') });
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         default:
-            throw new Error('No existe el tipo acción, revise su información')  
+            throw  { message : 'No existe el tipo acción, revise su información'};
     }
 
        return v.ok;
@@ -304,62 +304,62 @@ export const cotizacionAccion = async (data, usuario)=>{
        switch(data.accion){
         case 'aprobar_venta':
             accion= await Cotizaciones.updateAccion(data, usuario);
-                if(!accion)  throw new Error('Error al aprobar venta de la cotización, revise su información');
-                if(accion.length ==0)  throw new Error('No se logro aprobar venta  de la cotización, revise su información');
+                if(!accion)  throw  { message : 'Error al aprobar venta de la cotización, revise su información'};
+                if(accion.length ==0)  throw  { message : 'No se logro aprobar venta  de la cotización, revise su información'};
             estado = await Cotizaciones.consultaEstadoCotizacion(data);
-                if(!estado)  throw new Error('Error al consultar el estado de la cotizacion, revise su información');
-                if(estado.length ==0)  throw new Error('No se logro consultar el estado de la cotización, revise su información');
+                if(!estado)  throw  { message : 'Error al consultar el estado de la cotizacion, revise su información'};
+                if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
                 if(estado.length > 0){ 
                     let cambiarEstado = Cotizaciones.cambiarEstado(data, usuario)
-                    if(!cambiarEstado)  throw new Error('Error no al cambiar el estado de la cotización, revise su información');
-                    if(cambiarEstado.length ==0)  throw new Error('No se logro cambiar el estado de la cotización, revise su información');
+                    if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
+                    if(cambiarEstado.length ==0)  throw  { message : 'No se logro cambiar el estado de la cotización, revise su información'};
                 }
 
         break;
         case 'aprobar_produccion':
             accion= await Cotizaciones.updateAccion(data, usuario);
-                    if(!accion)  throw new Error('Error al aprobar produccion de la cotización, revise su información');
-                    if(accion.length ==0)  throw new Error('No se logro aprobar produccion de la cotización, revise su información');
+                    if(!accion)  throw  { message : 'Error al aprobar produccion de la cotización, revise su información'};
+                    if(accion.length ==0)  throw  { message : 'No se logro aprobar produccion de la cotización, revise su información'};
             estado = await Cotizaciones.consultaEstadoCotizacion(data);
-                    if(!estado)  throw new Error('Error al consultar el estado de la cotizacion, revise su información');
-                    if(estado.length ==0)  throw new Error('No se logro consultar el estado de la cotización, revise su información');
+                    if(!estado)  throw  { message : 'Error al consultar el estado de la cotizacion, revise su información'};
+                    if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
             if(estado.length == 1){ 
                 let cambiarEstado = Cotizaciones.cambiarEstado(data, usuario) 
-                if(!cambiarEstado)  throw new Error('Error no al cambiar el estado de la cotización, revise su información');
-                if(cambiarEstado.length ==0)  throw new Error('No se logro cambiar el estado de la cotización, revise su información');
+                if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
+                if(cambiarEstado.length ==0)  throw  { message : 'No se logro cambiar el estado de la cotización, revise su información'};
             }
         break;
         case 'rechazar':
             accion= await Cotizaciones.updateAccion(data, usuario);
-            if(!accion)  throw new Error('Error no se logro rechazar la cotización, revise su información')   ;
-            if(accion.length ==0)  throw new Error('No se logro rechazar la cotización, revise su información')   ;
+            if(!accion)  throw  { message : 'Error no se logro rechazar la cotización, revise su información' };
+            if(accion.length ==0)  throw  { message : 'No se logro rechazar la cotización, revise su información' };
         break;
         case 'nueva_cotizacion':
             accion= await Cotizaciones.addCotizacion(data, usuario);
-            if(!accion)  throw new Error('Error no se logro crear la cotización, revise su información');
-            if(accion.length ==0)  throw new Error('No se logro crear la nueva cotización, revise su información');
+            if(!accion)  throw  { message : 'Error no se logro crear la cotización, revise su información'};
+            if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información'};
 
         break;
         case 'detalle_cotizacion':
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
-            if(!accion)  throw new Error('Error no se logro crear detalle de  cotización, revise su información')   ;
-            if(accion.length ==0)  throw new Error('No se logro crear la nueva cotización, revise su información')   ;
+            if(!accion)  throw  { message : 'Error no se logro crear detalle de  cotización, revise su información' };
+            if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información' };
 
         break;
         case 'nueva_cotizacion_fin':
             accion= await Cotizaciones.addCotizacionFin(data, usuario);
-            if(!accion)  throw new Error('Error no se logro finalizar la creacion de la cotización, revise su información');
-            if(accion.length ==0)  throw new Error('No se logro finalizar la creacion de la cotización, revise su información');
+            if(!accion)  throw  { message : 'Error no se logro finalizar la creacion de la cotización, revise su información'};
+            if(accion.length ==0)  throw  { message : 'No se logro finalizar la creacion de la cotización, revise su información'};
         break;
         case 'nueva_version':
             accion= await Cotizaciones.addCotizacion(data, usuario);
-            if(!accion)  throw new Error('Error no se logro crear nueva version de la  cotización, revise su información')   ;
-            if(accion.length ==0)  throw new Error('No se logro crear la nueva version de la cotización, revise su información')   ;
+            if(!accion)  throw  { message : 'Error no se logro crear nueva version de la  cotización, revise su información'};
+            if(accion.length ==0)  throw  { message : 'No se logro crear la nueva version de la cotización, revise su información'};
 
         break;
 
         default:
-            throw new Error(`No existe el tipo acción ${ data.tipo}, revise su información`)  
+            throw  { message : `No existe el tipo acción ${ data.tipo}, revise su información`};
     }
     return accion;
 }
