@@ -10,7 +10,7 @@ export const validaActive = async (data)=>{
        switch(data.tipo){
         case 'cotizaciones':
             v = await validateAll(data, {
-                active:'required|in:0,1',
+                active:'required|range:-1,2',
                 offset:'required|integer',
                 limit:'required|integer'      
                 },
@@ -40,7 +40,10 @@ export const validaActive = async (data)=>{
         break;
         case 'historialxcompañia':
             v = await validateAll(data, {
-                company_id:'required|integer'     
+                company_id:'required|integer',
+                active:'required|range:-1,2',
+                offset:'required|integer',
+                limit:'required|integer'   
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
@@ -227,31 +230,6 @@ export const getCotizacionFiltros = async (data)=>{
 export const validaAccion = async (data)=>{
     let v ;
        switch(data.accion){
-        case 'aprobar_venta':
-            v = await validateAll(data, {
-                id:'required|integer',
-                state_id:'required|in:2',
-                active:'required|in:1'
-                },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_venta fuera de rango, revise su información' }});
-        break;
-        case 'aprobar_produccion':
-            v = await validateAll(data, {
-                id:'required|integer',
-                state_id:'required|in:2',
-                active:'required|in:1'
-                },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_produccion fuera de rango, revise su información'}});
-        break;
-        case 'rechazar':
-            v = await validateAll(data, {
-                id:'required|integer',
-                state_id:'required|in:3',
-                comentario:"required|required",
-                active:'required|in:1'
-                },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada rechazar fuera de rango, revise su información'}});
-        break;
         case 'nueva_cotizacion':
             v = await validateAll(data, {
                 active:'required|in:0',
@@ -309,6 +287,100 @@ export const validaAccion = async (data)=>{
        return v.ok;
 }
 
+export const validaAction = async (data)=>{
+    let v ;
+       switch(data.accion){
+        case 'aprobar_venta':
+            v = await validateAll(data, {
+                id:'required|integer',
+                state_id:'required|range:1,3',
+                active:'required|range:0,2',
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_venta fuera de rango, revise su información' }});
+        break;
+        case 'aprobar_produccion':
+            v = await validateAll(data, {
+                id:'required|integer',
+                state_id:'required|range:1,3',
+                active:'required|range:0,2',
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_produccion fuera de rango, revise su información'}});
+        break;
+        case 'rechazar':
+            v = await validateAll(data, {
+                id:'required|integer',
+                state_id:'required|range:2,4',
+                comentario:"required|string",
+                active:'required|range:0,2',
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e =>  { console.log(e); throw  { message : 'Datos de entrada rechazar fuera de rango, revise su información'}});
+        break;
+       
+            v = await validateAll(data, {
+                active:'required|in:0',
+                quotation_id:'required|integer',
+                quotation_number:'required|string',
+                start_date:'required',
+                expiration_date:'required|date',
+                company_id:'required|integer',
+                estimated_days:'required|integer',
+                destinatario:'required|string',
+                general_condition_id:'required|integer',
+                specific_condition:'required|string',               
+                currency_id:'required|integer',
+                quotation_state_id:'required|integer',
+                parent_id:"required|integer"           
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+        break;
+        default:
+            throw  { message : 'No existe el tipo acción, revise su información'};
+    }
+
+       return v.ok;
+}
+
+export const validaNew = async (data)=>{
+    let v = await validateAll(data, {
+                active:'required|range:0,2',
+                quotation_number:'required|string',
+                start_date:'required',
+                expiration_date:'required|date',
+                company_id:'required|integer',
+                estimated_days:'required|integer',
+                destinatario:'required|string',
+                general_condition_id:'required|integer',
+                specific_condition:'required|string',               
+                currency_id:'required|integer',
+                quotation_state_id:'required|integer'             
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+       
+       return v.ok;
+}
+
+export const validaNewDetail = async (data)=>{
+    let v = await validateAll(data, {
+                active:'required|range:0,2',
+                quotation_id:'required|integer',
+                assay_id:'required|integer',
+                price:'required|integer'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
+
+       return v.ok;
+}
+
+
+export const validaNewEnd = async (data)=>{
+    let v = await validateAll(data, {
+        active:'required|range:0,2',
+        quotation_id:'required|integer'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
+ return v.ok;
+}
+
 export const cotizacionAccion = async (data, usuario)=>{
         // const usuario ={user_id:533 }; 
         let accion;
@@ -322,7 +394,7 @@ export const cotizacionAccion = async (data, usuario)=>{
                 if(!estado)  throw  { message : 'Error al consultar el estado de la cotizacion, revise su información'};
                 if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
                 if(estado.length > 0){ 
-                    let cambiarEstado = Cotizaciones.cambiarEstado(data, usuario)
+                    let cambiarEstado = Cotizaciones.cambiaEstadoCotizacion(data, usuario)
                     if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
                     if(cambiarEstado.length ==0)  throw  { message : 'No se logro cambiar el estado de la cotización, revise su información'};
                 }
@@ -336,13 +408,14 @@ export const cotizacionAccion = async (data, usuario)=>{
                     if(!estado)  throw  { message : 'Error al consultar el estado de la cotizacion, revise su información'};
                     if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
             if(estado.length == 1){ 
-                let cambiarEstado = Cotizaciones.cambiarEstado(data, usuario) 
+                let cambiarEstado = Cotizaciones.cambiaEstadoCotizacion(data, usuario) 
                 if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
                 if(cambiarEstado.length ==0)  throw  { message : 'No se logro cambiar el estado de la cotización, revise su información'};
             }
         break;
         case 'rechazar':
             accion= await Cotizaciones.updateAccion(data, usuario);
+            console.log("accion", accion);
             if(!accion)  throw  { message : 'Error no se logro rechazar la cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro rechazar la cotización, revise su información' };
         break;
@@ -375,3 +448,5 @@ export const cotizacionAccion = async (data, usuario)=>{
     }
     return accion;
 }
+
+export const validarCotizacion =async (data, usuario)=>{}

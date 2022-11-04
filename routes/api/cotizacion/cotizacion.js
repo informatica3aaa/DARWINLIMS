@@ -11,11 +11,15 @@ class Cotizacion{
         api.get('/:id/:active', this.getQuotation);
         api.post('/filter', this.getAllQuotationsFilter);
         api.get('/history/:company_id/project/:project_id', this.getHistory);
-        api.get('/company/:company_id', this.getHistoryCompany);
+        api.post('/history', this.getHistoryCompany);
         api.get('/project/:active/company/:company_id', this.getProject);
         api.get('/services/active/:active', this.getServicios );
         api.get('/service/active/:active/assay/:assay_id', this.getService);
         api.post('/accion',this.acciones); 
+        api.post('/action',this.approveQuotation); 
+        api.post('/new',this.newQuotation);
+        api.post('/new/detail',this.newQuotationDetail);
+        api.post('/new/end',this.newQuotationEnd);
 
         
         return api;
@@ -126,10 +130,10 @@ class Cotizacion{
 
     async getHistoryCompany(req, res){
         try {
-            req.params.tipo ='historialxcompañia';
-            const validacion = await CoreCotizacion.validaActive( req.params);//[historialxconañia]
-            const result = await CoreCotizacion.getCotizacion( req.params);
-            const contador = await CoreCotizacion.getContadores( req.params) 
+            req.body.tipo ='historialxcompañia';
+            const validacion = await CoreCotizacion.validaActive( req.body);//[historialxconañia]
+            const result = await CoreCotizacion.getCotizacion( req.body);
+            const contador = await CoreCotizacion.getContadores( req.body) 
             return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
@@ -182,6 +186,50 @@ class Cotizacion{
             // const log = CoreLog.addHistory(req, req.user)
             validacion = await CoreCotizacion.validaAccion(req.body);
             result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
+                return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }  
+    }
+
+    //ACCIONES
+    async approveQuotation(req, res){
+        try {
+          const  validacion = await CoreCotizacion.validaAction(req.body);
+          const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
+                return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }  
+    }
+
+    async newQuotation(req, res){
+        try {
+            req.body.accion ='nueva_cotizacion'
+          const  validacion = await CoreCotizacion.validaNew(req.body);
+          const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
+                return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }  
+    }
+
+    async newQuotationDetail(req, res){
+        try {
+            req.body.accion ='detalle_cotizacion'
+          const  validacion = await CoreCotizacion.validaNewDetail(req.body);
+          const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
+                return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }  
+    }
+  
+    async newQuotationEnd(req, res){
+        try {
+          req.body.accion ='nueva_cotizacion_fin'
+          const  validacion = await CoreCotizacion.validaNewEnd(req.body);
+          const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
                 return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
