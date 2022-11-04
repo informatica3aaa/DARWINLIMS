@@ -63,7 +63,7 @@ export const validaActive = async (data)=>{
         break;
         case 'servicio':
             v = await validateAll(data, {
-                active:'required|in:0,1',
+                active:'required|range:-1,2'  ,
                 assay_id:'required|integer'         
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});

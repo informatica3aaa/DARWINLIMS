@@ -10,10 +10,10 @@ class Cotizacion{
         api.post('/all', this.getAllQuotations);
         api.get('/:id/:active', this.getQuotation);
         api.post('/filter', this.getAllQuotationsFilter);
-        api.get('/history/:company_id/:project_id', this.getHistory);
-        api.get('/project/:company_id/:active', this.getProject);
-        api.get('/services/:active', this.getServicios );
-        // api.get('/service/:assay_id/:active', this.getService);
+        api.get('/history/:company_id/project/:project_id', this.getHistory);
+        api.get('/project/:active/company/:company_id', this.getProject);
+        api.get('/services/active/:active', this.getServicios );
+        api.get('/service/active/:active/assay/:assay_id', this.getService);
         api.post('/accion',this.acciones); 
 
         
@@ -137,38 +137,36 @@ class Cotizacion{
     }
 
     async getServicios(req, res){
-        console.log("acacac.::::", req.params);
         try {
             req.params.tipo = 'servicios'
             const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
             const result = await CoreCotizacion.getCotizacion(req.params);
-            const contador = await CoreCotizacion.getContadores(req.params)
-            return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
+            return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
             
         }
     }
 
-    // async getService(req, res){
-    //     try {
-    //         req.params.tipo = 'servicios'
-    //         const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
-    //         const result = await CoreCotizacion.getCotizacion(req.params);
-    //         const contador = await CoreCotizacion.getContadores(req.params)
-    //         return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
-    //     } catch (error) {
-    //         return res.status(200).json({ ok: false ,msg: error.message });  
+    async getService(req, res){
+        console.log("askjdjasdhjasdh", req.params);
+        try {
+            req.params.tipo = 'servicio'
+            validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
+            result = await CoreCotizacion.getCotizacion(req.body);
+            return res.status(200).json({ ok: true,  data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
             
-    //     }
-    // }
+        }
+    }
 
 
     async acciones(req, res){
         let result;
         let validacion;
         try {
-            const log = CoreLog.addHistory(req, req.user)
+            // const log = CoreLog.addHistory(req, req.user)
             validacion = await CoreCotizacion.validaAccion(req.body);
             result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
                 return res.status(200).json({ ok: true, data: result }); 
