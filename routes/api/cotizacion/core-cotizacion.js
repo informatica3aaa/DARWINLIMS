@@ -5,6 +5,7 @@ import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 
 
 export const validaActive = async (data)=>{
+    console.log("data:::", data.tipo);
     let v;
        switch(data.tipo){
         case 'cotizaciones':
@@ -24,12 +25,12 @@ export const validaActive = async (data)=>{
         break;
         case 'filtros':
             v = await validateAll(data, {
-                active:'required|in:0,1,2',
+                active:'required|range:-1,3',
                 offset:'required|integer',
                 limit:'required|integer'   
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
-        break;
+               break;
         case 'historial':
             v = await validateAll(data, {
                 company_id:'required|integer',
@@ -48,16 +49,17 @@ export const validaActive = async (data)=>{
         // break;
         case 'proyectos':
             v = await validateAll(data, {
-                active:'required|in:0,1', 
+                active:'required|range:-1,2',
                 company_id:'required|integer'      
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'servicios':
+            console.log("entro aca::::");
             v = await validateAll(data, {
-                active:'required|in:0,1'       
+                active:'required|range:-1,2'      
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para consultar los servicios fuera de rango o no corresponde, revise su información'}});
         break;
         case 'servicio':
             v = await validateAll(data, {
@@ -81,8 +83,7 @@ export const getContadores = async(data)=>{
     const query = await getCotizacionFiltros(data);
     const contador = await Cotizaciones.ContTools(data, query);
     if(!contador)  throw  { message : `Error no se logra contar ${ data.tipo}, revise su información`};
-    console.log("contado", contador);
-    return contador[0].total; 
+       return contador[0].total; 
 }
 
 export const getCotizacion = async (data)=>{
@@ -148,8 +149,8 @@ export const getCotizacion = async (data)=>{
         break ;                                  
         case 'filtros':
                 let where = await getCotizacionFiltros(data);
-                tool = await Cotizaciones.getCotizacionesCondicional(where, data)
-                if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+                     tool = await Cotizaciones.getCotizacionesCondicional(where, data)
+                   if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
         break ;    
@@ -195,19 +196,18 @@ export const getCotizacion = async (data)=>{
 
 export const getCotizacionFiltros = async (data)=>{
     let where ='';
-    if(data.active){
-        if(Number(data.active) == 2){
+        if(data.active == 2){
             where += ` quo.[active] in (0,1) `
         }
-        if(Number(data.active) != 2){
+        if(data.active != 2){
         where += ` quo.[active] = ${ Number(data.active)}`
-        }
     }
+    
     if(data.estado) where += ` and quo.[state_id] =${data.state_id}`
     if(data.cliente) where += ` and com.[name] like '%${data.cliente}%'`
     if(data.quotation_state_id) where += ` and quo.[quotation_state_id] = ${ data.quotation_state_id}`
     if(data.state_id) where += ` and quo.[state_id] = ${ data.state_id}`
-    if(data.creador) where += ` and us.[username] like '%${ data.creador}%'`
+    if(data.creador) where += ` and us.[user_creator] like '%${ data.creador}%'`
     // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
     return where;
 }
