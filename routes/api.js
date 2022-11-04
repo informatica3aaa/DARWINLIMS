@@ -19,7 +19,7 @@ class ApiRouter {
     api.use('/analisis', new Analisis());
     api.use('/bodega', new Bodega());
     api.use('/cliente', new Cliente());
-    api.use('/cotizacion', new Cotizacion());
+    api.use('/quotations', new Cotizacion());
     api.use('/herramientas', new Herramientas());
     api.use('/pagos', new Pagos());
     api.use('/trabajos', new Trabajo());

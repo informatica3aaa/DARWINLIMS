@@ -11,6 +11,7 @@ class Cotizacion{
         api.get('/:id/:active', this.getQuotation);
         api.post('/filter', this.getAllQuotationsFilter);
         api.get('/history/:company_id/project/:project_id', this.getHistory);
+        api.get('/company/:company_id', this.getHistoryCompany);
         api.get('/project/:active/company/:company_id', this.getProject);
         api.get('/services/active/:active', this.getServicios );
         api.get('/service/active/:active/assay/:assay_id', this.getService);
@@ -123,6 +124,19 @@ class Cotizacion{
         }
     }
 
+    async getHistoryCompany(req, res){
+        try {
+            req.params.tipo ='historialxcompañia';
+            const validacion = await CoreCotizacion.validaActive( req.params);//[historialxconañia]
+            const result = await CoreCotizacion.getCotizacion( req.params);
+            const contador = await CoreCotizacion.getContadores( req.params) 
+            return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+    }
+
     async getProject(req, res){
             try {
                 req.params.tipo = 'proyectos'
@@ -149,11 +163,10 @@ class Cotizacion{
     }
 
     async getService(req, res){
-        console.log("askjdjasdhjasdh", req.params);
         try {
             req.params.tipo = 'servicio'
-            validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
-            result = await CoreCotizacion.getCotizacion(req.body);
+            const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
+            const result = await CoreCotizacion.getCotizacion(req.params);
             return res.status(200).json({ ok: true,  data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  

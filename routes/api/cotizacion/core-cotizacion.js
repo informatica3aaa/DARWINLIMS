@@ -38,6 +38,12 @@ export const validaActive = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
+        case 'historialxcompañia':
+            v = await validateAll(data, {
+                company_id:'required|integer'     
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+        break;
         // case 'por_aprobar':
         //     v = await validateAll(data, {
         //         active:'required|in:0,1,2',
@@ -160,6 +166,12 @@ export const getCotizacion = async (data)=>{
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
          break ;  
+        case 'historialxcompañia':
+            tool = await Cotizaciones.getCotizacionesHistorialComp(data)
+            if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+
+     break ;  
         case 'proyectos':
             tool = await Cotizaciones.getProjectIdCompany(data)
             if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
