@@ -5,7 +5,7 @@ import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 
 
 export const validaActive = async (data)=>{
-    console.log("data:::", data.tipo);
+    console.log("VALIDACION::::", data);
     let v;
        switch(data.tipo){
         case 'cotizaciones':
@@ -13,6 +13,13 @@ export const validaActive = async (data)=>{
                 active:'required|range:-1,2',
                 offset:'required|integer',
                 limit:'required|integer'      
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+        break;
+        case 'download':
+            console.log("aca entrooooooo:::.",data);
+            v = await validateAll(data, {
+                id:'required|integer' 
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
@@ -64,7 +71,6 @@ export const validaActive = async (data)=>{
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
         case 'servicios':
-            console.log("entro aca::::");
             v = await validateAll(data, {
                 active:'required|range:-1,2'      
                 },
@@ -203,6 +209,48 @@ export const getCotizacion = async (data)=>{
              }
 
         break;
+        case 'download':
+            tool = await Cotizaciones.getCotizacionesId(data);
+            if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+            for(let index = 0; index < tool.length; index++){
+                let elemento=[];
+                let etapa=[];
+                let detalles= await Cotizaciones.getDetallesCotizacion(tool[index].id );
+                   for(let index1 = 0; index1 < detalles.length; index1++){
+                       const elementos= await Cotizaciones.getDetallesElementosCotizacion(detalles[index1].assay_id);
+                        elemento.push(elementos[0])
+                        detalles[index1].elementos = elemento;
+
+                        const etapas= await Cotizaciones.getEtapasCotizacion(detalles[index1].assay_id);
+                        etapa.push(etapas) 
+                        detalles[index1].etapas = etapas;
+
+                        }
+    
+                tool[index].analisis_asociado= detalles;
+            }
+
+            for(let index3 = 0; index3 < tool.length; index3++){
+                 const   condicionesEspecificas= await Cotizaciones.getCondicionesEspecificas(tool[index3].general_condition_id );
+                    tool[index3].condiciones_especificas= condicionesEspecificas;            
+            }
+                
+            
+            for(let index4 = 0; index4 < tool.length; index4++){
+                    const adjuntos= await Cotizaciones.getAdjuntosCotizacion(tool[index4].id );
+                    tool[index4].adjuntos= adjuntos;
+            }
+
+            // for(let index = 0; index < tool.length; index++){
+            //         proyectos= await Cotizaciones.getProyectos(data, tool[index].id );
+            //         tool[index].proyectos= proyectos;
+            // }
+        //     for(let index = 0; index < tool.length; index++){
+        //             contizaciones= await Cotizaciones.getCotizaciones(data, tool[index].id );
+        //             tool[index].contizaciones= contizaciones;
+        // }
+        break ;   
     default:
             throw  { message : `No existe el tipo ${ data.tipo} para realizar la busqueda, revise su información`};
     }
@@ -342,7 +390,7 @@ export const validaAction = async (data)=>{
 
 export const validaNew = async (data)=>{
     let v = await validateAll(data, {
-                active:'required|range:0,2',
+                active:'required|range:-1,1',
                 quotation_number:'required|string',
                 start_date:'required',
                 expiration_date:'required|date',
@@ -449,4 +497,28 @@ export const cotizacionAccion = async (data, usuario)=>{
     return accion;
 }
 
-export const validarCotizacion =async (data, usuario)=>{}
+export const validarCotizacion =async (form, usuario)=>{
+
+    const cotizacion= await Cotizaciones.getCotizacionXuser(form, usuario);
+            if(!cotizacion)  throw  { message : 'Error no se logro finalizar la creacion de la cotización, revise su información'};
+
+            let contador=0;
+            if(cotizacion.length > 0) {
+                for(let index = 0; index < cotizacion.length; index++){
+                    const detalle = await Cotizaciones.getCotizacionXDetalle(cotizacion[index].id);
+                    if(detalle.length == 0){
+                        throw  { message : 'El usuario tiene Cotizaciones pendientes por terminar'};
+                    }
+                }
+            }
+
+            return contador;
+}
+
+export const cotizacionPendientes =async (form, usuario)=>{
+
+            const cotizacion= await Cotizaciones.getCotizacionXuserDetalle(form, usuario);
+                    if(!cotizacion)  throw  { message : 'Error no se logro consultar por cotizaciones, revise su información'};
+        
+            return cotizacion;
+}

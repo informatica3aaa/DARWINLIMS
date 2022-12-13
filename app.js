@@ -7,6 +7,7 @@ import logger from 'morgan';
 import useragent from 'express-useragent';
 import numeral from 'numeral';
 import testConnection from './lib/db/test_connection';
+import connectionIcp from './lib/db/connectionIcp';
 import verificaToken from './lib/helpers/verificatoken';
 import ApiRouter from './routes/api';
 import AuthRouter from './routes/api/auth';
@@ -17,11 +18,13 @@ class App {
     process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 1;
     const cors = require('cors');
     const bodyParser = require('body-parser');
+
     this.port = config.port;
     this.sessionSecret = config.session_secret;
     this.express = express();
     this.express.use(bodyParser.urlencoded({ extended: false }));
     this.express.use(bodyParser.json());
+    this.express.use(bodyParser.json({limit:"10mb"}));
     this.express.use(cors());
     dotenv.config();
   }
@@ -30,6 +33,7 @@ class App {
     return this.express.listen(this.port, function () {
       console.log('Minerals API iniciada en puerto ' + this.port);
       testConnection();
+      connectionIcp();
     }.bind(this));
   }
 
@@ -57,6 +61,7 @@ class App {
   configureRoutes() {
     var expressApp = this.express;
     expressApp.use('/api', verificaToken, new ApiRouter());
+    // expressApp.use('/api/v1', verificaToken, new ApiRouter());
     // expressApp.use('/api', new ApiRouter());
     expressApp.use('/auth', new AuthRouter());
     

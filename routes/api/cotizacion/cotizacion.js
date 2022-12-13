@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as CoreCotizacion from './core-cotizacion';
 import * as CoreLog from '../log/core-log'
+import { Quotation } from '../../../lib/themplates/pdf/quotation';
 
 class Cotizacion{
     constructor(){
@@ -20,7 +21,9 @@ class Cotizacion{
         api.post('/new',this.newQuotation);
         api.post('/new/detail',this.newQuotationDetail);
         api.post('/new/end',this.newQuotationEnd);
-
+        api.get('/validate',this.validateQuotation);
+        api.get('/pending',this.pendingQuotation);
+        api.post('/download', this.dowloadQuotation);
         
         return api;
     };
@@ -76,6 +79,7 @@ class Cotizacion{
     }
     
     async getAllQuotations (req, res){
+        console.log("getall");
         try {
             req.body.tipo='cotizaciones';
             const validacion = await CoreCotizacion.validaActive(req.body);//[quotations]
@@ -92,7 +96,6 @@ class Cotizacion{
 
         try {
             req.params.tipo='cotizacion';
-            console.log(req.params);
             let validacion = await CoreCotizacion.validaActive(req.params);//[quotations_con_detalles]
             let result = await CoreCotizacion.getCotizacion(req.params);
             let contador = await CoreCotizacion.getContadores(req.params)
@@ -205,8 +208,9 @@ class Cotizacion{
 
     async newQuotation(req, res){
         try {
-            req.body.accion ='nueva_cotizacion'
-          const  validacion = await CoreCotizacion.validaNew(req.body);
+          req.body.accion ='nueva_cotizacion'
+          const cotizacion = await CoreCotizacion.validarCotizacion(req.body, req.user);
+          const validacion = await CoreCotizacion.validaNew(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
                 return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
@@ -236,6 +240,42 @@ class Cotizacion{
         }  
     }
 
+    async validateQuotation(req, res){
+        try {
+            const result = await CoreCotizacion.validarCotizacion(req.body, req.user);
+                  return res.status(200).json({ ok: true, data: 'no tiene cotizaciones pendientes por terminar' }); 
+          } catch (error) {
+              return res.status(200).json({ ok: false ,msg: error.message });  
+          }   
+    }
+
+    async pendingQuotation(req, res){
+        try {
+            const result = await CoreCotizacion.cotizacionPendientes(req.body, req.user);
+                  return res.status(200).json({ ok: true, data: result}); 
+          } catch (error) {
+              return res.status(200).json({ ok: false ,msg: error.message });  
+          }   
+    }
+
+    // DESCARGAS
+    async dowloadQuotation(req, res){
+        try {
+            req.body.tipo='download';
+            let validacion = await CoreCotizacion.validaActive(req.body);//[quotations_con_detalles]
+            let result = await CoreCotizacion.getCotizacion(req.body);
+            console.log("resultados:::::.",result);
+            let pdfDoc = await Quotation(result);
+            res.setHeader('Content-type', 'application/pdf')
+            res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
+            pdfDoc.pipe(res); 
+            pdfDoc.end();
+            
+        } catch (error) {
+            console.log("error::::", error);
+            return res.status(200).json({ ok: false ,msg: error.message }); 
+        }
+    }
 
 }
 export default Cotizacion;
