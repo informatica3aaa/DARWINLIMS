@@ -12,11 +12,12 @@ import Log from './api/log/log';
 import Icp from './api/icp/icp';
 import AuthRouter from './api/auth';
 
+
 class ApiRouter {
 
-  constructor(){
-    const api = Router();
-    
+constructor(){
+
+const api = Router();
     api.use('/analisis', new Analisis());
     api.use('/bodega', new Bodega());
     api.use('/cliente', new Cliente());

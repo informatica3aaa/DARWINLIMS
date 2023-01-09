@@ -1,16 +1,28 @@
 import { Router } from 'express';
 import * as CoreCotizacion from './core-cotizacion';
 import * as CoreLog from '../log/core-log'
-import { Quotation } from '../../../lib/themplates/pdf/quotation';
+import { QuotationPDF, QuotationWord } from '../../../lib/themplates/pdf/quotation';
 
 class Cotizacion{
-    constructor(){
-        const api = Router();
 
+    constructor(){
+        /**
+         * @openapi
+         * tags:
+         *  name:  quotations
+         *  description: API para Cotizaciones
+        */
+
+const api = Router();
         api.post('/', this.listar); 
         api.post('/all', this.getAllQuotations);
+        //refactorizacion
+        api.post('/allquo', this.getAllQuotationsV1);
+        api.post('/download', this.dowloadQuotation);
+        api.post('/quo', this.getQuo);
         api.get('/:id/:active', this.getQuotation);
-        api.post('/filter', this.getAllQuotationsFilter);
+        // api.post('/filter', this.getAllQuotationsFilter);
+        api.post('/filter', this.getAllFilter);
         api.get('/history/:company_id/project/:project_id', this.getHistory);
         api.post('/history', this.getHistoryCompany);
         api.get('/project/:active/company/:company_id', this.getProject);
@@ -23,7 +35,6 @@ class Cotizacion{
         api.post('/new/end',this.newQuotationEnd);
         api.get('/validate',this.validateQuotation);
         api.get('/pending',this.pendingQuotation);
-        api.post('/download', this.dowloadQuotation);
         
         return api;
     };
@@ -79,13 +90,36 @@ class Cotizacion{
     }
     
     async getAllQuotations (req, res){
-        console.log("getall");
         try {
             req.body.tipo='cotizaciones';
             const validacion = await CoreCotizacion.validaActive(req.body);//[quotations]
             const result = await CoreCotizacion.getCotizacion(req.body);
             const contador = await CoreCotizacion.getContadores(req.body) 
             return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+        }
+
+    } 
+
+
+    async getAllQuotationsV1 (req, res){
+        try {
+            const validacion = await CoreCotizacion.validaActiveAllQuo(req.body);//[quotations]
+            const result = await CoreCotizacion.getCotizacionAllQuo(req.body);
+            const contador = await CoreCotizacion.getContadoresAllQuo(req.body) 
+            return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+        }
+
+    } 
+
+    async getQuo (req, res){
+        try {
+            const validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations]
+            const result = await CoreCotizacion.getCotizacionQuo(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });   
         }
@@ -105,6 +139,17 @@ class Cotizacion{
         }
         
     }
+
+    async getAllFilter(req, res){
+        try {
+        const  validacion = await CoreCotizacion.validaActiveFilter(req.body);//[busqueda de cotizacion por filtros dinamicos]
+        const  result = await CoreCotizacion.getCotizacionFilter(req.body);
+        const  contador = await CoreCotizacion.getContadoresFilter(req.body)
+         return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
+     } catch (error) {
+         return res.status(200).json({ ok: false ,msg: error.message });  
+     }
+     }
 
     async getAllQuotationsFilter(req, res){
        try {
@@ -261,15 +306,22 @@ class Cotizacion{
     // DESCARGAS
     async dowloadQuotation(req, res){
         try {
-            req.body.tipo='download';
-            let validacion = await CoreCotizacion.validaActive(req.body);//[quotations_con_detalles]
-            let result = await CoreCotizacion.getCotizacion(req.body);
-            console.log("resultados:::::.",result);
-            let pdfDoc = await Quotation(result);
-            res.setHeader('Content-type', 'application/pdf')
-            res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
-            pdfDoc.pipe(res); 
-            pdfDoc.end();
+            let validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations_con_detalles]
+            let result = await CoreCotizacion.getCotizacionDown(req.body);
+            console.log("falta desarrollo");
+            if(!req.body.download){
+                return res.status(200).json({ ok: false ,msg: "Falta el tipo de documento que desea descargar" }); 
+            }
+            if(req.body.download == 'pdf'){
+                let pdfDoc = await QuotationPDF(result);
+                res.setHeader('Content-type', 'application/pdf')
+                res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
+                pdfDoc.pipe(res); 
+                pdfDoc.end();
+            }
+            if(req.body.download == 'word'){
+                
+            }
             
         } catch (error) {
             console.log("error::::", error);

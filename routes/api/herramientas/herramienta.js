@@ -6,16 +6,132 @@ import mensajes from '../../../lib/helpers/mensajes';
 class Herramienta{
     constructor(){
         const api = Router();
-        api.get('/getpais/:id', this.getPais); 
-        api.get('/getregiones/:id', this.getregiones); 
-        api.get('/getcomunas/:id', this.getComunas); 
-        api.post('/addregpais', this.addRegionPais); 
-        api.post('/editregpais', this.editarRegionPais); 
-        api.post('/activaregion', this.activarRegionPais); 
-        api.post('/gettool', this.getTools); 
-        api.post('/edittools', this.editTools);
-        return api;
-    };
+/**
+ * @openapi
+ * tags:
+ *  name:   Herramientas
+ *  description: API para herramientas del sistema
+ */
+
+/**
+ * @openapi
+ * paths:
+ *  /api/herramientas/pais/{id}:
+ *   get:
+ *      summary: Lista todos los paises en estado activo o inactivo
+ *      tags: [Herramientas]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *              format: int64
+ *              minimum: 1
+ *              example: 1
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: string
+ *                                  example: OK
+ */
+api.get('/pais/:id', this.getPais); 
+
+/**
+ * @openapi
+ * paths:
+ *  /api/herramientas/addpais:
+ *   post:
+ *      summary: crear un pais nuevo
+ *      tags: [Herramientas]
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              example: text
+ *                              maximun: 70
+ *                              required: true
+ *                          user_id:
+ *                              type: integer
+ *                              example: 1225 
+ *      responses:
+ *          200:
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              ok:
+ *                                  type: boolean
+ *                                  example: true
+ *                              data:
+ *                                  type: array
+ *                                  example:  [{}]
+ *                          
+ */
+api.post('/addpais', this.addPais); 
+/**
+ * @openapi
+ * paths:
+ *  /api/herramientas/addreg:
+ *   post:
+ *      summary: crear una nueva region
+ *      tags: [Herramientas]
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          country_id:
+ *                              type: integer
+ *                              example: 1
+ *                          name:
+ *                              type: string
+ *                              example: region
+ *                          user_id:
+ *                              type: integer
+ *                              example: 125
+ *                          order:
+ *                              type: integer
+ *                              example: 12
+ *                          active:
+ *                              type: boolean
+ *                              example: 1
+ *      responses:
+ *          200:
+ *              description: respuesta correcta
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              ok:
+ *                                  type: boolean
+ *                                  example: true
+ *                              data:
+ *                                  type: array
+ *                                  example: [{},{}]
+ */
+api.post('/addreg', this.addRegion); 
+api.get('/getregiones/:id', this.getregiones); 
+api.get('/getcomunas/:id', this.getComunas); 
+api.post('/editregpais', this.editarRegionPais); 
+api.post('/activaregion', this.activarRegionPais); 
+api.post('/gettool', this.getTools); 
+api.post('/edittools', this.editTools);
+return api;
+};
 //TECNICAS
 async editTools (req, res){
     try {
@@ -173,13 +289,10 @@ async getTools (req, res){
     }
 }
 
-
-
 //PAIS , REGION, COMUNAS
     async getPais (req, res){
         try {
-            // const validacion = await CoreHerramienta.validaActive(req.params);
-            // console.log("validacion", validacion);
+            const validacion = await CoreHerramienta.validaEstadoActive(req.params);
             const paises = await CoreHerramienta.getPaises(Number(req.params.id));
             return res.status(200).json({ ok: true, data: paises }); 
         } catch (error) {
@@ -225,18 +338,24 @@ async getTools (req, res){
 
     }
     
-    async addRegionPais (req, res){
+    async addPais (req, res){
         try {
             let resultado;
-            if(req.body.tipo=='region'){
-                const validacion = await CoreHerramienta.validaDelPais(req.body);
-                resultado = await CoreHerramienta.addRegion(req.body);
-            }
-            if(req.body.tipo=='pais'){
-                const validacion = await CoreHerramienta.validaAddPais(req.body);
-                resultado = await CoreHerramienta.addPais(req.body); 
-            }
+            const validacion = await CoreHerramienta.validaAddPais(req.body);
+            resultado = await CoreHerramienta.addPais(req.body); 
 
+            return res.status(200).json({ ok: true, data: resultado }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });    
+        }
+
+    }
+
+    async addRegion (req, res){
+        try {
+            let resultado;
+                const validacion = await CoreHerramienta.validaAddRegion(req.body);
+                resultado = await CoreHerramienta.addRegion(req.body);
             return res.status(200).json({ ok: true, data: resultado }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });    

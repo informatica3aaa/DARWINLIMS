@@ -12,6 +12,9 @@ import verificaToken from './lib/helpers/verificatoken';
 import ApiRouter from './routes/api';
 import AuthRouter from './routes/api/auth';
 import dotenv from 'dotenv';
+import config from '@babel/core/lib/config';
+const  { swaggerDocs: V1swagger} = require( './routes/swagger');
+
 
 class App {
   constructor(config) {
@@ -20,6 +23,8 @@ class App {
     const bodyParser = require('body-parser');
 
     this.port = config.port;
+    this.port1 = config.port1
+    // console.log("port1", this.port, this.port1);
     this.sessionSecret = config.session_secret;
     this.express = express();
     this.express.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +35,7 @@ class App {
   }
 
   start() {
-    return this.express.listen(this.port, function () {
+      return this.express.listen(this.port, function () {
       console.log('Minerals API iniciada en puerto ' + this.port);
       testConnection();
       connectionIcp();
@@ -60,10 +65,15 @@ class App {
 
   configureRoutes() {
     var expressApp = this.express;
+    // expressApp.use('/api',  new ApiRouter());
     expressApp.use('/api', verificaToken, new ApiRouter());
-    // expressApp.use('/api/v1', verificaToken, new ApiRouter());
     // expressApp.use('/api', new ApiRouter());
     expressApp.use('/auth', new AuthRouter());
+
+    expressApp.listen(this.port1, () => {
+      console.log("Server Listening Swagger" + this.port1 );
+      V1swagger(expressApp, this.port1)
+    });
     
   }
 
@@ -87,6 +97,7 @@ class App {
     err.status = 404;
     next(err);
   };
+
   
 
 

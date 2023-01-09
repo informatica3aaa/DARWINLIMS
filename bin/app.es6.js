@@ -7,9 +7,11 @@ debug('minerals:server');
 
 
 const port = normalizePort(process.env.PORT || '3001');
+const port1 = normalizePort(process.env.PORT1 || '3000');
 
 const config = {
   port: port,
+  port1:port1,
   session_secret: process.env.SESSION_SECRET,
   api_gateway_url: process.env.API_GATEWAY_URL
 }
