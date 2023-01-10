@@ -56,6 +56,16 @@ export const validaIdPais = async (data)=>{
        return v.ok;
 }
 
+export const validaEstadoActive = async (data)=>{
+    let v = await validateAll(data, {
+        id:'required|in:0,1'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Error dato de entrada debe ser número y/o fuera de rango, revise su información' }});
+  
+       return v.ok;
+}
+
+
 export const validaActive = async (data)=>{
     let v = await validateAll(data, {
         tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,compañia',
@@ -64,7 +74,7 @@ export const validaActive = async (data)=>{
         limit:'required|integer'
         },
        mensajes).then(d => {return  {ok: true, d}}).catch( e => { throw  { message : `Error en los datos de entrada, revise su información`}})
-
+      
        switch(data.tipo){
         case 'compañias':
             v = await validateAll(data, {
@@ -79,6 +89,7 @@ export const validaActive = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
         break;
+
         default:
             throw  { message : 'No existe el tipo para realizar la consulta, revise su información'};
         }  
@@ -194,8 +205,8 @@ export const validaAddPais = async (data)=>{
         name:'required|string|max:70'
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada debe no son validos, revise su información'}});
-  
-       const pais  = await Herramienta.getContryName(data.name );
+
+       const pais  = await Herramienta.getContryName(data.name);
 
        if(pais.length != 0){
            throw  { message : 'El pais existe, revise su información'};

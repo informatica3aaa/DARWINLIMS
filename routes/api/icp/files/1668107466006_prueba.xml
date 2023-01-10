@@ -1,0 +1,861 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Report>
+  <LayoutTable exportid="Header">
+    <Row>
+      <Cell>
+        <Text>Basic Sample Report</Text>
+      </Cell>
+      <Cell>
+        <Image name="img001.png"/>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>4/26/2022 3:33:34 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="LabBook info">
+    <Row>
+      <Cell>
+        <Text>LabBook: </Text>
+      </Cell>
+      <Cell>
+        <Text>fp si manual.imexp</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>BK</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>BLK</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:39:11 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">0.000 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>STD-1</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>2</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>STD</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:41:31 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">42.545 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>STD-2</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>3</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>STD</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:43:24 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">102.603 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>STD-3</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>4</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>STD</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:44:58 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">198.190 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-1</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>5</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:46:38 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">0.006 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-2</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>6</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:56:16 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">0.004 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>F</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>7</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 1:58:19 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-1</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>8</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 2:03:20 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">170.862 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-2</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>9</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 2:05:24 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">0.325 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-3</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>10</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 2:06:52 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">0.008 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-4</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>11</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 2:08:29 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+    <Header index="0">
+      <Cell name="">Analyte (Measure Mode)</Cell>
+      <Cell name="">Concentration average </Cell>
+    </Header>
+    <Row index="1">
+      <Cell name="">Si 251.611 (Aqueous-Axial-iFR)</Cell>
+      <Cell name="">0.005 ppm</Cell>
+    </Row>
+  </Table>
+  <LayoutTable exportid="Sample name">
+    <Row>
+      <Cell>
+        <Text>Label: </Text>
+      </Cell>
+      <Cell>
+        <Text>444204-5</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;#:</Text>
+      </Cell>
+      <Cell>
+        <Text>12</Text>
+      </Cell>
+    </Row>
+    <Row>
+      <Cell>
+        <Text>Analysis Type:</Text>
+      </Cell>
+      <Cell>
+        <Text>UNKNOWN</Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Analysis started at:</Text>
+      </Cell>
+      <Cell>
+        <Text>10/25/2021 2:09:49 PM</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <LayoutTable exportid="Sample prep">
+    <Row>
+      <Cell>
+        <Text>Amount:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Final Quantity:</Text>
+      </Cell>
+      <Cell>
+        <Text></Text>
+      </Cell>
+      <Cell>
+      </Cell>
+      <Cell>
+        <Text>Standard DF:</Text>
+      </Cell>
+      <Cell>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+  <Table name="QueryDataTable" exportid="Results table">
+  </Table>
+  <LayoutTable exportid="Footer">
+    <Row>
+      <Cell>
+        <Text>1</Text>
+        <Text> / </Text>
+        <Text>1</Text>
+      </Cell>
+    </Row>
+  </LayoutTable>
+</Report>
