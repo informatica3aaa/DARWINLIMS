@@ -13,7 +13,8 @@ class AuthRouter {
         const user = await User.getByUsername(req.body.username);
         await User.registerLastLogin(user.id);
         const token = jwt.sign(user, process.env.SESSION_SECRET, { expiresIn: process.env.TOKEN_EXPIREIN });
-        return res.status(200).json({ ok: true, user, token });
+        const menu = await User.getMenuUser(user.group_id);
+        return res.status(200).json({ ok: true, user, token, menu });
       } else {
         return res.status(200).json({ ok: false });
       }
@@ -26,6 +27,12 @@ class AuthRouter {
       return res.json(result);
     });
 
+
+    api.post('/getmenuuser',  async (req, res, next) => {
+      const result = await User.getMenuUser(2);
+      return res.json(result);
+    });
+    
 
     return api;
   }

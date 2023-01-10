@@ -24,9 +24,7 @@ class ApiRouter {
     api.use('/pagos', new Pagos());
     api.use('/trabajos', new Trabajo());
     api.use('/xml', new Xml());
-    api.use('/log', new Log)
-    // api.use('/auth', passport.authenticate('local', { session: false }), new AuthRouter());
-    //api.use('/auth', new AuthRouter());
+    api.use('/log', new Log())
     api.use('/user', new AuthRouter());
     return api;
   }
