@@ -7,7 +7,7 @@ import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 export const validaActiveAllQuo = async (data)=>{
     let v;
          v = await validateAll(data, {
-             active:'required|range:-1,2',
+             active:'required|range:-1,3',
              offset:'required|integer',
              limit:'required|integer'      
              },
@@ -173,12 +173,12 @@ export const getContadoresFilter = async(data)=>{
 
 export const getCotizacionAllQuo = async (data)=>{
     let tool;
-            if(data.all =='no'){
+            if(data.todas =='no'){
                 tool = await Cotizaciones.getCotizaciones(data);
                 if(!tool)  throw  { message : `Error no se logra consultar por ${ data.id}, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.id}, revise su información`}};
             }
-            if(data.all =='yes'){
+            if(data.todas =='yes'){
                 tool = await Cotizaciones.getCotizacionesAll(data);
                 if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
@@ -458,6 +458,7 @@ export const getCotizacionFiltros = async (data)=>{
     if(data.quotation_state_id) where += ` and quo.[quotation_state_id] = ${ data.quotation_state_id}`
     if(data.state_id) where += ` and quo.[state_id] = ${ data.state_id}`
     if(data.creador) where += ` and us.[user_creator] like '%${ data.creador}%'`
+    if(data.quotation_number) where += ` and quo.[quotation_number] like '%${ data.quotation_number}%'`
     // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
     return where;
 }
