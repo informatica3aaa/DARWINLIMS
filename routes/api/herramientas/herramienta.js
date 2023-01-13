@@ -165,6 +165,7 @@ async editTools (req, res){
 }
 
 async getTools (req, res){
+    console.log("req:::::tools", req.body);
     try {
         let result;
         let validacion;

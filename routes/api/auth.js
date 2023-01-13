@@ -33,6 +33,8 @@ class AuthRouter {
       const result = await User.getMenuUser(2);
       return res.json(result);
     });
+
+    
     
 
     return api;

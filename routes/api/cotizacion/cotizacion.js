@@ -142,7 +142,7 @@ console.log("aca..a");
     }
 
     async getAllFilter(req, res){
-        console.log("filtwee", req.body);
+        console.log("filter", req.body);
         try {
         const  validacion = await CoreCotizacion.validaActiveFilter(req.body);//[busqueda de cotizacion por filtros dinamicos]
         const  result = await CoreCotizacion.getCotizacionFilter(req.body);
@@ -310,7 +310,7 @@ console.log("aca..a");
         try {
             let validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations_con_detalles]
             let result = await CoreCotizacion.getCotizacionDown(req.body);
-            console.log("falta desarrollo");
+            // console.log("falta desarrollo");
             if(!req.body.download){
                 return res.status(200).json({ ok: false ,msg: "Falta el tipo de documento que desea descargar" }); 
             }
@@ -326,7 +326,7 @@ console.log("aca..a");
             }
             
         } catch (error) {
-            console.log("error::::", error);
+            console.log("error pdf::::", error);
             return res.status(200).json({ ok: false ,msg: error.message }); 
         }
     }

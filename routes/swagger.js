@@ -1,5 +1,4 @@
 import swaggerJSDoc from "swagger-jsdoc";
-// import { swaggerUi } from "swagger-ui-express";
 const swaggerUi = require('swagger-ui-express');
 
 
@@ -19,7 +18,6 @@ const swaggerDocs = (app, port) =>{
         res.setHeader('Content-Type', 'application/json');
         res.send(swaggerSpec)
     });
-    console.log("version 1.0");
 
 
 };
