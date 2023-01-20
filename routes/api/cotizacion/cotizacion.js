@@ -40,7 +40,6 @@ const api = Router();
     };
 
     async listar(req, res) {
-
         try {
             const log = CoreLog.addHistory(req, req.user)
             let result;
@@ -104,6 +103,7 @@ const api = Router();
 
 
     async getAllQuotationsV1 (req, res){
+        // console.log("aca:::.");
         try {
             const validacion = await CoreCotizacion.validaActiveAllQuo(req.body);//[quotations]
             const result = await CoreCotizacion.getCotizacionAllQuo(req.body);
@@ -308,7 +308,7 @@ const api = Router();
         try {
             let validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations_con_detalles]
             let result = await CoreCotizacion.getCotizacionDown(req.body);
-            console.log("falta desarrollo");
+            // console.log("falta desarrollo");
             if(!req.body.download){
                 return res.status(200).json({ ok: false ,msg: "Falta el tipo de documento que desea descargar" }); 
             }
@@ -324,7 +324,7 @@ const api = Router();
             }
             
         } catch (error) {
-            console.log("error::::", error);
+            console.log("error pdf::::", error);
             return res.status(200).json({ ok: false ,msg: error.message }); 
         }
     }
