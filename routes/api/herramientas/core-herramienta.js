@@ -67,6 +67,7 @@ export const validaEstadoActive = async (data)=>{
 
 
 export const validaActive = async (data)=>{
+    console.log("DATA:::::", data)
     let v = await validateAll(data, {
         tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,compañia',
         active:'required|in:0,1',
@@ -95,6 +96,19 @@ export const validaActive = async (data)=>{
         }  
 
        return v.ok;
+}
+
+export const validaComprobar = async (data)=>{
+    let v = await validateAll(data, {
+        tipo:'required|in:compañia',
+        active:'required|in:0,1',
+        offset:'required|integer',
+        limit:'required|integer',
+        rut:'required|integer'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch( e => { throw  { message : `Error en los datos de entrada, revise su información`}})
+       
+       return v.ok;   
 }
 
 export const validaAddRegion = async (data)=>{
@@ -488,6 +502,26 @@ export const getTools = async (data)=>{
         break; 
         default:
             throw  { message : 'No existe el tipo para realizar la busqueda, revise su información'};
+    }
+    return tool;
+}
+
+export const getCompaniaRut = async (data)=>{
+    let tool = await Herramienta.getCompaniaRut(data);
+    if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
+        if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+
+    for(let index = 0; index < tool.length; index++){
+                direccion= await Herramienta.getDireccion(data,tool[index].id );
+                tool[index].direccion= direccion;
+    }
+    for(let index1 = 0; index1 < tool.length; index1++){
+            emails= await Herramienta.getMails(data, tool[index1].id );
+            tool[index1].emails= emails;2
+    }
+    for(let index2 = 0; index2 < tool.length; index2++){
+            proyectos= await Herramienta.getProyectos(data, tool[index2].id );
+            tool[index2].proyectos= proyectos;
     }
     return tool;
 }

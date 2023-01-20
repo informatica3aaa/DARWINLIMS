@@ -130,6 +130,7 @@ api.post('/editregpais', this.editarRegionPais);
 api.post('/activaregion', this.activarRegionPais); 
 api.post('/gettool', this.getTools); 
 api.post('/edittools', this.editTools);
+api.post('/comprobar', this.comprobar)
 return api;
 };
 //TECNICAS
@@ -165,7 +166,7 @@ async editTools (req, res){
 }
 
 async getTools (req, res){
-    console.log("req:::::tools", req.body);
+    // console.log("req:::::tools", req.body.tipo);
     try {
         let result;
         let validacion;
@@ -385,5 +386,21 @@ async getTools (req, res){
             }
     }
 
+    async comprobar(req, res){
+
+        try {
+            switch(req.body.tipo){
+                case 'compañia':
+                   let validacion = await CoreHerramienta.validaComprobar(req.body);//[[companies x ID]]
+                   let result = await CoreHerramienta.getCompaniaRut(req.body);
+                break;
+                default:
+                    throw new Error(`No existe el tipo ${ req.body.tipo}, revisar el listado valido`)  
+            }
+            return res.status(200).json({ ok: true, data: result , id: 1});
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }
+    }
 }
 export default Herramienta;

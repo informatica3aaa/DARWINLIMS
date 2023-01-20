@@ -38,7 +38,7 @@ class App {
       return this.express.listen(this.port, function () {
       console.log('Minerals API iniciada en puerto ' + this.port);
       testConnection();
-      connectionIcp();
+      // connectionIcp();
     }.bind(this));
   }
 

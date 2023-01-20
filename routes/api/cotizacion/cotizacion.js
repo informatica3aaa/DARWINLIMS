@@ -40,7 +40,6 @@ const api = Router();
     };
 
     async listar(req, res) {
-console.log("aca..a");
         try {
             const log = CoreLog.addHistory(req, req.user)
             let result;
@@ -104,7 +103,7 @@ console.log("aca..a");
 
 
     async getAllQuotationsV1 (req, res){
-        console.log("aca:::.");
+        // console.log("aca:::.");
         try {
             const validacion = await CoreCotizacion.validaActiveAllQuo(req.body);//[quotations]
             const result = await CoreCotizacion.getCotizacionAllQuo(req.body);
@@ -142,7 +141,6 @@ console.log("aca..a");
     }
 
     async getAllFilter(req, res){
-        console.log("filter", req.body);
         try {
         const  validacion = await CoreCotizacion.validaActiveFilter(req.body);//[busqueda de cotizacion por filtros dinamicos]
         const  result = await CoreCotizacion.getCotizacionFilter(req.body);
