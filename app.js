@@ -38,7 +38,7 @@ class App {
       return this.express.listen(this.port, function () {
       console.log('Minerals API iniciada en puerto ' + this.port);
       testConnection();
-      connectionIcp();
+      // connectionIcp();
     }.bind(this));
   }
 
@@ -71,7 +71,7 @@ class App {
     expressApp.use('/auth', new AuthRouter());
 
     expressApp.listen(this.port1, () => {
-      console.log("Server Listening Swagger" + this.port1 );
+      console.log("Server Swagger Port: " + this.port1 );
       V1swagger(expressApp, this.port1)
     });
     

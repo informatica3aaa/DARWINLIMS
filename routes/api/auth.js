@@ -7,6 +7,7 @@ class AuthRouter {
   constructor(){
     const api = Router();
     api.post('/login', async (req, res) => {
+      console.log("backs", req.body);
       const validPassword = await User.verifyPassword(req.body.username, req.body.password);
       console.log("valid::", validPassword);
       if (validPassword) {
@@ -32,6 +33,8 @@ class AuthRouter {
       const result = await User.getMenuUser(2);
       return res.json(result);
     });
+
+    
     
 
     return api;
