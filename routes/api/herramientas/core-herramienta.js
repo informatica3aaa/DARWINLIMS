@@ -511,19 +511,20 @@ export const getCompaniaRut = async (data)=>{
     if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
         if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
-    for(let index = 0; index < tool.length; index++){
-                let direccion= await Herramienta.getDireccion(data,tool[index].id );
+    for(let index = 0; index < tool.length; index++)
+    {
+        let id_tool = tool[index].id 
+                let direccion= await Herramienta.getDireccion(data, id_tool )
                 tool[index].direccion= direccion;
+
+                let emails= await Herramienta.getMails(data, id_tool)
+                tool[index].emails= emails;
+
+                let proyectos= await Herramienta.getProyectos(data, id_tool)
+                tool[index].proyectos= proyectos
     }
-    for(let index1 = 0; index1 < tool.length; index1++){
-            let emails= await Herramienta.getMails(data, tool[index1].id );
-            tool[index1].emails= emails;2
-    }
-    for(let index2 = 0; index2 < tool.length; index2++){
-           let  proyectos= await Herramienta.getProyectos(data, tool[index2].id );
-            tool[index2].proyectos= proyectos;
-    }
-    return tool;
+
+    return tool
 }
 
 export const getContadores = async(data)=>{
