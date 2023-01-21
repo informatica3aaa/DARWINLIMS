@@ -389,17 +389,36 @@ async getTools (req, res){
     async comprobar(req, res){
 
         try {
-            switch(req.body.tipo){
+            let result = null
+
+            switch(req.body.tipo)
+            {
                 case 'compañia':
-                   let validacion = await CoreHerramienta.validaComprobar(req.body);//[[companies x ID]]
-                   let result = await CoreHerramienta.getCompaniaRut(req.body);
+
+                    try {
+                        await CoreHerramienta.validaComprobar(req.body)
+
+                    } catch (error) {
+                        console.error('comprobar, validaComprobar::', error)
+                        throw error  
+
+                    }
+
+
+                   try {
+                       result = await CoreHerramienta.getCompaniaRut(req.body)
+                       
+                   } catch (error) {
+                       console.error('comprobar, getCompaniaRut::', error)
+                       throw error  
+                   }
                 break;
                 default:
                     throw new Error(`No existe el tipo ${ req.body.tipo}, revisar el listado valido`)  
             }
-            return res.status(200).json({ ok: true, data: result , id: 1});
+            return res.status(200).json({ ok: true, data: result , id: 1})
         } catch (error) {
-            return res.status(200).json({ ok: false ,msg: error.message });  
+            return res.status(200).json({ ok: false ,msg: error.message })
         }
     }
 }
