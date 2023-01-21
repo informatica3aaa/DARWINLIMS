@@ -512,7 +512,7 @@ export const getCompaniaRut = async (data)=>{
         if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
 
     for(let index = 0; index < tool.length; index++){
-                direccion= await Herramienta.getDireccion(data,tool[index].id );
+                let direccion= await Herramienta.getDireccion(data,tool[index].id );
                 tool[index].direccion= direccion;
     }
     for(let index1 = 0; index1 < tool.length; index1++){
