@@ -514,14 +514,14 @@ export const getCompaniaRut = async (data)=>{
     for(let index = 0; index < tool.length; index++)
     {
         let id_tool = tool[index].id 
-                let direccion= await Herramienta.getDireccion(data, id_tool )
-                tool[index].direccion= direccion;
+        let direccion= await Herramienta.getDireccion(data, id_tool )
+        tool[index].direccion= direccion;
 
-                let emails= await Herramienta.getMails(data, id_tool)
-                tool[index].emails= emails;
+        let emails= await Herramienta.getMails(data, id_tool)
+        tool[index].emails= emails;
 
-                let proyectos= await Herramienta.getProyectos(data, id_tool)
-                tool[index].proyectos= proyectos
+        let proyectos= await Herramienta.getProyectos(data, id_tool)
+        tool[index].proyectos= proyectos
     }
 
     return tool
