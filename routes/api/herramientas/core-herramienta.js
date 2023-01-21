@@ -508,8 +508,8 @@ export const getTools = async (data)=>{
 
 export const getCompaniaRut = async (data)=>{
     let tool = await Herramienta.getCompaniaRut(data);
-    if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
-        if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+    if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`}
+    if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}}
 
     for(let index = 0; index < tool.length; index++)
     {
