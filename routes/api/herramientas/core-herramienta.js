@@ -516,11 +516,11 @@ export const getCompaniaRut = async (data)=>{
                 tool[index].direccion= direccion;
     }
     for(let index1 = 0; index1 < tool.length; index1++){
-            emails= await Herramienta.getMails(data, tool[index1].id );
+            let emails= await Herramienta.getMails(data, tool[index1].id );
             tool[index1].emails= emails;2
     }
     for(let index2 = 0; index2 < tool.length; index2++){
-            proyectos= await Herramienta.getProyectos(data, tool[index2].id );
+           let  proyectos= await Herramienta.getProyectos(data, tool[index2].id );
             tool[index2].proyectos= proyectos;
     }
     return tool;
