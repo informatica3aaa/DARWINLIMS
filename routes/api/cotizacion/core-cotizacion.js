@@ -381,7 +381,8 @@ export const getCotizacion = async (data)=>{
         //     }
         // break ; 
         case 'servicios':
-            tool= await Cotizaciones.getServiciosAnaliticosAll(data);
+            let query = await getFiltrosServicios(data);
+            tool= await Cotizaciones.getServiciosAnaliticosAll(data, query);
             if(!tool)  throw  { message : 'Error no se logro encontrar los todos servicios, revise su información'};
             if(tool.length ==0)  throw  { message : 'No se logro encontrar todos servicios, revise su información'};
 
@@ -441,6 +442,7 @@ export const getCotizacion = async (data)=>{
     default:
             throw  { message : `No existe el tipo ${ data.tipo} para realizar la busqueda, revise su información`};
     }
+    // console.log("tools", tool);
     return tool;
 }
 
@@ -459,6 +461,23 @@ export const getCotizacionFiltros = async (data)=>{
     if(data.state_id) where += ` and quo.[state_id] = ${ data.state_id}`
     if(data.creador) where += ` and us.[user_creator] like '%${ data.creador}%'`
     if(data.quotation_number) where += ` and quo.[quotation_number] like '%${ data.quotation_number}%'`
+    // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
+    return where;
+}
+
+export const getFiltrosServicios = async (data)=>{
+    let where ='';
+        if(data.active == 2){
+            where += ` quo.[active] in (0,1) `
+        }
+        if(data.active != 2){
+        where += ` quo.[active] = ${ Number(data.active)}`
+    }
+    
+    if(data.assay_type_id) where += ` and quo.[assay_type_id] =${data.assay_type_id}`
+    if(data.sample_type_id) where += ` and com.[sample_type_id] =${data.sample_type_id}`
+    if(data.digestion_id) where += ` and quo.[digestion_id] = ${ data.digestion_id}`
+    if(data.technique_id) where += ` and quo.[technique_id] = ${ data.technique_id}`
     // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
     return where;
 }

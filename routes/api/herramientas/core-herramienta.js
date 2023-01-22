@@ -65,11 +65,9 @@ export const validaEstadoActive = async (data)=>{
        return v.ok;
 }
 
-
 export const validaActive = async (data)=>{
-    console.log("DATA:::::", data)
     let v = await validateAll(data, {
-        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,compañia',
+        tipo:'required|in:tecnica,elemento_tipo,digestiones,tipos_de_unidad,tipos_de_ensayo,metodos,estandares,transporte_tipo,unidad_tipo,unidades,estados,escalas,etapas_de_requisicion,estado_de_cotizacion,formulas,mallas,estado_material,monedas,elementos_quimicos,tipo_de_direccion,compañias,compañia,tipo_muestra,condiciones',
         active:'required|in:0,1',
         offset:'required|integer',
         limit:'required|integer'
@@ -91,6 +89,36 @@ export const validaActive = async (data)=>{
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
         break;
         case 'monedas':
+            v = await validateAll(data, {
+                active:'required'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
+        break;
+        case 'tipos_de_ensayo':
+            v = await validateAll(data, {
+                active:'required'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
+        break;
+        case 'tipo_muestra':
+            v = await validateAll(data, {
+                active:'required'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
+        break;
+        case 'digestiones':
+            v = await validateAll(data, {
+                active:'required'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
+        break;
+        case 'tecnica':
+            v = await validateAll(data, {
+                active:'required'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
+        break;
+        case 'condiciones':
             v = await validateAll(data, {
                 active:'required'
                 },
@@ -471,7 +499,17 @@ export const getTools = async (data)=>{
                 tool = await Herramienta.getTipoDireccion(data);
                 if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
-        break ; 
+        break ;
+        case 'tipo_muestra':
+            tool = await Herramienta.getSampleTypes(data);
+            if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+        break ;  
+        case 'condiciones':
+            tool = await Herramienta.getCondiciones(data);
+            if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+        break ;  
         case 'compañias':
             if(data.todas =='si'){
                 tool = await Herramienta.getCompaniasAll(data);

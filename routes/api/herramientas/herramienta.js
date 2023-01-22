@@ -276,6 +276,15 @@ async getTools (req, res){
             case 'compañia':
                 validacion = await CoreHerramienta.validaActive(req.body);//[[companies x ID]]
                 result = await CoreHerramienta.getTools(req.body);
+            break;   
+            case 'tipo_muestra':
+                validacion = await CoreHerramienta.validaActive(req.body);//[[companies x ID]]
+                // console.log("validacion", validacion);
+                result = await CoreHerramienta.getTools(req.body);
+            break; 
+            case 'condiciones':
+                validacion = await CoreHerramienta.validaActive(req.body);//[[general_conditions]]
+                result = await CoreHerramienta.getTools(req.body);
             break;                              
             default:
                 throw new Error(`No existe el tipo ${ req.body.tipo}, revisar el listado valido`)  

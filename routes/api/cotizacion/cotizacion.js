@@ -73,7 +73,9 @@ const api = Router();
                 break;  
                 case 'servicios':
                     validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
+                    // console.log("validacion::::", validacion);
                     result = await CoreCotizacion.getCotizacion(req.body);
+                    // console.log("result::::", result);
                 break; 
                 case 'servicio':
                     validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
