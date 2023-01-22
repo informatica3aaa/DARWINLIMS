@@ -535,6 +535,13 @@ export const validaAccion = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
+        case 'nuevo_proyecto':
+            v = await validateAll(data, {
+                company_id:'required|integer',
+                name:'required|string'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+        break;
         default:
             throw  { message : 'No existe el tipo acción, revise su información'};
     }
@@ -693,6 +700,12 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
         case 'nueva_version':
             accion= await Cotizaciones.addCotizacion(data, usuario);
+            if(!accion)  throw  { message : 'Error no se logro crear nueva version de la  cotización, revise su información'};
+            if(accion.length ==0)  throw  { message : 'No se logro crear la nueva version de la cotización, revise su información'};
+
+        break;
+        case 'nuevo_proyecto':
+            accion= await Cotizaciones.addProyecto(data, usuario);
             if(!accion)  throw  { message : 'Error no se logro crear nueva version de la  cotización, revise su información'};
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva version de la cotización, revise su información'};
 
