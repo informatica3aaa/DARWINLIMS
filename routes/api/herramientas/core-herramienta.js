@@ -90,7 +90,12 @@ export const validaActive = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
         break;
-
+        case 'monedas':
+            v = await validateAll(data, {
+                active:'required'
+                },
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
+        break;
         default:
             throw  { message : 'No existe el tipo para realizar la consulta, revise su información'};
         }  
