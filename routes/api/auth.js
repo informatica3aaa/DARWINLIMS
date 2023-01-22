@@ -13,7 +13,7 @@ class AuthRouter {
       if (validPassword) {
         const user = await User.getByUsername(req.body.username);
         await User.registerLastLogin(user.id);
-        const token = jwt.sign(user, process.env.SESSION_SECRET, { expiresIn: process.env.TOKEN_EXPIREIN });
+        const token = jwt.sign(user, process.env.SESSION_SECRET, { algorithm: 'RH256', allowInsecureKeySizes: true, expiresIn: process.env.TOKEN_EXPIREIN });
         const menu = await User.getMenuUser(user.group_id);
         return res.status(200).json({ ok: true, user, token, menu });
       } else {

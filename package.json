@@ -9,6 +9,7 @@
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.6",
     "@babel/node": "^7.19.1",
+    "@babel/runtime": "^7.20.7",
     "axios": "^0.27.2",
     "bcrypt": "^5.1.0",
     "body-parser": "~1.18.2",
@@ -25,7 +26,7 @@
     "express-session": "1.15.6",
     "express-useragent": "1.0.12",
     "indicative": "^5.0.8",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "morgan": "^1.9.1",
     "mssql": "^4.3.0",
@@ -44,6 +45,7 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.19.6",
     "babel-core": "^6.26.3",
     "babel-loader": "6.4.1",
     "babel-polyfill": "6.23.0",
