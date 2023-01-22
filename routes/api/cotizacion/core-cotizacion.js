@@ -468,16 +468,16 @@ export const getCotizacionFiltros = async (data)=>{
 export const getFiltrosServicios = async (data)=>{
     let where ='';
         if(data.active == 2){
-            where += ` quo.[active] in (0,1) `
+            where += ` ass.[active] in (0,1) `
         }
         if(data.active != 2){
-        where += ` quo.[active] = ${ Number(data.active)}`
+        where += ` ass.[active] = ${ Number(data.active)}`
     }
     
-    if(data.assay_type_id) where += ` and quo.[assay_type_id] =${data.assay_type_id}`
-    if(data.sample_type_id) where += ` and com.[sample_type_id] =${data.sample_type_id}`
-    if(data.digestion_id) where += ` and quo.[digestion_id] = ${ data.digestion_id}`
-    if(data.technique_id) where += ` and quo.[technique_id] = ${ data.technique_id}`
+    if(data.assay_type_id) where += ` and ass.[assay_type_id] =${data.assay_type_id}`
+    if(data.sample_type_id) where += ` and ass.[sample_type_id] =${data.sample_type_id}`
+    if(data.digestion_id) where += ` and ass.[digestion_id] = ${ data.digestion_id}`
+    if(data.technique_id) where += ` and ass.[technique_id] = ${ data.technique_id}`
     // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
     return where;
 }
