@@ -403,14 +403,14 @@ async getTools (req, res){
             switch(req.body.tipo)
             {
                 case 'compañia':
-                    numero =  await CoreHerramienta.getQuotationNumber()
                     const valida = await CoreHerramienta.validaComprobar(req.body)
                     result = await CoreHerramienta.getCompaniaRut(req.body)
+                    console.log("teste:::");
                 break;
                 default:
                     throw new Error(`No existe el tipo ${ req.body.tipo}, revisar el listado valido`)  
             }
-            return res.status(200).json({ ok: true, data: result , quotation_number: numero})
+            return res.status(200).json({ ok: true, data: result})
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message })
         }

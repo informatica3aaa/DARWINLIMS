@@ -151,7 +151,7 @@ export const  padQuotationNumber = async (num, size)=>{
 }
 
 
-export const getQuotationNumber = async function(){
+export const getQuotationNumber = async ()=>{
 
     // const fecha = moment().format('DD/MM/YYYY');
     const cantidad  = await Herramienta.getQuotationNumber();
@@ -162,7 +162,7 @@ export const getQuotationNumber = async function(){
     }
     
     var actualDate = new Date();
-    var quotationString = "AAA-" + moment(actualDate).format('YY') + moment(actualDate).format('MM') + "-"  + await this.padQuotationNumber((parseInt(cantidad.cant) + 1), 8) + "-V" + await this.padQuotationNumber(1, 2);
+    var quotationString = "AAA-" + moment(actualDate).format('YY') + moment(actualDate).format('MM') + "-"  + await padQuotationNumber((parseInt(cantidad.cant) + 1), 8) + "-V" + await padQuotationNumber(1, 2);
     console.log("tester::::", quotationString);
      
     return quotationString
@@ -375,14 +375,12 @@ export const validaEditTools = async(data)=>{
         break;
         case 'elemento_tipo':
             consul = await Herramienta.getElemento_tipoId(data);
-            console.log("consul::::", consul);
             if(consul.length == 0){
                 throw  { message : 'Element_type no existe, revise su información'};
             } 
         break;
         case 'digestiones':
             consul = await Herramienta.getDigestionId(data);
-            console.log("consul::::", consul);
             if(consul.length == 0){
                 throw  { message : 'Digestions no existe, revise su información'};
             } 
@@ -590,7 +588,8 @@ export const getCompaniaRut = async (data)=>{
         let proyectos= await Herramienta.getProyectos(data, id_tool)
         tool[index].proyectos= proyectos
     }
-
+    const quotation_number = await getQuotationNumber()
+    tool[0].quotation_number = quotation_number
     return tool
 }
 
