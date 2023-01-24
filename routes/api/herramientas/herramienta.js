@@ -399,33 +399,18 @@ async getTools (req, res){
 
         try {
             let result = null
-
+            let numero = null
             switch(req.body.tipo)
             {
                 case 'compañia':
-
-                    try {
-                        await CoreHerramienta.validaComprobar(req.body)
-
-                    } catch (error) {
-                        console.error('comprobar, validaComprobar::', error)
-                        throw error  
-
-                    }
-
-
-                   try {
-                       result = await CoreHerramienta.getCompaniaRut(req.body)
-                       
-                   } catch (error) {
-                       console.error('comprobar, getCompaniaRut::', error)
-                       throw error  
-                   }
+                    numero =  await CoreHerramienta.getQuotationNumber()
+                    const valida = await CoreHerramienta.validaComprobar(req.body)
+                    result = await CoreHerramienta.getCompaniaRut(req.body)
                 break;
                 default:
                     throw new Error(`No existe el tipo ${ req.body.tipo}, revisar el listado valido`)  
             }
-            return res.status(200).json({ ok: true, data: result , id: 1})
+            return res.status(200).json({ ok: true, data: result , quotation_number: numero})
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message })
         }

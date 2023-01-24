@@ -322,7 +322,7 @@ const api = Router();
                 pdfDoc.end();
             }
             if(req.body.download == 'word'){
-                
+                return res.status(200).json({ ok: false ,data: result }); 
             }
             
         } catch (error) {

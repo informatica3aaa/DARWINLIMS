@@ -3,6 +3,7 @@ import Herramienta from '../../../lib/models/herramienta/herramienta';
 import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 import { validateAll } from 'indicative';
 import mensajes from '../../../lib/helpers/mensajes';
+import moment from 'moment';
 
 export const getRegiones = async (id)=>{
 
@@ -132,16 +133,39 @@ export const validaActive = async (data)=>{
 }
 
 export const validaComprobar = async (data)=>{
+
     let v = await validateAll(data, {
         tipo:'required|in:compañia',
         active:'required|in:0,1',
-        offset:'required|integer',
-        limit:'required|integer',
         rut:'required|integer'
         },
        mensajes).then(d => {return  {ok: true, d}}).catch( e => { throw  { message : `Error en los datos de entrada, revise su información`}})
        
+       console.log("v::::", v);
        return v.ok;   
+}
+
+export const  padQuotationNumber = async (num, size)=>{
+		num = (parseInt(num)).toString(); //(parseInt(num) + 1)
+  		return ( Math.pow( 10, size ) + ~~num ).toString().substring( 1 );
+}
+
+
+export const getQuotationNumber = async function(){
+
+    // const fecha = moment().format('DD/MM/YYYY');
+    const cantidad  = await Herramienta.getQuotationNumber();
+    console.log("quotation_number", parseInt(cantidad.cant) + 1);
+    
+    if(cantidad.length == 0){
+        throw  { message : 'Error en la busqueda del quotation_number'};
+    }
+    
+    var actualDate = new Date();
+    var quotationString = "AAA-" + moment(actualDate).format('YY') + moment(actualDate).format('MM') + "-"  + await this.padQuotationNumber((parseInt(cantidad.cant) + 1), 8) + "-V" + await this.padQuotationNumber(1, 2);
+    console.log("tester::::", quotationString);
+     
+    return quotationString
 }
 
 export const validaAddRegion = async (data)=>{
