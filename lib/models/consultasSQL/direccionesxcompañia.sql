@@ -54,7 +54,7 @@ SELECT quo.[id]
       ,gc.[paragraph_4]
       ,gc.[title]
       ,quo.[user_creator_id]
-	  ,us1.[username] as user_creator
+	         ,us1.[name] + ' ' + us1.[lastname_f] + ' ' + us1[lastname_m]  as user_creator
       ,quo.[user_modifier_id]
 	  ,us2.[username] as user_modifier
       ,quo.[created]

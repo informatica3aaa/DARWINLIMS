@@ -205,10 +205,10 @@ export const getCotizacionDown = async (data)=>{
                         etapa.push(etapas) 
                         detalles[index1].etapas = etapas;
 
-                        }
+                }
 
                 tool[index].analisis_asociado= detalles;
-            }
+                }
 
             for(let index3 = 0; index3 < tool.length; index3++){
                 const   condicionesEspecificas= await Cotizaciones.getCondicionesEspecificas(tool[index3].general_condition_id );

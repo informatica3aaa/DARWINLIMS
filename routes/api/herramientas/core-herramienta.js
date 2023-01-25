@@ -155,7 +155,6 @@ export const getQuotationNumber = async ()=>{
 
     // const fecha = moment().format('DD/MM/YYYY');
     const cantidad  = await Herramienta.getQuotationNumber();
-    console.log("quotation_number", parseInt(cantidad.cant) + 1);
     
     if(cantidad.length == 0){
         throw  { message : 'Error en la busqueda del quotation_number'};
@@ -163,7 +162,7 @@ export const getQuotationNumber = async ()=>{
     
     var actualDate = new Date();
     var quotationString = "AAA-" + moment(actualDate).format('YY') + moment(actualDate).format('MM') + "-"  + await padQuotationNumber((parseInt(cantidad.cant) + 1), 8) + "-V" + await padQuotationNumber(1, 2);
-    console.log("tester::::", quotationString);
+
      
     return quotationString
 }
