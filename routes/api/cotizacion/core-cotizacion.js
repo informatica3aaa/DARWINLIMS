@@ -382,7 +382,9 @@ export const getCotizacion = async (data)=>{
         // break ; 
         case 'servicios':
             let query = await getFiltrosServicios(data);
+            console.log("quewry", query);
             tool= await Cotizaciones.getServiciosAnaliticosAll(data, query);
+            console.log("respuesrta", tool);
             if(!tool)  throw  { message : 'Error no se logro encontrar los todos servicios, revise su información'};
             if(tool.length ==0)  throw  { message : 'No se logro encontrar todos servicios, revise su información'};
 

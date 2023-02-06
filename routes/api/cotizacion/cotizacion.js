@@ -27,6 +27,7 @@ const api = Router();
         api.post('/history', this.getHistoryCompany);
         api.get('/project/:active/company/:company_id', this.getProject);
         api.get('/services/active/:active', this.getServicios );
+        api.post('/services', this.getServiciosFilter );
         api.get('/service/active/:active/assay/:assay_id', this.getService);
         api.post('/accion',this.acciones); 
         api.post('/action',this.approveQuotation); 
@@ -209,6 +210,17 @@ const api = Router();
             req.params.tipo = 'servicios'
             const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
             const result = await CoreCotizacion.getCotizacion(req.params);
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+    }
+
+    async getServiciosFilter(req, res){
+        try {
+            const validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
+            const result = await CoreCotizacion.getCotizacion(req.body);
             return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
