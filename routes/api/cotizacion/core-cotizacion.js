@@ -180,8 +180,9 @@ export const getCotizacionAllQuo = async (data)=>{
             }
             if(data.todas =='yes'){
                 tool = await Cotizaciones.getCotizacionesAll(data);
-                if(!tool)  throw  { message : `Error no se logra consultar por ${ data.tipo}, revise su información`};
-                if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
+                console.log("data all", tool);
+                if(!tool)  throw  { message : `Error no se logra consultar por estado ${ data.active }, revise su información`};
+                if(tool.length == 0){ throw  { message : `Sin resultados para estado  ${ data.active }, revise su información`}};
             }
      console.log(tool); 
     return tool;
@@ -382,11 +383,9 @@ export const getCotizacion = async (data)=>{
         // break ; 
         case 'servicios':
             let query = await getFiltrosServicios(data);
-            console.log("quewry", query);
             tool= await Cotizaciones.getServiciosAnaliticosAll(data, query);
-            console.log("respuesrta", tool);
             if(!tool)  throw  { message : 'Error no se logro encontrar los todos servicios, revise su información'};
-            if(tool.length ==0)  throw  { message : 'No se logro encontrar todos servicios, revise su información'};
+            // if(tool.length ==0)  throw  { message : 'No se logro encontrar todos servicios, revise su información'};
 
         break;  
         case 'servicio':
@@ -743,4 +742,32 @@ export const cotizacionPendientes =async (form, usuario)=>{
                     if(!cotizacion)  throw  { message : 'Error no se logro consultar por cotizaciones, revise su información'};
         
             return cotizacion;
+}
+
+export const getCotizacionXNumber =async ()=>{
+    const data ={active:1,
+    state_id :1}
+    const cotizacion= await Cotizaciones.getCotizacionXNumber(data);
+    if(!cotizacion)  throw  { message : 'Error no se logro consultar por cotizaciones, revise su información'};
+
+return cotizacion;
+
+}
+
+export const buscarServiciosXquotation =async (data)=>{
+    const cotizacion= await Cotizaciones.buscarServiciosXquotation(data);
+    if(!cotizacion)  throw  { message : 'Error no se logro consultar por cotizaciones, revise su información'};
+
+return cotizacion;
+
+}
+
+
+export const validaGetCotizacionXNumber =async (data)=>{
+    let v = await validateAll(data, {
+        active:'required|range:-1,2',
+        state_id:'required|integer'      
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+return v.ok
 }

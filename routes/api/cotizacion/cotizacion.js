@@ -36,9 +36,37 @@ const api = Router();
         api.post('/new/end',this.newQuotationEnd);
         api.get('/validate',this.validateQuotation);
         api.get('/pending',this.pendingQuotation);
+        api.get('/number',this.buscarXnumber);
+        api.post('/cargarservicios',this.cargarService);        
+
         
         return api;
     };
+
+
+    async cargarService(req, res) {
+        console.log("req::::::::::::");
+        try {
+            // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
+            console.log("params", req.body);
+            let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }
+    }
+
+
+    async buscarXnumber(req, res) {
+        try {
+            // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
+            let result = await CoreCotizacion.getCotizacionXNumber(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }
+    }
+
 
     async listar(req, res) {
         try {
