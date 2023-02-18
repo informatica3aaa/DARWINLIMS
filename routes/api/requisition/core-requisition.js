@@ -80,6 +80,17 @@ export const getUni = async (data)=>{
 
     return requi;
     }
+    
+export const validarFiltros = async (data)=>{
+    let v = await validateAll(data, {
+        active:'required|range:-1,2',
+        offset:'required|integer' ,
+        limit:'required|integer' 
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada fuera de rango o no corresponde, revise su información'}});
+      
+       return v 
+}
 
 export const getFiltros = async (data)=>{
     let where ='';

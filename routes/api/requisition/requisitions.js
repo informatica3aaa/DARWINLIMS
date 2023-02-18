@@ -42,6 +42,7 @@ class Requisition{
     async filtros(req, res) {
 
         try {
+            let validar = await CoreRequisition.validarFiltros(req.body);
             let requi = await CoreRequisition.getFiltros(req.body)
                return res.status(200).json({ ok: true, data: requi }); 
         } catch (error) {
