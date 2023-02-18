@@ -36,7 +36,7 @@ const api = Router();
         api.post('/new/end',this.newQuotationEnd);
         api.get('/validate',this.validateQuotation);
         api.get('/pending',this.pendingQuotation);
-        api.get('/number',this.buscarXnumber);
+        api.get('/number/:id',this.buscarXnumber);
         api.post('/cargarservicios',this.cargarService);        
 
         
@@ -45,7 +45,6 @@ const api = Router();
 
 
     async cargarService(req, res) {
-        console.log("req::::::::::::");
         try {
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             console.log("params", req.body);
@@ -59,6 +58,7 @@ const api = Router();
 
     async buscarXnumber(req, res) {
         try {
+            console.log("number", req.params);
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             let result = await CoreCotizacion.getCotizacionXNumber(req.body);
             return res.status(200).json({ ok: true, data: result }); 
@@ -69,8 +69,9 @@ const api = Router();
 
 
     async listar(req, res) {
+        console.log("entro en listar", req.body)
         try {
-            const log = CoreLog.addHistory(req, req.user)
+            // const log = CoreLog.addHistory(req, req.user)
             let result;
             let validacion;
             let contador;
@@ -104,7 +105,7 @@ const api = Router();
                     validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
                     // console.log("validacion::::", validacion);
                     result = await CoreCotizacion.getCotizacion(req.body);
-                    // console.log("result::::", result);
+                     // console.log("result::::", result);
                 break; 
                 case 'servicio':
                     validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]

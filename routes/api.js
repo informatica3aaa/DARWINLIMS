@@ -5,6 +5,7 @@ import Trabajo from './api/trabajos/trabajo';
 import Herramientas from './api/herramientas/herramienta';
 import Pagos from './api/pagos/pago';
 import Xml from './api/xml/xml'
+import requisition from './api/requisition/requisitions'
 // import APIToken from './api/token';
 import Cliente from './api/cliente/cliente';
 import Bodega from './api/bodega/bodega';
@@ -18,6 +19,7 @@ class ApiRouter {
 constructor(){
 
 const api = Router();
+    api.use('/requisition', new requisition());
     api.use('/analisis', new Analisis());
     api.use('/bodega', new Bodega());
     api.use('/cliente', new Cliente());
