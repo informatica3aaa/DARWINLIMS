@@ -357,10 +357,16 @@ const api = Router();
             }
             if(req.body.download == 'pdf'){
                 let pdfDoc = await QuotationPDF(result);
-                res.setHeader('Content-type', 'application/pdf')
-                res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
-                pdfDoc.pipe(res); 
-                pdfDoc.end();
+                // console.log("asdas",pdfDoc);
+                // res.setHeader('Content-type', 'application/pdf')
+                // res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
+                // pdfDoc.pipe(res); 
+                // pdfDoc.end();
+                // const buffer = Buffer.from(pdfDoc);
+                // const base64Data = buffer.toString('base64');
+                let base64Data = CoreCotizacion.pdfToBase64(pdfDoc)
+                console.log("pdfDoc", base64Data);
+                return res.status(200).json({ ok: false ,data: base64Data }); 
             }
             if(req.body.download == 'word'){
                 return res.status(200).json({ ok: false ,data: result }); 

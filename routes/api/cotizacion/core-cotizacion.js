@@ -2,6 +2,8 @@ import axios from 'axios';
 import { validateAll } from 'indicative';
 import mensajes from '../../../lib/helpers/mensajes';
 import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
+import fs from 'fs';
+import FileReader from 'filereader';
 
 
 export const validaActiveAllQuo = async (data)=>{
@@ -392,9 +394,15 @@ export const getCotizacion = async (data)=>{
             tool= await Cotizaciones.getServiciosAnaliticos(data);
             if(!tool)  throw  { message : 'Error no se logro encontrar el servicio, revise su información' };
             if(tool.length ==0)  throw  { message : 'No se logro encontrar el servicio, revise su información'};
+            let elemento=[];
               for(let index = 0; index < tool.length; index++){
+    
                     let fases= await Cotizaciones.getFasesServiciosAnaliticos(tool[index] );
                     tool[index].fases= fases;
+
+                    const elementos= await Cotizaciones.getDetallesElementosCotizacion(tool[index].id);
+                         tool[index].elemento = elementos[0];
+
              }
 
         break;
@@ -770,4 +778,23 @@ export const validaGetCotizacionXNumber =async (data)=>{
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
 return v.ok
+}
+
+
+export function pdfToBase64(filePath) {
+    return new Promise((resolve, reject) => {
+        const doc = new pdfkit();
+        const buffers = [];
+
+        doc.on('data', buffers.push.bind(buffers));
+        doc.on('end', () => {
+            const pdfData = Buffer.concat(buffers);
+
+            // convert data to base64
+            const base64 = pdfData.toString('base64');
+            resolve(base64);
+        });
+
+        fs.createReadStream(filePath).pipe(doc);
+    });
 }
