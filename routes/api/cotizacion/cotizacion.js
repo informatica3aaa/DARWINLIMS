@@ -39,7 +39,7 @@ const api = Router();
         api.get('/pending',this.pendingQuotation);
         api.get('/number/:id',this.buscarXnumber);
         api.post('/cargarservicios',this.cargarService);        
-
+        api.post('/buscar',this.cargarService);     
         
         return api;
     };
