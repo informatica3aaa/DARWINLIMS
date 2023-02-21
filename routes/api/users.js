@@ -15,13 +15,9 @@ class APIUsersRouter {
   }
 
   getUser(req, res) {
-    const current_user = req.current_user
-    const current_application_user = req.current_application_user;
+    const current_user = req.user;
 
-    const username = req.params.username && req.params.username.length > 0 ? req.params.username : null;
-
-    if(current_application_user.isAdmin() && username) {
-      return User.getByUsername(username).then((user) => {
+      return User.getByUsername(current_user.username).then((user) => {
         res.json(user);
       }).catch((error) => {
         console.log(error);
@@ -30,13 +26,6 @@ class APIUsersRouter {
           message: "Usuario no existe."
         });
       })
-    }
-    else {
-      res.status(401);
-      res.json({
-        message: "No esta autorizado para realizar la acción"
-      });
-    }
   }
 
   activateUser(req, res) {
