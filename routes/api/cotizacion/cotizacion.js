@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as CoreCotizacion from './core-cotizacion';
 import * as CoreLog from '../log/core-log'
 import { QuotationPDF, QuotationWord } from '../../../lib/themplates/pdf/quotation';
+import fs from 'fs';
 
 class Cotizacion{
 
@@ -358,15 +359,24 @@ const api = Router();
             if(req.body.download == 'pdf'){
                 let pdfDoc = await QuotationPDF(result);
                 // console.log("asdas",pdfDoc);
-                // res.setHeader('Content-type', 'application/pdf')
-                // res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
-                // pdfDoc.pipe(res); 
+                res.setHeader('Content-type', 'application/pdf')
+                res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
+                pdfDoc.pipe(res); 
                 // pdfDoc.end();
                 // const buffer = Buffer.from(pdfDoc);
                 // const base64Data = buffer.toString('base64');
-                let base64Data = CoreCotizacion.pdfToBase64(pdfDoc)
-                console.log("pdfDoc", base64Data);
-                return res.status(200).json({ ok: false ,data: base64Data }); 
+                fs.readFile( pdfDoc.pipe(res), (err, data) => {
+                    if (err) throw err;
+                
+                    CoreCotizacion.blobToBase64(data)
+                        .then((base64String) => {
+                            return res.status(200).json({ ok: false ,data: base64String }); 
+                        })
+                        .catch(console.error);
+                });
+                // let base64Data = CoreCotizacion.pdfToBase64(pdfDoc)
+
+               
             }
             if(req.body.download == 'word'){
                 return res.status(200).json({ ok: false ,data: result }); 

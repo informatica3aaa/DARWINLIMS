@@ -3,7 +3,7 @@ import { validateAll } from 'indicative';
 import mensajes from '../../../lib/helpers/mensajes';
 import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 import fs from 'fs';
-import FileReader from 'filereader';
+
 
 
 export const validaActiveAllQuo = async (data)=>{
@@ -781,20 +781,14 @@ return v.ok
 }
 
 
-export function pdfToBase64(filePath) {
+export const blobToBase64 = (blob) => {
     return new Promise((resolve, reject) => {
-        const doc = new pdfkit();
-        const buffers = [];
-
-        doc.on('data', buffers.push.bind(buffers));
-        doc.on('end', () => {
-            const pdfData = Buffer.concat(buffers);
-
-            // convert data to base64
-            const base64 = pdfData.toString('base64');
-            resolve(base64);
-        });
-
-        fs.createReadStream(filePath).pipe(doc);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result;
+            resolve(base64String);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
     });
 }
