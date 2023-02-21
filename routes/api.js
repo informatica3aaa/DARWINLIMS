@@ -10,8 +10,7 @@ import requisition from './api/requisition/requisitions'
 import Cliente from './api/cliente/cliente';
 import Bodega from './api/bodega/bodega';
 import Log from './api/log/log';
-import Icp from './api/icp/icp';
-import AuthRouter from './api/auth';
+import APIUsersRouter from './api/users'
 
 
 class ApiRouter {
@@ -32,7 +31,7 @@ const api = Router();
     api.use('/log', new Log)
     // api.use('/auth', passport.authenticate('local', { session: false }), new AuthRouter());
     //api.use('/auth', new AuthRouter());
-    api.use('/user', new AuthRouter());
+    api.use('/user', APIUsersRouter.create());
     return api;
   }
 

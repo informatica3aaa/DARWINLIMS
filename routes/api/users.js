@@ -97,9 +97,9 @@ class APIUsersRouter {
 
   //cambiar mi contraseña
   async setNewPassword(req, res) {
-    const current_user = req.user
+    const current_user = req.user;
 
-    const id_user = current_user.id;
+    const username = current_user.username;
     const current_password = req.body.current_password;
     const new_password = req.body.new_password;
     const new_password_confirmation = req.body.new_password_confirmation;
@@ -112,7 +112,7 @@ class APIUsersRouter {
       return res.status(200).json({ ok: false, message: "Nueva contraseña no coincide." });
     }
 
-    const result = await User.setNewPassword(id_user,new_password);
+    const result = await User.setNewPassword(username,new_password);
     if(result) {
       return res.status(200).json({ ok: true, message: "Contraseña modificada correctamente." });
     } else {
@@ -129,13 +129,13 @@ class APIUsersRouter {
   //editar mis datos
   async updateUser(req, res) {
     const current_user = req.user;
-    const form_data = req.body || {};
-
-    const result = await User.updateUser(current_user.id, name, lastname_f, lastname_m, address, country_id, phone, celphone);
+    const form_data = req.body;
+    console.log(current_user);
+    const result = await User.updateUser(current_user.id, form_data.name, form_data.lastname_f, form_data.lastname_m, form_data.address, form_data.country_id, form_data.phone, form_data.celphone);
     if(result) {
-      return res.status(200).json({ ok: true, message: "Contraseña modificada correctamente." });
+      return res.status(200).json({ ok: true, message: "Datos de usuario modificados correctamente." });
     } else {
-      return res.status(200).json({ ok: false, message: "No se pudo modificar la contraseña." });
+      return res.status(200).json({ ok: false, message: "No se pudo modificar los datos de usuario." });
     }
 
         

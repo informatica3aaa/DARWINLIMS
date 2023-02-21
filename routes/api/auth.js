@@ -29,12 +29,7 @@ class AuthRouter {
     });
 
 
-    api.post('/getmenuuser',  async (req, res, next) => {
-      const result = await User.getMenuUser(2);
-      return res.json(result);
-    });
-
-    
+   
     
 
     return api;
