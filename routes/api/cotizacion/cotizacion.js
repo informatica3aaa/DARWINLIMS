@@ -379,7 +379,7 @@ const api = Router();
                 // stream.on('data',function(chunk){
                 //     finalString +=chunk})
                 // stream.on('end',function(){
-                    return res.status(200).json({ ok: false ,data: pdfDoc }); 
+                    return res.status(200).json({ ok: true ,data: pdfDoc }); 
                 // });
 
                
