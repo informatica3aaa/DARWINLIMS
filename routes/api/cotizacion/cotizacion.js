@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as CoreCotizacion from './core-cotizacion';
 import * as CoreLog from '../log/core-log'
-import { QuotationPDF, QuotationWord } from '../../../lib/themplates/pdf/quotation';
+import { QuotationPDF,QuotationPDF64, QuotationWord } from '../../../lib/themplates/pdf/quotation';
 import fs from 'fs';
 
 class Cotizacion{
@@ -367,24 +367,20 @@ const api = Router();
                 return res.status(200).json({ ok: false ,msg: "Falta el tipo de documento que desea descargar" }); 
             }
             if(req.body.download == 'pdf'){
-                let pdfDoc = await QuotationPDF(result);
-                // console.log("asdas",pdfDoc);
-                res.setHeader('Content-type', 'application/pdf')
-                res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
-                pdfDoc.pipe(res); 
+
+                let pdfDoc = await QuotationPDF64(result);
+                // res.setHeader('Content-type', 'application/pdf')
+                // res.setHeader('Content-disposition', 'inline; filename="CertificadoRendiciones.pdf"')
+                // pdfDoc.pipe(res); 
+                // let finalString =''
+                // const stream = pdfDoc.pipe(new Base64Encode())
                 // pdfDoc.end();
-                // const buffer = Buffer.from(pdfDoc);
-                // const base64Data = buffer.toString('base64');
-                fs.readFile( pdfDoc.pipe(res), (err, data) => {
-                    if (err) throw err;
-                
-                    CoreCotizacion.blobToBase64(data)
-                        .then((base64String) => {
-                            return res.status(200).json({ ok: false ,data: base64String }); 
-                        })
-                        .catch(console.error);
-                });
-                // let base64Data = CoreCotizacion.pdfToBase64(pdfDoc)
+
+                // stream.on('data',function(chunk){
+                //     finalString +=chunk})
+                // stream.on('end',function(){
+                    return res.status(200).json({ ok: false ,data: pdfDoc }); 
+                // });
 
                
             }
