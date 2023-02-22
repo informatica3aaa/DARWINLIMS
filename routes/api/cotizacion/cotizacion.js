@@ -39,11 +39,21 @@ const api = Router();
         api.get('/pending',this.pendingQuotation);
         api.get('/number/:id',this.buscarXnumber);
         api.post('/cargarservicios',this.cargarService);        
-        api.post('/buscar',this.cargarService);     
+        api.post('/buscar',this.cargarService);  
+        api.get('/list',this.listarQuotationAll);     
         
         return api;
     };
 
+
+    async listarQuotationAll(req, res) {
+        try {
+            let result = await CoreCotizacion.buscarAllQuo();
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }
+    }
 
     async cargarService(req, res) {
         try {

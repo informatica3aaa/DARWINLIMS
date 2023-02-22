@@ -770,6 +770,14 @@ return cotizacion;
 
 }
 
+export const buscarAllQuo =async ()=>{
+    const cotizacion= await Cotizaciones.buscarAllQuo();
+    if(!cotizacion)  throw  { message : 'Error no se logro consultar por cotizaciones, revise su información'};
+
+return cotizacion;
+
+}
+
 
 export const validaGetCotizacionXNumber =async (data)=>{
     let v = await validateAll(data, {
