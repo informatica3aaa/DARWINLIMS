@@ -112,5 +112,35 @@ export const getFiltros = async (data)=>{
     return requi;
 }
 
+export const validaAdd = async (data)=>{
+    let v = await validateAll(data, {
+        quotation_id:'required|integer',
+        company_id:'required|integer',
+        name:'required|string',
+        destinatario:'required',
+        observations:'required',
+        has_insert:'required|boolean'
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada fuera de rango o no corresponde, revise su información'}});
+      
+       return v
+}
+
+export const add = async (data, user)=>{
+    let requisicion = await Requisitions.addPaso1(data, user)
+         if(!requisicion)  throw  { message : `Error al crear la requisición, revise su información`};
+
+    return  requisicion;
+}
 
 
+export const validaQuo = async (data)=>{
+
+    let cotizacion = await Cotizaciones.existeCotizacionId(data.quotation_id, data.company_id);
+            if(!cotizacion)  throw  { message : `Error al consultar por cotizacion, revise su información`};
+
+             if(cotizacion.length == 0)  throw  { message : `Cotizacion Nro ${data.quotation_id} no pertenece a la compañia , revise su información`};
+    
+    return cotizacion[0];
+
+}

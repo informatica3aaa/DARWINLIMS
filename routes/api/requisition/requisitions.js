@@ -8,6 +8,7 @@ class Requisition{
         api.post('/list',this.listar); 
         api.post('/buscar', this.buscar)
         api.post('/filter', this.filtros)
+        api.post('/add', this.add)
         return api;
     };
 
@@ -51,6 +52,19 @@ class Requisition{
         }
 
     }
+
+    async add(req, res) {
+        try {
+            const validaAdd = await CoreRequisition.validaAdd(req.body);
+            const validarQuo = await CoreRequisition.validaQuo(req.body);
+            const requi = await CoreRequisition.add(req.body, req.user);
+            return res.status(200).json({ ok: true, data: requi }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+    }
+
 
 }
 export default Requisition;
