@@ -384,7 +384,7 @@ const api = Router();
 
                
             }
-            if(req.body.download == 'word'){
+            if(req.body.download == 'doc'){
                 return res.status(200).json({ ok: false ,data: result }); 
             }
             
