@@ -40,10 +40,22 @@ const api = Router();
         api.get('/number/:id',this.buscarXnumber);
         api.post('/cargarservicios',this.cargarService);        
         api.post('/buscar',this.cargarService);  
-        api.get('/list',this.listarQuotationAll);     
+        api.get('/list',this.listarQuotationAll);   
+        api.post('/parent', this.parent);
         
         return api;
     };
+
+
+    async parent(req, res) {
+        try {
+            let result = await CoreCotizacion.getParent(req.body);
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+        }
+    }
+
 
 
     async listarQuotationAll(req, res) {
@@ -341,8 +353,8 @@ const api = Router();
 
     async validateQuotation(req, res){
         try {
-            const result = await CoreCotizacion.validarCotizacion(req.body, req.user);
-                  return res.status(200).json({ ok: true, data: 'no tiene cotizaciones pendientes por terminar' }); 
+            const result = await CoreCotizacion.validarCotizacionV2(req.body, req.user);
+                  return res.status(200).json({ ok: true, data: result }); 
           } catch (error) {
               return res.status(200).json({ ok: false ,msg: error.message });  
           }   

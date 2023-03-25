@@ -100,7 +100,7 @@ class APIUsersRouter {
     if(new_password != new_password_confirmation) {
       return res.status(200).json({ ok: false, message: "Nueva contraseña no coincide." });
     }
-
+    console.log("(username,new_password",username,new_password);
     const result = await User.setNewPassword(username,new_password);
     if(result) {
       return res.status(200).json({ ok: true, message: "Contraseña modificada correctamente." });

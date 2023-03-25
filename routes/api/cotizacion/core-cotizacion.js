@@ -528,7 +528,6 @@ export const validaAccion = async (data)=>{
         break;
         case 'nueva_version':
             v = await validateAll(data, {
-                active:'required|in:0',
                 quotation_id:'required|integer',
                 quotation_number:'required|string',
                 start_date:'required',
@@ -539,7 +538,7 @@ export const validaAccion = async (data)=>{
                 general_condition_id:'required|integer',
                 specific_condition:'required|string',               
                 currency_id:'required|integer',
-                quotation_state_id:'required|integer',
+                quotation_state_id:'required|integer|range:0,6',
                 parent_id:"required|integer"           
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
@@ -622,8 +621,7 @@ export const validaNew = async (data)=>{
                 destinatario:'required|string',
                 general_condition_id:'required|integer',
                 specific_condition:'required|string',               
-                currency_id:'required|integer',
-                quotation_state_id:'required|integer'             
+                currency_id:'required|integer'             
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
        
@@ -730,19 +728,34 @@ export const validarCotizacion =async (form, usuario)=>{
 
     const cotizacion= await Cotizaciones.getCotizacionXuser(form, usuario);
             if(!cotizacion)  throw  { message : 'Error no se logro finalizar la creacion de la cotización, revise su información'};
-
             let contador=0;
             if(cotizacion.length > 0) {
                 for(let index = 0; index < cotizacion.length; index++){
+                    console.log("entro ",cotizacion[index].id);
                     const detalle = await Cotizaciones.getCotizacionXDetalle(cotizacion[index].id);
+                    console.log("detalle");
                     if(detalle.length == 0){
-                        throw  { message : 'El usuario tiene Cotizaciones pendientes por terminar'};
+                        throw  { message : 'El usuario No tiene Cotizaciones pendientes por terminar'};
                     }
                 }
             }
-
-            return contador;
+    
+   
+    return contador;
 }
+
+export const validarCotizacionV2 =async (form, usuario)=>{
+
+    let  cotizacion= await Cotizaciones.getCotizacionXuserV2(form, usuario);
+            if(!cotizacion)  throw  { message : 'Error no se logro validar las cotización pendiente, revise su información'};
+            console.log("cotiza", cotizacion.length);
+            if(cotizacion.length == 0) {
+                throw  { message : 'El usuario No tiene Cotizaciones pendientes por terminar'};
+            }
+
+    return cotizacion;
+}
+
 
 export const cotizacionPendientes =async (form, usuario)=>{
 
@@ -789,7 +802,6 @@ return cotizacion;
 
 }
 
-
 export const validaGetCotizacionXNumber =async (data)=>{
     let v = await validateAll(data, {
         active:'required|range:-1,2',
@@ -798,7 +810,6 @@ export const validaGetCotizacionXNumber =async (data)=>{
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
 return v.ok
 }
-
 
 export const blobToBase64 = (blob) => {
     return new Promise((resolve, reject) => {
@@ -810,4 +821,25 @@ export const blobToBase64 = (blob) => {
         reader.onerror = reject;
         reader.readAsDataURL(blob);
     });
+}
+
+export const getParent  = async (data)=>{
+    let respuesta=[]
+    let  cotizacion= await Cotizaciones.getCotizacionesId(data);
+            if(!cotizacion)  throw  { message : 'Error no se logro validar las cotización pendiente, revise su información'};
+            // console.log("cotiza", cotizacion);
+            respuesta.push(cotizacion[0])
+            if(cotizacion.length > 0){
+                 let  parent = await Cotizaciones.getCotizacionesbyParent(cotizacion[0].id);
+                    for(let par of parent){
+                        respuesta.push(par)
+                     }
+
+            }if(cotizacion.length == 0){
+                throw  { message : `No existe cotización Nro ${data.id} `};
+            }
+
+
+    return respuesta;
+
 }
