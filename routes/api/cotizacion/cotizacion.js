@@ -120,7 +120,6 @@ async parent(req, res) {
 
     async buscarXnumber(req, res) {
         try {
-            console.log("number", req.params);
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             let result = await CoreCotizacion.getCotizacionXNumber(req.body);
             return res.status(200).json({ ok: true, data: result }); 
@@ -131,7 +130,6 @@ async parent(req, res) {
 
 
     async listar(req, res) {
-        console.log("entro en listar", req.body)
         try {
             // const log = CoreLog.addHistory(req, req.user)
             let result;

@@ -131,8 +131,33 @@ api.post('/activaregion', this.activarRegionPais);
 api.post('/gettool', this.getTools); 
 api.post('/edittools', this.editTools);
 api.post('/comprobar', this.comprobar)
+api.post('/adjuntar', this.adjuntar)
+api.post('/descargar', this.descargar)
 return api;
 };
+//ARCHIVOS
+async adjuntar(req, res){
+try {
+    const result = null
+    return res.status(200).json({ ok: true, data: result });
+} catch (error) {
+    return res.status(200).json({ ok: false ,msg: error.message });   
+}
+
+}
+
+async descargar(req, res){
+    try {
+        const result = null
+        return res.status(200).json({ ok: true, data: result });
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });   
+        
+    }
+    
+    }
+
+
 //TECNICAS
 async editTools (req, res){
     try {
