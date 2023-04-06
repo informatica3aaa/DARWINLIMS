@@ -893,3 +893,19 @@ export const getContPendientes =async(data)=>{
 
     return cotizacion[0].total
 }
+
+export const getContPorVencer =async(data)=>{
+    let respuesta=[]
+    let  cotizacion= await Cotizaciones.contarCotizacionesPorVencer();
+            if(!cotizacion)  throw  { message : 'Error no se logro encontrar las cotizaciones pendientes, revise su información'};
+
+    return cotizacion[0].total
+}
+
+export const getPorVencer =async(data)=>{
+    let respuesta=[]
+    let  cotizacion= await Cotizaciones.getCotizacionesPorVencer(data);
+            if(!cotizacion)  throw  { message : 'Error no se logro encontrar las cotizaciones pendientes, revise su información'};
+
+    return cotizacion
+}

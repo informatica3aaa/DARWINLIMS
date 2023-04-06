@@ -44,14 +44,29 @@ const api = Router();
         api.post('/parent', this.parent);
         api.post('/upestado',this.upestado)
         api.post('/pendingquotations', this.listarPendientes)
+        api.post('/por_vencer', this.por_vencer)
         
         return api;
     };
 
+async por_vencer(req, res){
+    try {
+        const validarPaginado = await CoreCotizacion.validarPaginado(req.body)
+        const contador = await CoreCotizacion.getContPorVencer();
+        const result = await CoreCotizacion.getPorVencer(req.body);
+        return res.status(200).json({ ok: true, total: contador, data: result }); 
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });
+        
+    }
+}
+
+
 async listarPendientes (req, res){
     try {
-        let contador = await CoreCotizacion.getContPendientes();
-        let result = await CoreCotizacion.getPendientes(req.body);
+        const validarPaginado = await CoreCotizacion.validarPaginado(req.body)
+        const contador = await CoreCotizacion.getContPendientes();
+        const result = await CoreCotizacion.getPendientes(req.body);
         return res.status(200).json({ ok: true, total_pendientes: contador, data: result }); 
     } catch (error) {
         return res.status(200).json({ ok: false ,msg: error.message });  
@@ -59,8 +74,6 @@ async listarPendientes (req, res){
     }
 
 }
-
-
 
 async upestado(req, res){
 try {
