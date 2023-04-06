@@ -42,10 +42,22 @@ const api = Router();
         api.post('/buscar',this.cargarService);  
         api.get('/list',this.listarQuotationAll);   
         api.post('/parent', this.parent);
+        api.post('/upestado',this.upestado)
         
         return api;
     };
 
+
+async upestado(req, res){
+try {
+                const valida = await CoreCotizacion.validarEstadoId(req.body);
+                const result = await CoreCotizacion.cambiaEstado(req.body, req.user)
+                return res.status(200).json({ ok: true, data: result }); 
+            } catch (error) {
+                return res.status(200).json({ ok: false ,msg: error.message });  
+                
+            }
+}
 
     async parent(req, res) {
         try {

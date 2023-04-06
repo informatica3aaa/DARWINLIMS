@@ -843,3 +843,29 @@ export const getParent  = async (data)=>{
     return respuesta;
 
 }
+
+
+export const cambiaEstado = async (data, user)=>{
+    let  cotizacion= await Cotizaciones.cambiaEstado(data, user);
+    if(!cotizacion)  throw  { message : 'Error no se logro actualizar el estado de la cotización, revise su información'};
+    
+   if(cotizacion.length == 0){
+    throw  { message : 'Error no se logro actualizar ningún estado de la cotización, revise su información'};
+   }
+    return cotizacion
+
+}
+
+
+
+
+
+export const validarEstadoId = async(data)=>{
+    let v = await validateAll(data, {
+        quotation_id:'required|integer',
+        state_id:'required|range:0,5'      
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); 
+       throw  { message : 'Datos de entrada para validar el estado fuera de rango o no corresponde, revise su información'}});
+return v.ok 
+}
