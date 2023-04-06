@@ -857,9 +857,6 @@ export const cambiaEstado = async (data, user)=>{
 }
 
 
-
-
-
 export const validarEstadoId = async(data)=>{
     let v = await validateAll(data, {
         quotation_id:'required|integer',
@@ -868,4 +865,31 @@ export const validarEstadoId = async(data)=>{
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); 
        throw  { message : 'Datos de entrada para validar el estado fuera de rango o no corresponde, revise su información'}});
 return v.ok 
+}
+
+
+export const validarPaginado = async(data)=>{
+    let v = await validateAll(data, {
+        offset:'required|integer',
+        limit:'required|integer'      
+        },
+       mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); 
+       throw  { message : 'Datos de entrada para la paginación fuera de rango o no corresponde, revise su información'}});
+return v.ok 
+}
+
+export const getPendientes =async(data)=>{
+    let respuesta=[]
+    let  cotizacion= await Cotizaciones.getCotizacionesPendientes(data);
+            if(!cotizacion)  throw  { message : 'Error no se logro encontrar las cotizaciones pendientes, revise su información'};
+
+    return cotizacion
+}
+
+export const getContPendientes =async(data)=>{
+    let respuesta=[]
+    let  cotizacion= await Cotizaciones.contarCotizacionesPendientes();
+            if(!cotizacion)  throw  { message : 'Error no se logro encontrar las cotizaciones pendientes, revise su información'};
+
+    return cotizacion[0].total
 }

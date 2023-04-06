@@ -43,9 +43,23 @@ const api = Router();
         api.get('/list',this.listarQuotationAll);   
         api.post('/parent', this.parent);
         api.post('/upestado',this.upestado)
+        api.post('/pendingquotations', this.listarPendientes)
         
         return api;
     };
+
+async listarPendientes (req, res){
+    try {
+        let contador = await CoreCotizacion.getContPendientes();
+        let result = await CoreCotizacion.getPendientes(req.body);
+        return res.status(200).json({ ok: true, total_pendientes: contador, data: result }); 
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });  
+        
+    }
+
+}
+
 
 
 async upestado(req, res){
@@ -59,7 +73,7 @@ try {
             }
 }
 
-    async parent(req, res) {
+async parent(req, res) {
         try {
             let result = await CoreCotizacion.getParent(req.body);
             return res.status(200).json({ ok: true, data: result }); 
