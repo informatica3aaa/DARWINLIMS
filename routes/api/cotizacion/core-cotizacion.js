@@ -890,3 +890,25 @@ export const getPorVencer =async(data)=>{
 
     return cotizacion
 }
+
+export const validarValidity = async(data)=>{
+    let v = await validateAll(data, {
+        quotation_state_id:'required|number|range:0,6',
+        quotation_comment:'required|string',
+        id:'required|integer'     
+        },
+       mensajes).then(d => {return  {ok: true, d}})
+       .catch(e => { console.log("errores:::", e); 
+       throw  { message : 'Datos de entrada para el cambio de estado interno fuera de rango o no corresponde, revise su información'}
+        });
+return v.ok 
+}
+
+export const actualizarEstadoInterno =async (data, user)=>{
+
+    let  cotizacion= await Cotizaciones.cambiaEstadoIterno(data, user);
+    if(!cotizacion)  throw  { message : 'Error no se logro encontrar las cotizaciones pendientes, revise su información'};
+
+return cotizacion
+}
+

@@ -45,29 +45,40 @@ const api = Router();
         api.post('/upestado',this.upestado)
         api.post('/pendingquotations', this.listarPendientes)
         api.post('/por_vencer', this.por_vencer)
+        api.post('/quotation_validity', this.estadoInterno)
         
         return api;
     };
+
+async estadoInterno(req, res){
+    try {
+        const validar = await CoreCotizacion.validarValidity(req.body); 
+        const result = await CoreCotizacion.actualizarEstadoInterno(req.body);
+        return res.status(200).json({ ok: true, data: result}); 
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });
+        
+    }
+}    
 
 async por_vencer(req, res){
     try {
         const validarPaginado = await CoreCotizacion.validarPaginado(req.body)
         const contador = await CoreCotizacion.getContPorVencer();
         const result = await CoreCotizacion.getPorVencer(req.body);
-        return res.status(200).json({ ok: true, total: contador, data: result }); 
+        return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
     } catch (error) {
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
 }
 
-
 async listarPendientes (req, res){
     try {
         const validarPaginado = await CoreCotizacion.validarPaginado(req.body)
         const contador = await CoreCotizacion.getContPendientes();
         const result = await CoreCotizacion.getPendientes(req.body);
-        return res.status(200).json({ ok: true, total_pendientes: contador, data: result }); 
+        return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
     } catch (error) {
         return res.status(200).json({ ok: false ,msg: error.message });  
         
@@ -95,9 +106,7 @@ async parent(req, res) {
         }
     }
 
-
-
-    async listarQuotationAll(req, res) {
+async listarQuotationAll(req, res) {
         try {
             let result = await CoreCotizacion.buscarAllQuo();
             return res.status(200).json({ ok: true, data: result }); 
@@ -106,7 +115,7 @@ async parent(req, res) {
         }
     }
 
-    async cargarService(req, res) {
+async cargarService(req, res) {
         try {
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             console.log("params", req.body);
@@ -117,8 +126,7 @@ async parent(req, res) {
         }
     }
 
-
-    async buscarXnumber(req, res) {
+async buscarXnumber(req, res) {
         try {
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             let result = await CoreCotizacion.getCotizacionXNumber(req.body);
@@ -128,8 +136,7 @@ async parent(req, res) {
         }
     }
 
-
-    async listar(req, res) {
+async listar(req, res) {
         try {
             // const log = CoreLog.addHistory(req, req.user)
             let result;
@@ -180,7 +187,7 @@ async parent(req, res) {
         }
     }
     
-    async getAllQuotations (req, res){
+async getAllQuotations (req, res){
         try {
             req.body.tipo='cotizaciones';
             const validacion = await CoreCotizacion.validaActive(req.body);//[quotations]
@@ -193,8 +200,7 @@ async parent(req, res) {
 
     } 
 
-
-    async getAllQuotationsV1 (req, res){
+async getAllQuotationsV1 (req, res){
         // console.log("aca:::.");
         try {
             const validacion = await CoreCotizacion.validaActiveAllQuo(req.body);//[quotations]
@@ -207,7 +213,7 @@ async parent(req, res) {
 
     } 
 
-    async getQuo (req, res){
+async getQuo (req, res){
         try {
             const validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations]
             const result = await CoreCotizacion.getCotizacionQuo(req.body);
@@ -218,7 +224,7 @@ async parent(req, res) {
 
     } 
 
-    async getQuotation(req, res){
+async getQuotation(req, res){
 
         try {
             req.params.tipo='cotizacion';
@@ -232,7 +238,7 @@ async parent(req, res) {
         
     }
 
-    async getAllFilter(req, res){
+async getAllFilter(req, res){
         try {
         const  validacion = await CoreCotizacion.validaActiveFilter(req.body);//[busqueda de cotizacion por filtros dinamicos]
         const  result = await CoreCotizacion.getCotizacionFilter(req.body);
@@ -241,9 +247,9 @@ async parent(req, res) {
      } catch (error) {
          return res.status(200).json({ ok: false ,msg: error.message });  
      }
-     }
+    }
 
-    async getAllQuotationsFilter(req, res){
+async getAllQuotationsFilter(req, res){
        try {
        req.body.tipo='filtros'
        const  validacion = await CoreCotizacion.validaActive(req.body);//[busqueda de cotizacion por filtros dinamicos]
@@ -255,7 +261,7 @@ async parent(req, res) {
     }
     }
 
-    async getHistory(req, res){
+async getHistory(req, res){
         try {
             req.params.tipo ='historial';
             const validacion = await CoreCotizacion.validaActive( req.params);//[historial]
@@ -268,7 +274,7 @@ async parent(req, res) {
         }
     }
 
-    async getHistoryCompany(req, res){
+async getHistoryCompany(req, res){
         try {
             req.body.tipo ='historialxcompañia';
             const validacion = await CoreCotizacion.validaActive( req.body);//[historialxconañia]
@@ -281,7 +287,7 @@ async parent(req, res) {
         }
     }
 
-    async getProject(req, res){
+async getProject(req, res){
             try {
                 req.params.tipo = 'proyectos'
                 const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
@@ -294,7 +300,7 @@ async parent(req, res) {
             }
     }
 
-    async getServicios(req, res){
+async getServicios(req, res){
         try {
             req.params.tipo = 'servicios'
             const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
@@ -306,7 +312,7 @@ async parent(req, res) {
         }
     }
 
-    async getServiciosFilter(req, res){
+async getServiciosFilter(req, res){
         try {
             const validacion = await CoreCotizacion.validaActive(req.body);//[project x company_id]
             const result = await CoreCotizacion.getCotizacion(req.body);
@@ -317,7 +323,7 @@ async parent(req, res) {
         }
     }
 
-    async getService(req, res){
+async getService(req, res){
         try {
             req.params.tipo = 'servicio'
             const validacion = await CoreCotizacion.validaActive(req.params);//[project x company_id]
@@ -329,8 +335,7 @@ async parent(req, res) {
         }
     }
 
-
-    async acciones(req, res){
+async acciones(req, res){
         let result;
         let validacion;
         try {
@@ -344,7 +349,7 @@ async parent(req, res) {
     }
 
     //ACCIONES
-    async approveQuotation(req, res){
+async approveQuotation(req, res){
         try {
           const  validacion = await CoreCotizacion.validaAction(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
@@ -354,7 +359,7 @@ async parent(req, res) {
         }  
     }
 
-    async newQuotation(req, res){
+async newQuotation(req, res){
         try {
           req.body.accion ='nueva_cotizacion'
           const cotizacion = await CoreCotizacion.validarCotizacion(req.body, req.user);
@@ -366,7 +371,7 @@ async parent(req, res) {
         }  
     }
 
-    async newQuotationDetail(req, res){
+async newQuotationDetail(req, res){
         try {
             req.body.accion ='detalle_cotizacion'
           const  validacion = await CoreCotizacion.validaNewDetail(req.body);
@@ -377,7 +382,7 @@ async parent(req, res) {
         }  
     }
   
-    async newQuotationEnd(req, res){
+async newQuotationEnd(req, res){
         try {
           req.body.accion ='nueva_cotizacion_fin'
           const  validacion = await CoreCotizacion.validaNewEnd(req.body);
@@ -388,7 +393,7 @@ async parent(req, res) {
         }  
     }
 
-    async validateQuotation(req, res){
+async validateQuotation(req, res){
         try {
             const result = await CoreCotizacion.validarCotizacionV2(req.body, req.user);
                   return res.status(200).json({ ok: true, data: result }); 
@@ -397,7 +402,7 @@ async parent(req, res) {
           }   
     }
 
-    async pendingQuotation(req, res){
+async pendingQuotation(req, res){
         try {
             const result = await CoreCotizacion.cotizacionPendientes(req.body, req.user);
                   return res.status(200).json({ ok: true, data: result}); 
@@ -407,7 +412,7 @@ async parent(req, res) {
     }
 
     // DESCARGAS
-    async dowloadQuotation(req, res){
+async dowloadQuotation(req, res){
         try {
             let validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations_con_detalles]
             let result = await CoreCotizacion.getCotizacionDown(req.body);
