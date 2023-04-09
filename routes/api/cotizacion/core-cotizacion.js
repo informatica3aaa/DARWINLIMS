@@ -20,7 +20,7 @@ export const validaActiveAllQuo = async (data)=>{
 
 export const validaActiveQuo = async (data)=>{
     let v = await validateAll(data, {
-             id:'required|integer'    
+             id:'required|integer'
              },
             mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
    return v.ok;
@@ -190,6 +190,11 @@ export const getCotizacionAllQuo = async (data)=>{
 }
 
 export const getCotizacionDown = async (data)=>{
+
+            let v = await validateAll(data, {
+            download:'required|string|in:doc,pdf'},mensajes)
+            .then(d => {return  {ok: true, d}})
+            .catch(e => { throw  { message : 'Datos de entrada para la busqueda de la cotización fuera de rango o no corresponde, revise su información'}});
 
            let tool = await Cotizaciones.getCotizacionesId(data);
             if(!tool)  throw  { message : `Error no se logra consultar por ${ data.id}, revise su información`};
@@ -561,22 +566,19 @@ export const validaAction = async (data)=>{
        switch(data.accion){
         case 'aprobar_venta':
             v = await validateAll(data, {
-                id:'required|integer',
-                state_id:'required|range:1,3'
+                id:'required|integer'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_venta fuera de rango, revise su información' }});
         break;
         case 'aprobar_produccion':
             v = await validateAll(data, {
-                id:'required|integer',
-                state_id:'required|range:1,3'
+                id:'required|integer'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_produccion fuera de rango, revise su información'}});
         break;
         case 'rechazar':
             v = await validateAll(data, {
                 id:'required|integer',
-                state_id:'required|range:2,4',
                 comentario:"required|string"
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e =>  { console.log(e); throw  { message : 'Datos de entrada rechazar fuera de rango, revise su información'}});
@@ -640,7 +642,7 @@ export const cotizacionAccion = async (data, usuario)=>{
                 if(accion.length ==0)  throw  { message : 'No se logro aprobar venta  de la cotización, revise su información'};
             estado = await Cotizaciones.consultaEstadoCotizacion(data);
                 if(!estado)  throw  { message : 'Error al consultar el estado de la cotizacion, revise su información'};
-                if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
+                // if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
                 if(estado.length > 0){ 
                     let cambiarEstado = Cotizaciones.cambiaEstadoCotizacion(data, usuario)
                     if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
@@ -654,7 +656,7 @@ export const cotizacionAccion = async (data, usuario)=>{
                     if(accion.length ==0)  throw  { message : 'No se logro aprobar produccion de la cotización, revise su información'};
             estado = await Cotizaciones.consultaEstadoCotizacion(data);
                     if(!estado)  throw  { message : 'Error al consultar el estado de la cotizacion, revise su información'};
-                    if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
+                    // if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
             if(estado.length == 1){ 
                 let cambiarEstado = Cotizaciones.cambiaEstadoCotizacion(data, usuario) 
                 if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
@@ -699,6 +701,7 @@ export const cotizacionAccion = async (data, usuario)=>{
         default:
             throw  { message : `No existe el tipo acción ${ data.tipo}, revise su información`};
     }
+    console.log("actiocn", accion);
     return accion;
 }
 

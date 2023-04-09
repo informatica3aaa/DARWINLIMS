@@ -27,6 +27,7 @@
     "express-session": "1.15.6",
     "express-useragent": "1.0.12",
     "filereader": "^0.10.3",
+    "fs": "*",
     "indicative": "^5.0.8",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
