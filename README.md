@@ -1,7 +1,6 @@
-# PROYECTO BASE
+# PROYECTO BASE NINERALS VERSION 1.0.0
 PROYECTO BASE PARA API
-# node version 12.16
-
+### Node version 12.16.1
 ## Start up
 
 ```

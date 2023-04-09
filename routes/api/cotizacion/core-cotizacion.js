@@ -20,8 +20,7 @@ export const validaActiveAllQuo = async (data)=>{
 
 export const validaActiveQuo = async (data)=>{
     let v = await validateAll(data, {
-             id:'required|integer',
-             active:'required|range:-1,2'     
+             id:'required|integer'    
              },
             mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
    return v.ok;
@@ -563,16 +562,14 @@ export const validaAction = async (data)=>{
         case 'aprobar_venta':
             v = await validateAll(data, {
                 id:'required|integer',
-                state_id:'required|range:1,3',
-                active:'required|range:0,2',
+                state_id:'required|range:1,3'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_venta fuera de rango, revise su información' }});
         break;
         case 'aprobar_produccion':
             v = await validateAll(data, {
                 id:'required|integer',
-                state_id:'required|range:1,3',
-                active:'required|range:0,2',
+                state_id:'required|range:1,3'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada aprobar_produccion fuera de rango, revise su información'}});
         break;
@@ -580,30 +577,12 @@ export const validaAction = async (data)=>{
             v = await validateAll(data, {
                 id:'required|integer',
                 state_id:'required|range:2,4',
-                comentario:"required|string",
-                active:'required|range:0,2',
+                comentario:"required|string"
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e =>  { console.log(e); throw  { message : 'Datos de entrada rechazar fuera de rango, revise su información'}});
         break;
        
-            v = await validateAll(data, {
-                active:'required|in:0',
-                quotation_id:'required|integer',
-                quotation_number:'required|string',
-                start_date:'required',
-                expiration_date:'required|date',
-                company_id:'required|integer',
-                estimated_days:'required|integer',
-                destinatario:'required|string',
-                general_condition_id:'required|integer',
-                specific_condition:'required|string',               
-                currency_id:'required|integer',
-                quotation_state_id:'required|integer',
-                parent_id:"required|integer"           
-                },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
-        break;
-        default:
+       default:
             throw  { message : 'No existe el tipo acción, revise su información'};
     }
 
@@ -684,7 +663,6 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
         case 'rechazar':
             accion= await Cotizaciones.updateAccion(data, usuario);
-            console.log("accion", accion);
             if(!accion)  throw  { message : 'Error no se logro rechazar la cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro rechazar la cotización, revise su información' };
         break;
