@@ -907,7 +907,7 @@ return v.ok
 export const actualizarEstadoInterno =async (data, user)=>{
 
     let  cotizacion= await Cotizaciones.cambiaEstadoIterno(data, user);
-    if(!cotizacion)  throw  { message : 'Error no se logro encontrar las cotizaciones pendientes, revise su información'};
+    if(!cotizacion)  throw  { message : 'Error no se logro encontrar la cotización para actulizar el estado interno, revise su información'};
 
 return cotizacion
 }

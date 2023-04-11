@@ -53,7 +53,7 @@ const api = Router();
 async estadoInterno(req, res){
     try {
         const validar = await CoreCotizacion.validarValidity(req.body); 
-        const result = await CoreCotizacion.actualizarEstadoInterno(req.body);
+        const result = await CoreCotizacion.actualizarEstadoInterno(req.body, req.user);
         return res.status(200).json({ ok: true, data: result}); 
     } catch (error) {
         return res.status(200).json({ ok: false ,msg: error.message });
