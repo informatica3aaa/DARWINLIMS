@@ -912,3 +912,36 @@ export const actualizarEstadoInterno =async (data, user)=>{
 return cotizacion
 }
 
+
+export const validarQuo =async (data)=>{
+    let v = await validateAll(data, {
+                    id:'required|integer'     
+        },
+       mensajes).then(d => {return  {ok: true, d}})
+       .catch(e => { console.log("errores:::", e); 
+       throw  { message : 'Datos de entrada para el cambio de estado interno fuera de rango o no corresponde, revise su información'}
+        });
+
+    let  cotizacion= await Cotizaciones.validaSiExiste(data);
+    if(!cotizacion)  throw  { message : 'Error no se logro consultar por la cotización, revise su información'};
+        if(cotizacion.length == 0) throw  { message : 'Cotización no existe, revise su información'};
+    
+    return cotizacion
+}
+
+export const clonarPaso1 = async(data, user)=>{
+    let cotizacion;
+    if(data.tipo == 1){
+        cotizacion = await Cotizaciones.addCotizacionClonCompany(data, user)
+        if(!cotizacion)  throw  { message : 'Error no se logro encontrar la cotización para actulizar el estado interno, revise su información'};
+    }
+    if(data.tipo == 2){
+        cotizacion = await Cotizaciones.addCotizacionClon(data, user)
+        if(!cotizacion)  throw  { message : 'Error no se logro encontrar la cotización para actulizar el estado interno, revise su información'};
+    }
+    for(let index = 0; index < data.analisis_asociado.length; index++){
+    console.log("index:::", data.analisis_asociado[index]);
+    // let detalle_cotizacion = await  Cotizaciones.addDetallesCotizacion()
+    }
+
+}

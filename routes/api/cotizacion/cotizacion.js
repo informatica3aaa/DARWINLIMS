@@ -46,9 +46,34 @@ const api = Router();
         api.post('/pendingquotations', this.listarPendientes)
         api.post('/por_vencer', this.por_vencer)
         api.post('/quotation_validity', this.estadoInterno)
+        api.post('/clonar', this.clonarPaso1)
+        // api.post('/clonarfin', this.clonarPaso2)
         
         return api;
     };
+async clonarPaso1 (req, res){
+    try {
+        const validar = await CoreCotizacion.validarQuo(req.body)
+        const result = await CoreCotizacion.getCotizacionQuo(req.body)
+        const crear = await CoreCotizacion.clonarPaso1(result[0])
+        
+        return res.status(200).json({ ok: true, data: crear }); 
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });
+        
+    }
+}
+
+// async clonarPaso2 (req, res){
+//     try {
+//         const result = await validar
+        
+//         return res.status(200).json({ ok: true, data: result }); 
+//     } catch (error) {
+//         return res.status(200).json({ ok: false ,msg: error.message });
+        
+//     }
+// }
 
 async estadoInterno(req, res){
     try {
