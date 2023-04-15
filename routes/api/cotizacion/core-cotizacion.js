@@ -929,19 +929,35 @@ export const validarQuo =async (data)=>{
     return cotizacion
 }
 
-export const clonarPaso1 = async(data, user)=>{
+export const clonarPaso1 = async(form, data, user)=>{
     let cotizacion;
-    if(data.tipo == 1){
-        cotizacion = await Cotizaciones.addCotizacionClonCompany(data, user)
-        if(!cotizacion)  throw  { message : 'Error no se logro encontrar la cotización para actulizar el estado interno, revise su información'};
+    let analisis_asociado=[]
+    if(form.tipo == 1){
+        // console.log("entro en tipo", data.tipo);
+        cotizacion = await Cotizaciones.addCotizacionClonCompany(data, user, form.id)
+        if(!cotizacion)  throw  { message : 'Error al clonar con compañia, revise su información'};
     }
-    if(data.tipo == 2){
+    if(form.tipo == 2){
         cotizacion = await Cotizaciones.addCotizacionClon(data, user)
-        if(!cotizacion)  throw  { message : 'Error no se logro encontrar la cotización para actulizar el estado interno, revise su información'};
+        if(!cotizacion)  throw  { message : 'Error al clonar sin compañia, revise su información'};
     }
+    let data_form;
+    
     for(let index = 0; index < data.analisis_asociado.length; index++){
-    console.log("index:::", data.analisis_asociado[index]);
-    // let detalle_cotizacion = await  Cotizaciones.addDetallesCotizacion()
+    // console.log("index:::", data.analisis_asociado[index].id);
+    data_form = {
+        active:data.analisis_asociado[index].active,
+        quotation_id: cotizacion[0].id,
+        assay_id:data.analisis_asociado[index].assay_id,
+        price:data.analisis_asociado[index].price
     }
 
+        let detalle_data_cotizacion = await  Cotizaciones.addDetallesCotizacion(data_form, user)
+        if(!detalle_data_cotizacion)  throw  { message : 'Error no se logro crear el detalle de la cotización, revise su información'};
+        // console.log("Aba", detalle_data_cotizacion);    
+        analisis_asociado.push(detalle_data_cotizacion[0])
+    }
+
+   cotizacion[0].analisis_asociado = analisis_asociado //  console.log("analisis_asociado:::::::", analisis_asociado);
+   return cotizacion 
 }

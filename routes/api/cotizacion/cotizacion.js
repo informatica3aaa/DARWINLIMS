@@ -55,9 +55,10 @@ async clonarPaso1 (req, res){
     try {
         const validar = await CoreCotizacion.validarQuo(req.body)
         const result = await CoreCotizacion.getCotizacionQuo(req.body)
-        const crear = await CoreCotizacion.clonarPaso1(result[0])
+        const crear = await CoreCotizacion.clonarPaso1(req.body, result[0], req.user)
+        const result2 = await CoreCotizacion.getCotizacionQuo(crear[0])
         
-        return res.status(200).json({ ok: true, data: crear }); 
+        return res.status(200).json({ ok: true, data: result2 }); 
     } catch (error) {
         return res.status(200).json({ ok: false ,msg: error.message });
         
