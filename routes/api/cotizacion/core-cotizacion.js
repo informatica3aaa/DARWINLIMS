@@ -988,3 +988,18 @@ export const actualizarQuo = async (data, user)=>{
     if(!cotizacion)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
     return cotizacion;
 }
+
+
+export const addDetalle = async (data, user)=>{
+     const detallesAdministrativos  = await Cotizaciones.getDetallesAministrativos()   
+     if(!detallesAdministrativos)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
+     if(detallesAdministrativos.length == 0){throw  { message : 'No exiten servicios basicos que agregar'};};
+
+     for(let detAdmin of detallesAdministrativos.length){
+
+
+        
+
+     }
+
+}
