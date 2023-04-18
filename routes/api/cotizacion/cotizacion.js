@@ -47,10 +47,24 @@ const api = Router();
         api.post('/por_vencer', this.por_vencer)
         api.post('/quotation_validity', this.estadoInterno)
         api.post('/clonar', this.clonarPaso1)
-        // api.post('/clonarfin', this.clonarPaso2)
+        api.post('/clonar-fin', this.clonarPaso2)
+        api.post('/anular-det', this.anularDetalle)
+  
         
         return api;
     };
+
+    async anularDetalle (req, res){
+        try {
+            const validar = await CoreCotizacion.validarQuo(req.body)
+            const result = await CoreCotizacion.eliminarDetalles(req.body, req.user)
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });
+            
+        }
+    }
+
 async clonarPaso1 (req, res){
     try {
         const validar = await CoreCotizacion.validarQuo(req.body)
@@ -65,16 +79,19 @@ async clonarPaso1 (req, res){
     }
 }
 
-// async clonarPaso2 (req, res){
-//     try {
-//         const result = await validar
+async clonarPaso2 (req, res){
+
+    try {
+        const validar = await CoreCotizacion.validarQuo(req.body)
+        const actulizar = await CoreCotizacion.actualizarQuo(req.body, req.user)
+        const result = await CoreCotizacion.actualizarDetalles(req.body, req.user)
         
-//         return res.status(200).json({ ok: true, data: result }); 
-//     } catch (error) {
-//         return res.status(200).json({ ok: false ,msg: error.message });
+        return res.status(200).json({ ok: true, data: validar }); 
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });
         
-//     }
-// }
+    }
+}
 
 async estadoInterno(req, res){
     try {

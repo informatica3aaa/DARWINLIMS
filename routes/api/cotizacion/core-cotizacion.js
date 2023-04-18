@@ -961,3 +961,30 @@ export const clonarPaso1 = async(form, data, user)=>{
    cotizacion[0].analisis_asociado = analisis_asociado //  console.log("analisis_asociado:::::::", analisis_asociado);
    return cotizacion 
 }
+
+
+export const actualizarDetalles =async (data, user)=>{
+    const inicio = data.analisis_asociado.length
+    let salida =0;
+    for(let index = 0; index < data.analisis_asociado.length; index++){
+      salida = salida + 1
+            let detalle_data_cotizacion = await  Cotizaciones.updateDetalles(data, user)
+            if(!detalle_data_cotizacion)  throw  { message : 'Error no se logro actulizar el detalle de la cotización, revise su información'};
+          }
+    const resultado = inicio - salida
+    return resultado
+}
+
+export const eliminarDetalles =async (data, user)=>{
+            let detalle_data_cotizacion = await  Cotizaciones.eliminaDetalles(data, user)
+            if(!detalle_data_cotizacion)  throw  { message : 'Error no se logro actulizar el detalle de la cotización, revise su información'};
+    return detalle_data_cotizacion
+}
+
+
+
+export const actualizarQuo = async (data, user)=>{
+    const cotizacion = await Cotizaciones.actulizarQuoClon(data, user)
+    if(!cotizacion)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
+    return cotizacion;
+}
