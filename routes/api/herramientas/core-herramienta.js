@@ -125,10 +125,8 @@ export const validaActive = async (data)=>{
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
         break;
-        default:
-            throw  { message : 'No existe el tipo para realizar la consulta, revise su información'};
         }  
-
+        console.log("okoko", v.ok);
        return v.ok;
 }
 
@@ -425,6 +423,7 @@ export const getTools = async (data)=>{
     let emails;
     let proyectos;
     let contizaciones;
+    // console.log("data.tipo:::::", data.tipo);
     switch(data.tipo){
         case 'tecnica':
                 tool = await Herramienta.getTecnicas(data);
@@ -468,6 +467,7 @@ export const getTools = async (data)=>{
                 break;
         case 'unidades':
                 tool = await Herramienta.getUnidades(data);
+                // console.log("unidades:::.", tool);
                 if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
         break;       
@@ -513,6 +513,7 @@ export const getTools = async (data)=>{
         break ;   
         case 'elementos_quimicos':
                 tool = await Herramienta.getElementosQuimicos(data);
+                // console.log("elementos_quimicos", tool);
                 if(!tool)  throw  { message :  `Error no se logra consultar por ${ data.tipo}, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para ${ data.tipo}, revise su información`}};
         break ; 
@@ -603,3 +604,25 @@ export const getContadores = async(data)=>{
 
     return cont; 
 }
+
+export const filtrosServicios = async (data)=>{
+    let active = 1
+    let where ='';
+        if(data.active == 2){
+            where += ` quo.[active] in (0,1) `
+        }
+        if(data.active != 2){
+        where += ` quo.[active] = ${ Number(active)}`
+    }
+    
+    if(data.assay_type_id) where += ` and ass.assay_type_id =${data.assay_type_id}`
+    if(data.sample_type_id) where += ` and ass.sample_type_id = '%${data.sample_type_id}%'`
+    if(data.digestion_id) where += ` and ass.digestion_id = ${ data.digestion_id}`
+    if(data.technique_id) where += ` and ass.technique_id  = ${ data.technique_id}`
+    if(data.unit_id) where += ` and  ea.unit_id = '%${ data.unit_id}%'`
+    if(data.element_id) where += ` and ea.chemical_element_id =  like '%${ data.element_id}%'`
+
+    return where;
+}
+
+export const getServicios = async (data)=>{}

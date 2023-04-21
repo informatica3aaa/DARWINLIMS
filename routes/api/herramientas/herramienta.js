@@ -133,8 +133,23 @@ api.post('/edittools', this.editTools);
 api.post('/comprobar', this.comprobar)
 api.post('/adjuntar', this.adjuntar)
 api.post('/descargar', this.descargar)
+api.post('/servicios', this.getServicios)
 return api;
 };
+
+async getServicios(req, res){
+    try {
+        let query = await CoreHerramienta.filtrosServicios(req.body);
+        const result = await CoreHerramienta.getServicios(query);
+        return res.status(200).json({ ok: true, data: result });
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+    
+    }
+    
+
+
 //ARCHIVOS
 async adjuntar(req, res){
 try {
@@ -191,7 +206,7 @@ async editTools (req, res){
 }
 
 async getTools (req, res){
-    // console.log("req:::::tools", req.body.tipo);
+    // console.log("req.body.tipo:::::::", req.body.tipo);
     try {
         let result;
         let validacion;
@@ -239,8 +254,11 @@ async getTools (req, res){
                 contador = await CoreHerramienta.getContadores(req.body)
             break;
             case 'unidades':
+                // console.log("ENTRO:::unid");
                 validacion = await CoreHerramienta.validaActive(req.body);//[unit]
+                // console.log("validacion", validacion);
                 result = await CoreHerramienta.getTools(req.body);
+                // console.log("RESULTADO::::::", result)
                 contador = await CoreHerramienta.getContadores(req.body)
             break;
             case 'estados':
@@ -284,7 +302,9 @@ async getTools (req, res){
                 contador = await CoreHerramienta.getContadores(req.body)
             break;    
             case 'elementos_quimicos':
+                // console.log("entro:::::: quimicos")
                 validacion = await CoreHerramienta.validaActive(req.body);//[chemical_elements]
+                // console.log("validacion", validacion);
                 result = await CoreHerramienta.getTools(req.body);
                 contador = await CoreHerramienta.getContadores(req.body)
             break;  
@@ -318,9 +338,10 @@ async getTools (req, res){
         // if(result.length == 0 ){
         //     return res.status(204).json({ ok: false, total_registros: contador, data: result }); 
         // }
-
+        
         return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
     } catch (error) {
+        console.log("error", error);
         return res.status(200).json({ ok: false ,msg: error.message });  
     }
 }

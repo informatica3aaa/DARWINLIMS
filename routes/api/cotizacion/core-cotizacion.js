@@ -479,6 +479,7 @@ export const getCotizacionFiltros = async (data)=>{
 }
 
 export const getFiltrosServicios = async (data)=>{
+    console.log("data:::", data);
     let where ='';
         if(data.active == 2){
             where += ` ass.[active] in (0,1) `
@@ -487,11 +488,13 @@ export const getFiltrosServicios = async (data)=>{
         where += ` ass.[active] = ${ Number(data.active)}`
     }
     
-    if(data.assay_type_id) where += ` and ass.[assay_type_id] =${data.assay_type_id}`
-    if(data.sample_type_id) where += ` and ass.[sample_type_id] =${data.sample_type_id}`
-    if(data.digestion_id) where += ` and ass.[digestion_id] = ${ data.digestion_id}`
-    if(data.technique_id) where += ` and ass.[technique_id] = ${ data.technique_id}`
-    // if(data.vigencia) where += ` and vigencia like%${data.vigencia}%`
+    if(data.assay_type_id) where += ` and ass.[assay_type_id] =${ data.assay_type_id }`
+    if(data.sample_type_id) where += ` and ass.[sample_type_id] =${ data.sample_type_id }`
+    if(data.digestion_id) where += ` and ass.[digestion_id] = ${ data.digestion_id }`
+    if(data.technique_id) where += ` and ass.[technique_id] = ${ data.technique_id }`
+    if(data.unit_id) where += ` and  ea.unit_id = ${ data.unit_id }`
+    if(data.element_id) where += ` and ea.chemical_element_id =${ data.element_id }`
+    console.log("query", where);
     return where;
 }
 
@@ -621,7 +624,6 @@ console.log("v", v);
        return v.ok;
 }
 
-
 export const validaNewEnd = async (data)=>{
     let v = await validateAll(data, {
         active:'required|range:0,2',
@@ -672,6 +674,21 @@ export const cotizacionAccion = async (data, usuario)=>{
             accion= await Cotizaciones.addCotizacion(data, usuario);
             if(!accion)  throw  { message : 'Error no se logro crear la cotización, revise su información'};
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información'};
+            const servicios_basicos = await Cotizaciones.getDetallesAdmin()
+            for(let basic of servicios_basicos){
+                // console.log("basic::::", basic);
+                const data_form = {
+                    active: 1,
+                    quotation_id: accion[0].id,
+                    assay_id: basic.id,
+                    price: basic.cost
+                }
+                const detalles= await Cotizaciones.addDetallesCotizacion(data_form, usuario);
+                if(!detalles)  throw  { message : 'Error no se logro crear detalle basicos de  cotización, revise su información' };
+                if(detalles.length ==0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
+                // console.log("deatlles:::::", detalles);
+            }
+
 
         break;
         case 'detalle_cotizacion':
@@ -701,7 +718,7 @@ export const cotizacionAccion = async (data, usuario)=>{
         default:
             throw  { message : `No existe el tipo acción ${ data.tipo}, revise su información`};
     }
-    console.log("actiocn", accion);
+    // console.log("actiocn", accion);
     return accion;
 }
 
@@ -825,7 +842,6 @@ export const getParent  = async (data)=>{
 
 }
 
-
 export const cambiaEstado = async (data, user)=>{
     let  cotizacion= await Cotizaciones.cambiaEstado(data, user);
     if(!cotizacion)  throw  { message : 'Error no se logro actualizar el estado de la cotización, revise su información'};
@@ -837,7 +853,6 @@ export const cambiaEstado = async (data, user)=>{
 
 }
 
-
 export const validarEstadoId = async(data)=>{
     let v = await validateAll(data, {
         quotation_id:'required|integer',
@@ -847,7 +862,6 @@ export const validarEstadoId = async(data)=>{
        throw  { message : 'Datos de entrada para validar el estado fuera de rango o no corresponde, revise su información'}});
 return v.ok 
 }
-
 
 export const validarPaginado = async(data)=>{
     let v = await validateAll(data, {
@@ -912,7 +926,6 @@ export const actualizarEstadoInterno =async (data, user)=>{
 return cotizacion
 }
 
-
 export const validarQuo =async (data)=>{
     let v = await validateAll(data, {
                     id:'required|integer'     
@@ -962,7 +975,6 @@ export const clonarPaso1 = async(form, data, user)=>{
    return cotizacion 
 }
 
-
 export const actualizarDetalles =async (data, user)=>{
     const inicio = data.analisis_asociado.length
     let salida =0;
@@ -981,14 +993,11 @@ export const eliminarDetalles =async (data, user)=>{
     return detalle_data_cotizacion
 }
 
-
-
 export const actualizarQuo = async (data, user)=>{
     const cotizacion = await Cotizaciones.actulizarQuoClon(data, user)
     if(!cotizacion)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
     return cotizacion;
 }
-
 
 export const addDetalle = async (data, user)=>{
      const detallesAdministrativos  = await Cotizaciones.getDetallesAministrativos()   
