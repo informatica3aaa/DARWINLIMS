@@ -49,10 +49,36 @@ const api = Router();
         api.post('/clonar', this.clonarPaso1)
         api.post('/clonar-fin', this.clonarPaso2)
         api.post('/anular-det', this.anularDetalle)
+        api.post('/destinatarios', this.getDestinatarios)
+        api.post('/destinatario/crear', this.creaDestinatario)
   
         
         return api;
     };
+
+    async creaDestinatario (req, res){
+        try {
+            const validar = await CoreCotizacion.validaCreaDestinatario(req.body)
+            const result = await CoreCotizacion.addDestinatario(req.body, req.user)
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });
+            
+        }
+    }
+
+
+    async getDestinatarios (req, res){
+        try {
+            const validar = await CoreCotizacion.validaBusquedaDestinatarios(req.body)
+            const result = await CoreCotizacion.getDestinatario(req.body, req.user)
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });
+            
+        }
+    }
+
 
     async anularDetalle (req, res){
         try {

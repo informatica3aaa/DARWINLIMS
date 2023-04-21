@@ -1012,3 +1012,47 @@ export const addDetalle = async (data, user)=>{
      }
 
 }
+
+export const getDestinatario = async (data)=>{
+    const destinatarios  = await Cotizaciones.getDestinatario(data.company_id)   
+    if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
+    if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
+ 
+    return destinatarios
+}
+
+export const addDestinatario = async (data)=>{
+    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id,data.mail,data.name, data.user_creator_id, data.telefono)   
+    if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
+    if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
+ 
+    return destinatarios
+}
+
+export const validaBusquedaDestinatarios = async (data)=>{
+                let v = await validateAll(data, {
+                    company_id:'required|integer'     
+            },
+            mensajes).then(d => {return  {ok: true, d}})
+            .catch(e => { console.log("errores:::", e); 
+            throw  { message : 'Datos de entrada para el busqueda de destinatarios fuera de rango o no corresponde, revise su información'}
+            });
+
+            return v;
+}
+
+export const validaCreaDestinatario = async (data)=>{
+    let v = await validateAll(data, {
+        company_id:'required|integer',
+        mail:'required|email', 
+        name:'required|string',
+        user_creator_id:'required|integer',
+        telefono:'required|string'
+},
+mensajes).then(d => {return  {ok: true, d}})
+.catch(e => { console.log("errores:::", e); 
+throw  { message : 'Datos de entrada para el creardestinatarios fuera de rango o no corresponde, revise su información'}
+});
+
+return v;
+}
