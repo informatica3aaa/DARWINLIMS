@@ -56,7 +56,7 @@ const api = Router();
         return api;
     };
 
-    async creaDestinatario (req, res){
+async creaDestinatario (req, res){
         try {
             const validar = await CoreCotizacion.validaCreaDestinatario(req.body)
             const result = await CoreCotizacion.addDestinatario(req.body, req.user)
@@ -68,7 +68,7 @@ const api = Router();
     }
 
 
-    async getDestinatarios (req, res){
+async getDestinatarios (req, res){
         try {
             const validar = await CoreCotizacion.validaBusquedaDestinatarios(req.body)
             const result = await CoreCotizacion.getDestinatario(req.body, req.user)
@@ -80,7 +80,7 @@ const api = Router();
     }
 
 
-    async anularDetalle (req, res){
+async anularDetalle (req, res){
         try {
             const validar = await CoreCotizacion.validarQuo(req.body)
             const result = await CoreCotizacion.eliminarDetalles(req.body, req.user)
@@ -91,7 +91,7 @@ const api = Router();
         }
     }
 
-    async clonarPaso1 (req, res){
+async clonarPaso1 (req, res){
     try {
         const validar = await CoreCotizacion.validarQuo(req.body)
         const result = await CoreCotizacion.getCotizacionQuo(req.body)
@@ -412,12 +412,11 @@ async acciones(req, res){
             validacion = await CoreCotizacion.validaAccion(req.body);
             result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
             // result = await CoreCotizacion.getCotizacionQuo(creada[0])
-                return res.status(200).json({ ok: true, data: result }); 
+            return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }  
     }
-
     //ACCIONES
 async approveQuotation(req, res){
         try {

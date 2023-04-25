@@ -687,8 +687,10 @@ export const cotizacionAccion = async (data, usuario)=>{
                 if(!detalles)  throw  { message : 'Error no se logro crear detalle basicos de  cotización, revise su información' };
                 if(detalles.length ==0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
                 // console.log("deatlles:::::", detalles);
+                // accion[0].detalle = detalles
             }
-
+           accion  = await Cotizaciones.getCotizacionesId(accion[0])
+           console.log("accion",accion);
 
         break;
         case 'detalle_cotizacion':
@@ -753,7 +755,6 @@ export const validarCotizacionV2 =async (form, usuario)=>{
 
     return cotizacion;
 }
-
 
 export const cotizacionPendientes =async (form, usuario)=>{
 
@@ -1022,8 +1023,9 @@ export const getDestinatario = async (data)=>{
 }
 
 export const addDestinatario = async (data, user)=>{
-    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id,data.mail,data.name, user.user_creator_id, data.telefono, data.modulo)   
-    if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
+    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id, data.mail, data.name, user.user_creator_id, data.telefono, data.modulo)   
+    console.log("TESTER::::", destinatarios);
+    if(!destinatarios)  throw  { message : 'Error al crear destinatarios, revise su información'};
     if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
  
     return destinatarios
