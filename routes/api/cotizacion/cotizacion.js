@@ -91,7 +91,7 @@ const api = Router();
         }
     }
 
-async clonarPaso1 (req, res){
+    async clonarPaso1 (req, res){
     try {
         const validar = await CoreCotizacion.validarQuo(req.body)
         const result = await CoreCotizacion.getCotizacionQuo(req.body)

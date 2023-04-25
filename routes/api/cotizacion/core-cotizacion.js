@@ -1021,8 +1021,8 @@ export const getDestinatario = async (data)=>{
     return destinatarios
 }
 
-export const addDestinatario = async (data)=>{
-    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id,data.mail,data.name, data.user_creator_id, data.telefono, data.modulo)   
+export const addDestinatario = async (data, user)=>{
+    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id,data.mail,data.name, user.user_creator_id, data.telefono, data.modulo)   
     if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
     if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
  
