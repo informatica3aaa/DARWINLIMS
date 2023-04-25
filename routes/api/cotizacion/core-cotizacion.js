@@ -689,8 +689,11 @@ export const cotizacionAccion = async (data, usuario)=>{
                 // console.log("deatlles:::::", detalles);
                 // accion[0].detalle = detalles
             }
-           accion  = await Cotizaciones.getCotizacionesId(accion[0])
-           console.log("accion",accion);
+            let form ={
+                id: accion[0].id,
+                tipo :'cotizacion'
+            }
+            accion = await getCotizacion(form)
 
         break;
         case 'detalle_cotizacion':
@@ -1024,7 +1027,6 @@ export const getDestinatario = async (data)=>{
 
 export const addDestinatario = async (data, user)=>{
     const destinatarios  = await Cotizaciones.addDestinatario(data.company_id, data.mail, data.name, user.user_creator_id, data.telefono, data.modulo)   
-    console.log("TESTER::::", destinatarios);
     if(!destinatarios)  throw  { message : 'Error al crear destinatarios, revise su información'};
     if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
  
