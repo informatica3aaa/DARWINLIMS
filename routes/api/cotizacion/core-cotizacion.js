@@ -1022,7 +1022,7 @@ export const getDestinatario = async (data)=>{
 }
 
 export const addDestinatario = async (data)=>{
-    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id,data.mail,data.name, data.user_creator_id, data.telefono)   
+    const destinatarios  = await Cotizaciones.addDestinatario(data.company_id,data.mail,data.name, data.user_creator_id, data.telefono, data.modulo, data.cargo)   
     if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
     if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
  
@@ -1046,7 +1046,9 @@ export const validaCreaDestinatario = async (data)=>{
         company_id:'required|integer',
         mail:'required|email', 
         name:'required|string',
-        telefono:'required|string'
+        telefono:'required|string',
+        modulo:'required|string',
+        cargo:'required|string'
 },
 mensajes).then(d => {return  {ok: true, d}})
 .catch(e => { console.log("errores:::", e); 
