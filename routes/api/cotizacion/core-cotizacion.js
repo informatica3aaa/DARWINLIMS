@@ -1029,7 +1029,7 @@ export const getDestinatario = async (data)=>{
 export const addDestinatario = async (data, user)=>{
     const destinatarios  = await Cotizaciones.addDestinatario(data.company_id, data.mail, data.name, user.user_creator_id, data.telefono, data.modulo)   
     if(!destinatarios)  throw  { message : 'Error al crear destinatarios, revise su información'};
-    if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
+    // if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios'};};
  
     return destinatarios
 }
