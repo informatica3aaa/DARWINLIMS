@@ -513,7 +513,8 @@ export const validaAccion = async (data)=>{
                 general_condition_id:'required|integer',
                 specific_condition:'required|string',               
                 currency_id:'required|integer',
-                quotation_state_id:'required|integer'             
+                quotation_state_id:'required|integer',
+                pago_previo:'required|range:-1,2'             
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
         break;
