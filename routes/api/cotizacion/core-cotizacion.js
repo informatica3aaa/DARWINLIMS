@@ -461,13 +461,13 @@ export const getCotizacion = async (data)=>{
 
 export const getCotizacionFiltros = async (data)=>{
     let where ='';
-        if(data.active == 2){
-            where += ` quo.[active] in (0,1) `
-        }
-        if(data.active != 2){
-        where += ` quo.[active] = ${ Number(data.active)}`
-    }
-    
+    //     if(data.active == 2){
+    //         where += ` quo.[active] in (0,1) `
+    //     }
+    //     if(data.active != 2){
+    //     where += ` quo.[active] = ${ Number(data.active)}`
+    // }
+    where += ` quo.[active] = 1`
     if(data.estado) where += ` and quo.[state_id] =${data.state_id}`
     if(data.cliente) where += ` and com.[name] like '%${data.cliente}%'`
     if(data.quotation_state_id) where += ` and quo.[quotation_state_id] = ${ data.quotation_state_id}`
@@ -1061,4 +1061,12 @@ throw  { message : 'Datos de entrada para crear destinatario fuera de rango o no
 });
 
 return v;
+}
+
+export const getStados = async (data)=>{
+    const estados  = await Cotizaciones.getStatusEstados()   
+    if(!estados)  throw  { message : 'Error al crear destinatarios, revise su información'};
+
+ 
+    return estados
 }

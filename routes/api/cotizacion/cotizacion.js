@@ -51,10 +51,22 @@ const api = Router();
         api.post('/anular-det', this.anularDetalle)
         api.post('/destinatarios', this.getDestinatarios)
         api.post('/destinatario/crear', this.creaDestinatario)
+        api.post('/quo-status', this.quoStatus)
+
+
   
         
         return api;
     };
+    async quoStatus (req, res){
+        try {
+            const result = await CoreCotizacion.getStados(req.body, req.user)
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });
+            
+        }
+    }
 
 async creaDestinatario (req, res){
         try {
@@ -317,6 +329,8 @@ async getAllFilter(req, res){
          return res.status(200).json({ ok: false ,msg: error.message });  
      }
     }
+
+
 
 async getAllQuotationsFilter(req, res){
        try {
