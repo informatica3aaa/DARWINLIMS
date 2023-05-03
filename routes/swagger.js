@@ -14,12 +14,12 @@ const options = {
                     type: 'http',
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
-                },
+                }
             }
         },
 
         security: [{
-            ApiKeyAuth: []
+            bearerAuth: []
         }]
     },
     apis:['routes/api/auth.js','routes/api/cotizacion/cotizacion.js','routes/api/herramientas/herramienta.js'],

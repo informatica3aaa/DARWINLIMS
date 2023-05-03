@@ -41,7 +41,6 @@ class AuthRouter {
  *                                  example: OK
  */
     api.post('/login', async (req, res) => {
-      console.log("dlaldal", req.body);
     const validPassword = await User.verifyPassword(req.body.username, req.body.password);
     if (validPassword) {
       const user = await User.getByUsername(req.body.username);
