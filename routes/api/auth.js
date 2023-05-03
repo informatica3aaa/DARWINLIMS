@@ -6,7 +6,42 @@ class AuthRouter {
 
   constructor(){
     const api = Router();
+/**
+ * @openapi
+ * paths:
+ *  /auth/login:
+ *   post:
+ *      summary: aaceso al sistema
+ *      tags: [Login]
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          username:
+ *                              type: string
+ *                              example: text
+ *                              maximun: 70
+ *                              required: true
+ *                          password:
+ *                              example: text
+ *                              maximun: 70
+ *                              required: true
+ *      responses:
+ *          200:
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              status:
+ *                                  type: string
+ *                                  example: OK
+ */
     api.post('/login', async (req, res) => {
+      console.log("dlaldal", req.body);
     const validPassword = await User.verifyPassword(req.body.username, req.body.password);
     if (validPassword) {
       const user = await User.getByUsername(req.body.username);

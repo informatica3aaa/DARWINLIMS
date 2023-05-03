@@ -11,6 +11,7 @@ import Cliente from './api/cliente/cliente';
 import Bodega from './api/bodega/bodega';
 import Log from './api/log/log';
 import APIUsersRouter from './api/users'
+import Notificaciones from './api/notificaciones/notificaciones';
 
 
 class ApiRouter {
@@ -29,6 +30,7 @@ const api = Router();
     api.use('/trabajos', new Trabajo());
     api.use('/xml', new Xml());
     api.use('/log', new Log)
+    api.use('/notificaciones', new Notificaciones)
     // api.use('/auth', passport.authenticate('local', { session: false }), new AuthRouter());
     //api.use('/auth', new AuthRouter());
     api.use('/user', APIUsersRouter.create());
