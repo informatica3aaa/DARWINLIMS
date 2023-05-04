@@ -13,7 +13,7 @@ export const listarNotificaciones = async (data)=>{
 }
 
 export const add = async (data, user)=>{
-    const result = await Notificaciones.get(data);
+    const result = await Notificaciones.add(data);
     if(!result)  throw  { message : `Error no se logra Listar las Notificaciones`};
        return result;   
 }

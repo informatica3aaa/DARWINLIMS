@@ -3,7 +3,7 @@ import { validateAll } from 'indicative';
 import mensajes from '../../../lib/helpers/mensajes';
 import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 import fs from 'fs';
-
+import * as CoreNotificacion from '../notificaciones/core-notificaciones';
 
 
 export const validaActiveAllQuo = async (data)=>{
@@ -1069,4 +1069,28 @@ export const getStados = async (data)=>{
 
  
     return estados
+}
+
+export const getCotizacionXNotificar = async (data, user)=>{
+    const quo  = await getCotizacionQuo(data)   
+                if(!quo) throw { message : 'Error al buscar Cotizacion, revise su información'};
+    if(quo.d){
+        let form = {
+            modulo: 'cotizaciones',
+            id: quo[0].id,
+            estado: 'creado',
+            active: 1,
+            user_id: user.id
+        }
+        try {
+            const notificacion = await CoreNotificacion.add(form)
+            
+        } catch (error) {
+            form.estado = error
+            const notificacion = await CoreNotificacion.add(form)
+        }
+
+    }
+    return quo
+
 }

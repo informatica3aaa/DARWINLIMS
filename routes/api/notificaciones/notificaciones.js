@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import fs from 'fs';
 import * as CoreNotificaciones from './core-notificaciones';
+import * as CoreCotizaciones from '../cotizacion/core-cotizacion'
 
 class Notificaciones{
     constructor(){
@@ -29,6 +30,7 @@ async listar (req, res){
 
 async add (req, res){
     try {
+        const quo = await CoreCotizaciones.getCotizacionQuo(data)
         const result = await CoreNotificaciones.add(req.body, req.user)
         return res.status(200).json({ ok: true, data: result }); 
     } catch (error) {
