@@ -34,7 +34,7 @@
     "morgan": "^1.9.1",
     "mssql": "^4.3.0",
     "mssql-session-store": "^1.0.0",
-    "nodemailer": "4.6.3",
+    "nodemailer": "^4.6.3",
     "npm": "^8.19.2",
     "numeral": "2.0.6",
     "officegen": "^0.6.5",
