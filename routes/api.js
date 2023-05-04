@@ -11,6 +11,7 @@ import Cliente from './api/cliente/cliente';
 import Bodega from './api/bodega/bodega';
 import Log from './api/log/log';
 import APIUsersRouter from './api/users'
+import Email from './api/email/email'
 import Notificaciones from './api/notificaciones/notificaciones';
 
 
@@ -23,6 +24,7 @@ const api = Router();
     api.use('/analisis', new Analisis());
     api.use('/bodega', new Bodega());
     api.use('/cliente', new Cliente());
+    api.use('/mensaje', new Email());
     api.use('/quotations', new Cotizacion());
     api.use('/v2/quotations', new Cotizacion());
     api.use('/herramientas', new Herramientas());
