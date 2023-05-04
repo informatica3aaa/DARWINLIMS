@@ -1,5 +1,4 @@
 import { Router } from 'express' 
-
 import HelperEmail  from './../../../lib/helpers/email_helper'
 
  
@@ -17,16 +16,12 @@ class Email{
 
     async send(req, res) 
     {
-
-
         const cm = new HelperEmail()  
-
         try {
-            await cm.sendQuotation({correo: 'dpailahueque01@gmail.com'})   
+            await cm.sendQuotation({correo: 'dcarrascocid@gmail.com'})   
             console.log('enviado')
             res.status(200).json({ok: true})
-            
-        } catch (error) {
+         } catch (error) {
             console.error('Error: ', error)
             res.status(200).json({ok: false})
         }
