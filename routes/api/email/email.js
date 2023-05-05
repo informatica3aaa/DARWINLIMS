@@ -36,9 +36,16 @@ class Email{
 
     async cotizacion(req, res){
         try {
-            const quo = await CoreCotizacion.getCotizacionQuo()
+            const quo = await CoreCotizacion.getCotizacionQuo(req.body)
+            const form ={
+                company_id:quo[0].company_id,
+                modulo: req.body.modulo
+            }
+            const destinatarios = await CoreCotizacion.getDestinatario(form)
+            console.log("destinatarios", destinatarios);
+            return res.status(200).json({ ok: true, data: quo }); 
         } catch (error) {
-            
+            return res.status(200).json({ ok: false ,msg: error.message });       
         }
     }
 

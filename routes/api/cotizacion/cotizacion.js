@@ -94,7 +94,7 @@ async getDestinatarios (req, res){
 
 async anularDetalle (req, res){
         try {
-            const validar = await CoreCotizacion.validarQuo(req.body)
+            // const validar = await CoreCotizacion.validarQuo(req.body)
             const result = await CoreCotizacion.eliminarDetalles(req.body, req.user)
             return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {

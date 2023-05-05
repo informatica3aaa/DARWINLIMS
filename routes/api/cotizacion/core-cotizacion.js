@@ -37,7 +37,6 @@ export const validaActiveFilter = async (data)=>{
     return v.ok;
 }
 
-
 export const validaActive = async (data)=>{
        let v;
        switch(data.tipo){
@@ -134,8 +133,6 @@ export const validaActiveDown = async (data)=>{
             mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
    return v.ok;
 }
-
-
 
 export const getContadoresAllQuo = async(data)=>{
     const query = await getCotizacionFiltros(data);
@@ -293,7 +290,6 @@ export const getCotizacionFilter = async (data)=>{
 
     return tool;
 }
-
 
 export const getCotizacion = async (data)=>{
     let tool;
@@ -479,7 +475,6 @@ export const getCotizacionFiltros = async (data)=>{
 }
 
 export const getFiltrosServicios = async (data)=>{
-    console.log("data:::", data);
     let where ='';
         if(data.active == 2){
             where += ` ass.[active] in (0,1) `
