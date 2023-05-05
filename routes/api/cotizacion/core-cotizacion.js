@@ -710,6 +710,7 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
         case 'nueva_version':
             accion= await Cotizaciones.addCotizacion(data, usuario);
+            console.log("nueva", accion);
             if(!accion)  throw  { message : 'Error no se logro crear nueva version de la  cotización, revise su información'};
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva version de la cotización, revise su información'};
 
