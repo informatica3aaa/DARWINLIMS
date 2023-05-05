@@ -685,12 +685,13 @@ export const cotizacionAccion = async (data, usuario)=>{
                 // console.log("deatlles:::::", detalles);
                 // accion[0].detalle = detalles
             }
-            let form ={
-                id: accion[0].id,
-                tipo :'cotizacion'
-            }
-            accion = await buscarServiciosXquotation(form)
-
+            // let form ={
+            //     id: accion[0].id,
+            //     tipo :'cotizacion'
+            // }
+            // console.log("form", form);
+            // accion = await buscarServiciosXquotation(form)
+            // console.log("accion", accion);
         break;
         case 'detalle_cotizacion':
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
@@ -732,12 +733,13 @@ export const validarCotizacion =async (form, usuario)=>{
             let contador=0;
             if(cotizacion.length > 0) {
                 for(let index = 0; index < cotizacion.length; index++){
-                    console.log("entro ",cotizacion[index].id);
+                    // console.log("entro ",cotizacion[index].id);
                     const detalle = await Cotizaciones.getCotizacionXDetalle(cotizacion[index].id);
-                    console.log("detalle");
+                    // console.log("detalle");
                     if(detalle.length == 0){
-                        throw  { message : 'El usuario No tiene Cotizaciones pendientes por terminar'};
-                    }
+                    //   throw  { message : 'El usuario No tiene Cotizaciones pendientes por terminar'};
+                contador=0;    
+                }
                 }
             }
     
@@ -998,16 +1000,16 @@ export const actualizarQuo = async (data, user)=>{
 }
 
 export const addDetalle = async (data, user)=>{
-     const detallesAdministrativos  = await Cotizaciones.getDetallesAministrativos()   
-     if(!detallesAdministrativos)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
-     if(detallesAdministrativos.length == 0){throw  { message : 'No exiten servicios basicos que agregar'};};
+     const detallesAdministrativos  = await Cotizaciones.getDetallesAdmin()   
+        if(!detallesAdministrativos)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
+        if(detallesAdministrativos.length == 0){throw  { message : 'No exiten servicios basicos que agregar'};};
 
-     for(let detAdmin of detallesAdministrativos.length){
+        for(let analisis of detallesAdministrativos){
+            let result = await buscarServiciosXquotation(data);
+        }
+        data[0].analisis_asociado = detallesAdministrativos
 
-
-        
-
-     }
+        return data
 
 }
 

@@ -452,8 +452,10 @@ async newQuotation(req, res){
           const validacion = await CoreCotizacion.validaNew(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
           const addDetallesbasicos = await CoreCotizacion.addDetalle(result, req.user)
-        //   let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
-                return res.status(200).json({ ok: true, data: result }); 
+        //   console.log("addDetallesbasicos",addDetallesbasicos);
+          
+        // //   let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
+                return res.status(200).json({ ok: true, data: addDetallesbasicos }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }  
