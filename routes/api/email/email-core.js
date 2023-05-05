@@ -20,12 +20,3 @@ export const nuevaCotizacion = async (data)=>{
 
 }
 
-export const pagarCotizacion = async (data)=>{
-
-}
-
-export const nuevaRequisicion = async (data)=>{
-
-}
-
-export const mailFallido = async (id, motivo, data)=>{}

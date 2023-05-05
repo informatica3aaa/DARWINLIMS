@@ -1,5 +1,6 @@
 import { Router } from 'express' 
 import HelperEmail  from './../../../lib/helpers/email_helper'
+import * as CoreCotizacion from '../cotizacion/core-cotizacion';
 
  
 
@@ -10,6 +11,9 @@ class Email{
         const api = Router()
 
         api.post('/send', this.send)
+        api.post('/cotizacion', this.cotizacion)
+        api.post('/pago-previo', this.pagoPrevio)
+        api.post('/requisicion', this.requisicion)
         
         return api
     }
@@ -29,6 +33,31 @@ class Email{
         console.log('paso todo')
 
     } 
+
+    async cotizacion(req, res){
+        try {
+            const quo = await CoreCotizacion.getCotizacionQuo()
+        } catch (error) {
+            
+        }
+    }
+
+    async pagoPrevio(req, res){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
+
+    async requisicion(req, res){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
+
 
 }
 export default Email;

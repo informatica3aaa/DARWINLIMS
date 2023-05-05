@@ -779,18 +779,14 @@ return cotizacion;
 }
 
 export const buscarServiciosXquotation =async (data)=>{
-    let tool= await Cotizaciones.buscarServiciosXquotation(data);
+    let tool= await Cotizaciones.getCotizacionesId(data);
     if(!tool)  throw  { message : 'Error no se logro consultar por cotizaciones, revise su información'};
-    // let elemento=[];
-
     for(let index = 0; index < tool.length; index++){
-
+        
           let fases= await Cotizaciones.getFasesServiciosAnaliticosAssay_id(tool[index].id );
-          tool[index].fases= fases;
-
+            tool[index].fases= fases;
           const elementos= await Cotizaciones.getDetallesElementosCotizacion(tool[index].id);
-           tool[index].elemento = elementos;
-
+            tool[index].elemento = elementos;
    }
 
 return tool;
