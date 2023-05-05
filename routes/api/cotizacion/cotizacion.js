@@ -294,7 +294,7 @@ async getAllQuotationsV1 (req, res){
         }
 
     } 
-
+//buscar Cotizaciones
 async getQuo (req, res){
         try {
             const validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations]
