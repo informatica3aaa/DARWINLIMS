@@ -280,6 +280,50 @@ export const getCotizacionQuo = async (data)=>{
        
     return tool;
 }
+export const getCotizacionQuoV2 = async (data)=>{
+    let tool = await Cotizaciones.getCotizacionesId(data);
+            if(!tool)  throw  { message : `Error no se logra consultar por ${ data.id}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para registro Nro: ${ data.id}, revise su información`}};
+            for(let index = 0; index < tool.length; index++){
+                let elemento=[];
+                let etapa=[];
+                let detalles= await Cotizaciones.getDetallesCotizacion(tool[index].id );
+                   for(let index1 = 0; index1 < detalles.length; index1++){
+                       const elementos= await Cotizaciones.getDetallesElementosCotizacion(detalles[index1].assay_id);
+                        elemento.push(elementos[0])
+                        detalles[index1].elementos = elemento;
+
+                        const etapas= await Cotizaciones.getEtapasCotizacion(detalles[index1].assay_id);
+                        etapa.push(etapas) 
+                        detalles[index1].etapas = etapas;
+
+                        }
+    
+                tool[index].analisis_asociado= detalles;
+            }
+
+            for(let index3 = 0; index3 < tool.length; index3++){
+                 const   condicionesEspecificas= await Cotizaciones.getCondicionesEspecificas(tool[index3].general_condition_id );
+                    tool[index3].condiciones_especificas= condicionesEspecificas;            
+            }
+                
+            
+            for(let index4 = 0; index4 < tool.length; index4++){
+                    const adjuntos= await Cotizaciones.getAdjuntosCotizacion(tool[index4].id );
+                    tool[index4].adjuntos= adjuntos;
+            }
+
+            for(let index5 = 0; index5 < tool.length; index5++){
+                   const dest= await Cotizaciones.getDestinatarioCotizacion(tool[index5].destinatario_id );
+                    tool[index5].destinatario= dest;
+            }
+        //     for(let index = 0; index < tool.length; index++){
+        //             contizaciones= await Cotizaciones.getCotizaciones(data, tool[index].id );
+        //             tool[index].contizaciones= contizaciones;
+        // }
+       
+    return tool;
+}
 
 export const getCotizacionFilter = async (data)=>{
     let tool;
@@ -1087,5 +1131,16 @@ export const getCotizacionXNotificar = async (data, user)=>{
 
     }
     return quo
+
+}
+
+export const getCotizacionConDestinatario = async (quo, data)=>{
+
+    const destinatarios  = await Cotizaciones.getDestinatario(quo[0].company_id, data.modulo)   
+    if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
+    // if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios para la compañia'};};
+    quo[0].destinatarios = destinatarios
+    return quo
+
 
 }

@@ -58,7 +58,8 @@ const api = Router();
         
         return api;
     };
-    async quoStatus (req, res){
+
+async quoStatus (req, res){
         try {
             const result = await CoreCotizacion.getStados(req.body, req.user)
             return res.status(200).json({ ok: true, data: result }); 
@@ -79,7 +80,6 @@ async creaDestinatario (req, res){
         }
     }
 
-
 async getDestinatarios (req, res){
         try {
             const validar = await CoreCotizacion.validaBusquedaDestinatarios(req.body)
@@ -90,7 +90,6 @@ async getDestinatarios (req, res){
             
         }
     }
-
 
 async anularDetalle (req, res){
         try {
@@ -115,7 +114,7 @@ async clonarPaso1 (req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}
+    }
 
 async clonarPaso2 (req, res){
 
@@ -129,7 +128,7 @@ async clonarPaso2 (req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}
+    }
 
 async estadoInterno(req, res){
     try {
@@ -140,7 +139,7 @@ async estadoInterno(req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}    
+    }       
 
 async por_vencer(req, res){
     try {
@@ -152,7 +151,7 @@ async por_vencer(req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}
+    }
 
 async listarPendientes (req, res){
     try {
@@ -165,7 +164,7 @@ async listarPendientes (req, res){
         
     }
 
-}
+    }
 
 async upestado(req, res){
 try {
@@ -176,7 +175,7 @@ try {
                 return res.status(200).json({ ok: false ,msg: error.message });  
                 
             }
-}
+    }
 
 async parent(req, res) {
         try {
@@ -333,8 +332,6 @@ async getAllFilter(req, res){
      }
     }
 
-
-
 async getAllQuotationsFilter(req, res){
        try {
        req.body.tipo='filtros'
@@ -452,10 +449,7 @@ async newQuotation(req, res){
           const validacion = await CoreCotizacion.validaNew(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
           const addDetallesbasicos = await CoreCotizacion.addDetalle(result, req.user)
-        //   console.log("addDetallesbasicos",addDetallesbasicos);
-          
-        // //   let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
-                return res.status(200).json({ ok: true, data: addDetallesbasicos }); 
+          return res.status(200).json({ ok: true, data: addDetallesbasicos }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }  
