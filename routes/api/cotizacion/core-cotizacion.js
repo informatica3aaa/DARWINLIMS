@@ -689,7 +689,7 @@ export const cotizacionAccion = async (data, usuario)=>{
                 id: accion[0].id,
                 tipo :'cotizacion'
             }
-            accion = await getCotizacion(form)
+            accion = await buscarServiciosXquotation(form)
 
         break;
         case 'detalle_cotizacion':

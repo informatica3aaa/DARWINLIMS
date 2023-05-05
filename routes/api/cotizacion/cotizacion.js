@@ -195,14 +195,16 @@ async listarQuotationAll(req, res) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }
     }
-
+//cargar servicios
 async cargarService(req, res) {
         try {
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             console.log("params", req.body);
-            let result = await CoreCotizacion.getCotizacionQuo(req.body);
+            // let result = await CoreCotizacion.getCotizacionQuo(req.body);
+            let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
+
             // console.log("resulT:::::", result);
-            return res.status(200).json({ ok: true, data: result[0].analisis_asociado }); 
+            return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }
@@ -450,6 +452,7 @@ async newQuotation(req, res){
           const validacion = await CoreCotizacion.validaNew(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
           const addDetallesbasicos = await CoreCotizacion.addDetalle(result, req.user)
+        //   let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
                 return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
