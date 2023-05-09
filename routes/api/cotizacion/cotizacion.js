@@ -58,7 +58,8 @@ const api = Router();
         
         return api;
     };
-    async quoStatus (req, res){
+
+async quoStatus (req, res){
         try {
             const result = await CoreCotizacion.getStados(req.body, req.user)
             return res.status(200).json({ ok: true, data: result }); 
@@ -79,7 +80,6 @@ async creaDestinatario (req, res){
         }
     }
 
-
 async getDestinatarios (req, res){
         try {
             const validar = await CoreCotizacion.validaBusquedaDestinatarios(req.body)
@@ -91,10 +91,9 @@ async getDestinatarios (req, res){
         }
     }
 
-
 async anularDetalle (req, res){
         try {
-            const validar = await CoreCotizacion.validarQuo(req.body)
+            // const validar = await CoreCotizacion.validarQuo(req.body)
             const result = await CoreCotizacion.eliminarDetalles(req.body, req.user)
             return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
@@ -115,7 +114,7 @@ async clonarPaso1 (req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}
+    }
 
 async clonarPaso2 (req, res){
 
@@ -129,7 +128,7 @@ async clonarPaso2 (req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}
+    }
 
 async estadoInterno(req, res){
     try {
@@ -140,7 +139,7 @@ async estadoInterno(req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}    
+    }       
 
 async por_vencer(req, res){
     try {
@@ -152,7 +151,7 @@ async por_vencer(req, res){
         return res.status(200).json({ ok: false ,msg: error.message });
         
     }
-}
+    }
 
 async listarPendientes (req, res){
     try {
@@ -165,7 +164,7 @@ async listarPendientes (req, res){
         
     }
 
-}
+    }
 
 async upestado(req, res){
 try {
@@ -176,7 +175,7 @@ try {
                 return res.status(200).json({ ok: false ,msg: error.message });  
                 
             }
-}
+    }
 
 async parent(req, res) {
         try {
@@ -195,14 +194,16 @@ async listarQuotationAll(req, res) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }
     }
-
+//cargar servicios
 async cargarService(req, res) {
         try {
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             console.log("params", req.body);
-            let result = await CoreCotizacion.getCotizacionQuo(req.body);
+            // let result = await CoreCotizacion.getCotizacionQuo(req.body);
+            let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
+
             // console.log("resulT:::::", result);
-            return res.status(200).json({ ok: true, data: result[0].analisis_asociado }); 
+            return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }
@@ -294,7 +295,7 @@ async getAllQuotationsV1 (req, res){
         }
 
     } 
-
+//buscar Cotizaciones
 async getQuo (req, res){
         try {
             const validacion = await CoreCotizacion.validaActiveQuo(req.body);//[quotations]
@@ -330,8 +331,6 @@ async getAllFilter(req, res){
          return res.status(200).json({ ok: false ,msg: error.message });  
      }
     }
-
-
 
 async getAllQuotationsFilter(req, res){
        try {

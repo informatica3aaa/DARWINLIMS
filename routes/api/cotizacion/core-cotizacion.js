@@ -37,7 +37,6 @@ export const validaActiveFilter = async (data)=>{
     return v.ok;
 }
 
-
 export const validaActive = async (data)=>{
        let v;
        switch(data.tipo){
@@ -134,8 +133,6 @@ export const validaActiveDown = async (data)=>{
             mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
    return v.ok;
 }
-
-
 
 export const getContadoresAllQuo = async(data)=>{
     const query = await getCotizacionFiltros(data);
@@ -283,6 +280,50 @@ export const getCotizacionQuo = async (data)=>{
        
     return tool;
 }
+export const getCotizacionQuoV2 = async (data)=>{
+    let tool = await Cotizaciones.getCotizacionesId(data);
+            if(!tool)  throw  { message : `Error no se logra consultar por ${ data.id}, revise su información`};
+            if(tool.length == 0){ throw  { message : `Sin resultados para registro Nro: ${ data.id}, revise su información`}};
+            for(let index = 0; index < tool.length; index++){
+                let elemento=[];
+                let etapa=[];
+                let detalles= await Cotizaciones.getDetallesCotizacion(tool[index].id );
+                   for(let index1 = 0; index1 < detalles.length; index1++){
+                       const elementos= await Cotizaciones.getDetallesElementosCotizacion(detalles[index1].assay_id);
+                        elemento.push(elementos[0])
+                        detalles[index1].elementos = elemento;
+
+                        const etapas= await Cotizaciones.getEtapasCotizacion(detalles[index1].assay_id);
+                        etapa.push(etapas) 
+                        detalles[index1].etapas = etapas;
+
+                        }
+    
+                tool[index].analisis_asociado= detalles;
+            }
+
+            for(let index3 = 0; index3 < tool.length; index3++){
+                 const   condicionesEspecificas= await Cotizaciones.getCondicionesEspecificas(tool[index3].general_condition_id );
+                    tool[index3].condiciones_especificas= condicionesEspecificas;            
+            }
+                
+            
+            for(let index4 = 0; index4 < tool.length; index4++){
+                    const adjuntos= await Cotizaciones.getAdjuntosCotizacion(tool[index4].id );
+                    tool[index4].adjuntos= adjuntos;
+            }
+
+            for(let index5 = 0; index5 < tool.length; index5++){
+                   const dest= await Cotizaciones.getDestinatarioCotizacion(tool[index5].destinatario_id );
+                    tool[index5].destinatario= dest;
+            }
+        //     for(let index = 0; index < tool.length; index++){
+        //             contizaciones= await Cotizaciones.getCotizaciones(data, tool[index].id );
+        //             tool[index].contizaciones= contizaciones;
+        // }
+       
+    return tool;
+}
 
 export const getCotizacionFilter = async (data)=>{
     let tool;
@@ -293,7 +334,6 @@ export const getCotizacionFilter = async (data)=>{
 
     return tool;
 }
-
 
 export const getCotizacion = async (data)=>{
     let tool;
@@ -479,7 +519,6 @@ export const getCotizacionFiltros = async (data)=>{
 }
 
 export const getFiltrosServicios = async (data)=>{
-    console.log("data:::", data);
     let where ='';
         if(data.active == 2){
             where += ` ass.[active] in (0,1) `
@@ -689,17 +728,19 @@ export const cotizacionAccion = async (data, usuario)=>{
                 if(!detalles)  throw  { message : 'Error no se logro crear detalle basicos de  cotización, revise su información' };
                 if(detalles.length ==0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
                 // console.log("deatlles:::::", detalles);
-                // accion[0].detalle = detalles
+                accion[0].detalle = detalles
             }
-            let form ={
-                id: accion[0].id,
-                tipo :'cotizacion'
-            }
-            accion = await getCotizacion(form)
-
+            // let form ={
+            //     id: accion[0].id,
+            //     tipo :'cotizacion'
+            // }
+            // console.log("form", form);
+            // accion = await buscarServiciosXquotation(form)
+            // console.log("accion", accion);
         break;
         case 'detalle_cotizacion':
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
+            console.log("accion", accion);
             if(!accion)  throw  { message : 'Error no se logro crear detalle de  cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información' };
 
@@ -711,6 +752,7 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
         case 'nueva_version':
             accion= await Cotizaciones.addCotizacion(data, usuario);
+            console.log("nueva", accion);
             if(!accion)  throw  { message : 'Error no se logro crear nueva version de la  cotización, revise su información'};
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva version de la cotización, revise su información'};
 
@@ -738,10 +780,11 @@ export const validarCotizacion =async (form, usuario)=>{
                 for(let index = 0; index < cotizacion.length; index++){
                     // console.log("entro ",cotizacion[index].id);
                     const detalle = await Cotizaciones.getCotizacionXDetalle(cotizacion[index].id);
-                    console.log("detalle");
+                    // console.log("detalle");
                     if(detalle.length == 0){
-                        throw  { message : 'El usuario tiene Cotizaciones pendientes por terminar'};
-                    }
+                    //   throw  { message : 'El usuario No tiene Cotizaciones pendientes por terminar'};
+                contador=0;    
+                }
                 }
             }
     
@@ -1002,16 +1045,16 @@ export const actualizarQuo = async (data, user)=>{
 }
 
 export const addDetalle = async (data, user)=>{
-     const detallesAdministrativos  = await Cotizaciones.getDetallesAministrativos()   
-     if(!detallesAdministrativos)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
-     if(detallesAdministrativos.length == 0){throw  { message : 'No exiten servicios basicos que agregar'};};
+     const detallesAdministrativos  = await Cotizaciones.getDetallesAdmin()   
+        if(!detallesAdministrativos)  throw  { message : 'Error al actualizar el clonar con compañia, revise su información'};
+        if(detallesAdministrativos.length == 0){throw  { message : 'No exiten servicios basicos que agregar'};};
 
-     for(let detAdmin of detallesAdministrativos.length){
+        for(let analisis of detallesAdministrativos){
+            let result = await buscarServiciosXquotation(data);
+        }
+        data[0].analisis_asociado = detallesAdministrativos
 
-
-        
-
-     }
+        return data
 
 }
 
@@ -1089,5 +1132,16 @@ export const getCotizacionXNotificar = async (data, user)=>{
 
     }
     return quo
+
+}
+
+export const getCotizacionConDestinatario = async (quo, data)=>{
+
+    const destinatarios  = await Cotizaciones.getDestinatario(quo[0].company_id, data.modulo)   
+    if(!destinatarios)  throw  { message : 'Error al buscar destinatarios, revise su información'};
+    // if(destinatarios.length == 0){throw  { message : 'No exiten destinatarios para la compañia'};};
+    quo[0].destinatarios = destinatarios
+    return quo
+
 
 }

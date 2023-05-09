@@ -1,8 +1,8 @@
 import swaggerJSDoc from "swagger-jsdoc";
 const swaggerUi = require('swagger-ui-express');
 
-var myHeaders =  new Headers()
-myHeaders.append('Content-Type','application/json; charset=utf-8');
+// var myHeaders =  new Headers()
+// myHeaders.append('Content-Type','application/json; charset=utf-8');
 
 const options = {
     definition :{
@@ -22,8 +22,8 @@ const options = {
             bearerAuth: []
         }]
     },
-    apis:['routes/api/auth.js','routes/api/cotizacion/cotizacion.js','routes/api/herramientas/herramienta.js'],
-    header : myHeaders
+    apis:['routes/api/auth.js','routes/api/cotizacion/cotizacion.js','routes/api/herramientas/herramienta.js']
+
 
 };
 const swaggerSpec = swaggerJSDoc(options);
@@ -33,7 +33,7 @@ const swaggerDocs = (app, port) =>{
     app.use('/swagger/docs', swaggerUi.serve , swaggerUi.setup(swaggerSpec));
     // app.use('/api/docs', swaggerUi.serve , swaggerUi.setup(swaggerSpec));
     app.get('/swagger/docs.json', (req, res)=>{
-        res.setHeader(myHeaders);
+        res.setHeader('Content-Type','application/json; charset=utf-8');
         res.send(swaggerSpec)
     });
 };
