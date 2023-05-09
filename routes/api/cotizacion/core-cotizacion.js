@@ -674,7 +674,6 @@ export const validaNewEnd = async (data)=>{
 }
 
 export const cotizacionAccion = async (data, usuario)=>{
-        // const usuario ={user_id:533 }; 
         let accion;
         let estado;
        switch(data.accion){
@@ -730,7 +729,7 @@ export const cotizacionAccion = async (data, usuario)=>{
                 if(detalles.length ==0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
             }
             const analisis_asociado = await Cotizaciones.getDetallesCotizacion( accion[0].id)
-            console.log("analisis_asoc", analisis_asociado);
+            // console.log("analisis_asoc", analisis_asociado);
             accion[0].analisis_asociado = analisis_asociado
         break;
         case 'detalle_cotizacion':
@@ -760,9 +759,9 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
 
         default:
-            throw  { message : `No existe el tipo acción ${ data.tipo}, revise su información`};
+            throw  { message : `No existe el tipo acción ${ data.accion}, revise su información`};
     }
-    console.log("actiocn", accion[0].analisis_asociado);
+    // console.log("action", accion);
     return accion;
 }
 

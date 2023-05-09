@@ -1,6 +1,7 @@
 import { Router } from 'express' 
 import HelperEmail  from './../../../lib/helpers/email_helper'
 import * as CoreCotizacion from '../cotizacion/core-cotizacion';
+import * as CoreNotificaciones from '../notificaciones/core-notificaciones';
 import * as CoreEmail from './core-email';
 
  
@@ -39,7 +40,7 @@ class Email{
         try {
             const cm = new HelperEmail()  
             const result = await CoreCotizacion.getCotizacionQuoV2(req.body)
-            const token = await CoreEmail.generarToken(req.body.id)
+            const token = await CoreEmail.generarToken(req.body)
             await cm.sendQuotation(result[0], token)  
             return res.status(200).json({ ok: true, data: result[0]}); 
         } catch (error) {

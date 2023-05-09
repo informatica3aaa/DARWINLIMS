@@ -468,10 +468,11 @@ async newQuotationDetail(req, res){
   
 async newQuotationEnd(req, res){
         try {
-          req.body.accion ='nueva_cotizacion_fin'
+            req.body.accion ='nueva_cotizacion_fin'
+            // console.log("req.body",req.body);  
           const  validacion = await CoreCotizacion.validaNewEnd(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
-          await CoreCotizacion.getCotizacionXNotificar(result)
+        //   await CoreCotizacion.getCotizacionXNotificar(result)
           return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
