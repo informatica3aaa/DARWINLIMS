@@ -636,7 +636,6 @@ export const validaAction = async (data)=>{
 
 export const validaNew = async (data)=>{
     let v = await validateAll(data, {
-                active:'required|range:-1,1',
                 quotation_number:'required|string',
                 start_date:'required',
                 expiration_date:'required|date',
@@ -716,27 +715,23 @@ export const cotizacionAccion = async (data, usuario)=>{
             if(!accion)  throw  { message : 'Error no se logro crear la cotización, revise su información'};
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información'};
             const servicios_basicos = await Cotizaciones.getDetallesAdmin()
+            let data_form = {
+                active: 1,
+                quotation_id: accion[0].id,
+                assay_id:null,
+                price:null
+            }
             for(let basic of servicios_basicos){
                 // console.log("basic::::", basic);
-                const data_form = {
-                    active: 1,
-                    quotation_id: accion[0].id,
-                    assay_id: basic.id,
-                    price: basic.cost
-                }
+                data_form.assay_id= basic.id
+                data_form.price= basic.cost
                 const detalles= await Cotizaciones.addDetallesCotizacion(data_form, usuario);
                 if(!detalles)  throw  { message : 'Error no se logro crear detalle basicos de  cotización, revise su información' };
                 if(detalles.length ==0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
-                // console.log("deatlles:::::", detalles);
-                accion[0].detalle = detalles
             }
-            // let form ={
-            //     id: accion[0].id,
-            //     tipo :'cotizacion'
-            // }
-            // console.log("form", form);
-            // accion = await buscarServiciosXquotation(form)
-            // console.log("accion", accion);
+            const analisis_asociado = await Cotizaciones.getDetallesCotizacion( accion[0].id)
+            console.log("analisis_asoc", analisis_asociado);
+            accion[0].analisis_asociado = analisis_asociado
         break;
         case 'detalle_cotizacion':
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
@@ -767,7 +762,7 @@ export const cotizacionAccion = async (data, usuario)=>{
         default:
             throw  { message : `No existe el tipo acción ${ data.tipo}, revise su información`};
     }
-    // console.log("actiocn", accion);
+    console.log("actiocn", accion[0].analisis_asociado);
     return accion;
 }
 

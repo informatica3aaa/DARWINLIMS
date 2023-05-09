@@ -126,7 +126,7 @@ export const validaActive = async (data)=>{
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { throw  { message : 'Datos de entrada fuera de rango, revise su información'}});
         break;
         }  
-        console.log("okoko", v.ok);
+        // console.log("okoko", v.ok);
        return v.ok;
 }
 
@@ -139,7 +139,7 @@ export const validaComprobar = async (data)=>{
         },
        mensajes).then(d => {return  {ok: true, d}}).catch( e => { throw  { message : `Error en los datos de entrada, revise su información`}})
        
-       console.log("v::::", v);
+    //    console.log("v::::", v);
        return v.ok;   
 }
 
