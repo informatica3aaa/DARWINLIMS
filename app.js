@@ -66,7 +66,7 @@ class App {
   configureRoutes() {
     var expressApp = this.express;
     // expressApp.use('/api',  new ApiRouter());
-    expressApp.use('/api',  new ApiRouter());
+    expressApp.use('/api', verificaToken, new ApiRouter());
     // expressApp.use('/api2', new ApiRouter());
     expressApp.use('/auth', new AuthRouter());
 

@@ -606,7 +606,8 @@ export const validaNew = async (data)=>{
                 destinatario:'required|string',
                 general_condition_id:'required|integer',
                 specific_condition:'required|string',               
-                currency_id:'required|integer'             
+                currency_id:'required|integer',
+                destinatario_id:'required|integer'             
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
        
@@ -735,11 +736,11 @@ export const validarCotizacion =async (form, usuario)=>{
             let contador=0;
             if(cotizacion.length > 0) {
                 for(let index = 0; index < cotizacion.length; index++){
-                    console.log("entro ",cotizacion[index].id);
+                    // console.log("entro ",cotizacion[index].id);
                     const detalle = await Cotizaciones.getCotizacionXDetalle(cotizacion[index].id);
                     console.log("detalle");
                     if(detalle.length == 0){
-                        throw  { message : 'El usuario No tiene Cotizaciones pendientes por terminar'};
+                        throw  { message : 'El usuario tiene Cotizaciones pendientes por terminar'};
                     }
                 }
             }

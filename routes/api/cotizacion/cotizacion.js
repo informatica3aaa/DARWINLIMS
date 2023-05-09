@@ -446,11 +446,11 @@ async approveQuotation(req, res){
 async newQuotation(req, res){
         try {
           req.body.accion ='nueva_cotizacion'
-          const cotizacion = await CoreCotizacion.validarCotizacion(req.body, req.user);
+        //   const cotizacion = await CoreCotizacion.validarCotizacion(req.body, req.user);
           const validacion = await CoreCotizacion.validaNew(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
           const addDetallesbasicos = await CoreCotizacion.addDetalle(result, req.user)
-                return res.status(200).json({ ok: true, data: result }); 
+          return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }  
