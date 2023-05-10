@@ -199,8 +199,8 @@ async cargarService(req, res) {
         try {
             // const validar = await CoreCotizacion.validaGetCotizacionXNumber(req.body)
             console.log("params", req.body);
-            // let result = await CoreCotizacion.getCotizacionQuo(req.body);
-            let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
+            let result = await CoreCotizacion.getCotizacionQuo(req.body);
+            // let result = await CoreCotizacion.buscarServiciosXquotation(req.body);
 
             // console.log("resulT:::::", result);
             return res.status(200).json({ ok: true, data: result }); 
