@@ -3,6 +3,7 @@ import HelperEmail  from './../../../lib/helpers/email_helper'
 import * as CoreCotizacion from '../cotizacion/core-cotizacion';
 import * as CoreNotificaciones from '../notificaciones/core-notificaciones';
 import * as CoreEmail from './core-email';
+import Notificaciones from '../../../lib/models/notificaciones/notificacionesSQL';
 
  
 
@@ -41,6 +42,7 @@ class Email{
             const cm = new HelperEmail()  
             const result = await CoreCotizacion.getCotizacionQuoV2(req.body)
             const token = await CoreEmail.generarToken(req.body)
+            const notificacion = await  CoreNotificaciones.add(result[0], req)
             await cm.sendQuotation(result[0], token)  
             return res.status(200).json({ ok: true, data: result[0]}); 
         } catch (error) {
