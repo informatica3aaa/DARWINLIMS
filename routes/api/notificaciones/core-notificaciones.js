@@ -12,9 +12,10 @@ export const listarNotificaciones = async (data)=>{
        return result; 
 }
 
-export const add = async (result,req)=>{
-    const data = await Notificaciones.add(req.body.modulo, result.id, 'CREADO',req.usuario);
-    console.log("data");
+export const add = async (quo,req)=>{
+    // console.log("req", req.usuario);
+    const data = await Notificaciones.add(req.body.modulo, quo.id, 'CREADO',req.user.user_id);
+    console.log("data0,", data);
     if(!data)  throw  { message : `Error no se crear la Notificación`};
        return data;   
 }

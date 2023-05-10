@@ -39,6 +39,7 @@ class Email{
 
     async cotizacion(req, res){
         try {
+            console.log("USUARIO:::", req.body);
             const cm = new HelperEmail()  
             const result = await CoreCotizacion.getCotizacionQuoV2(req.body)
             const token = await CoreEmail.generarToken(req.body)
