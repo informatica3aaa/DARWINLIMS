@@ -657,10 +657,10 @@ export const validaNewDetail = async (data)=>{
                 active:'required|range:-1,1',
                 quotation_id:'required|integer',
                 assay_id:'required|integer',
-                price:'required|number'
+                price:'required'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
-console.log("v", v);
+
        return v.ok;
 }
 
@@ -739,6 +739,7 @@ export const cotizacionAccion = async (data, usuario)=>{
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información' };
             
             const analisis_asociadoV2 = await Cotizaciones.getDetallesCotizacionV2( accion[0].id)
+            console.log("analisis_asociadoV2",analisis_asociadoV2);
             accion[0].analisis_asociado = analisis_asociadoV2
 
         break;
