@@ -734,12 +734,9 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
         case 'detalle_cotizacion':
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
-            console.log("accion", accion);
             if(!accion)  throw  { message : 'Error no se logro crear detalle de  cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información' };
-            
             const analisis_asociadoV2 = await Cotizaciones.getDetallesCotizacionV2( accion[0].id)
-            console.log("analisis_asociadoV2",analisis_asociadoV2);
             accion[0].analisis_asociado = analisis_asociadoV2
 
         break;
@@ -1142,4 +1139,25 @@ export const getCotizacionConDestinatario = async (quo, data)=>{
     return quo
 
 
+}
+
+export const confimarQuo = async (data)=>{
+    const quo  = await Cotizaciones.cambiarEstado(data.id, data.estado)   
+    if(!quo)  throw  { message : 'Error al confirmar las cotización'};
+    return quo  
+}
+
+export const validarConfirmacion = async (data)=>{
+        console.log("data", data);
+            let v = await validateAll(data,{
+            id:'required|integer',
+            estado:'required|range:1,4'
+            },mensajes).then(d => {return  {ok: true, d}})
+            .catch(e => { throw  { message : `Datos de ingreso no validos ${ JSON.stringify(e)}`}});
+
+            let  cotizacion= await Cotizaciones.getCotizacionesId(data);
+            if(!cotizacion)  throw  { message : 'Error no se logro validar las cotización pendiente, revise su información'};
+            if(cotizacion.length == 0) throw  { message : 'Cotizacion no valida'};
+
+            return cotizacion
 }

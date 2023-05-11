@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../../lib/models/user';
+import * as CoreCotizacion from '../api/cotizacion/core-cotizacion';
+
 
 class AuthRouter {
 
@@ -47,7 +49,7 @@ class AuthRouter {
       await User.registerLastLogin(user.id);
       const token = jwt.sign(user, process.env.SESSION_SECRET, { algorithm: 'HS256', allowInsecureKeySizes: true, expiresIn: process.env.TOKEN_EXPIREIN });
       const menu = await User.getMenuUser(user.group_id);
-      console.log("menu", menu);
+      // console.log("menu", menu);
 
       return res.status(200).json({ ok: true, user, token, menu });
     } else {
@@ -62,6 +64,22 @@ class AuthRouter {
       console.log("resultado:::", result);
       return res.json(result);
     });
+
+    api.post('/confirmacion',async (req, res)=>{
+    // const   CoreCotizacion = require ('../api/cotizacion/core-cotizacion')
+      try {
+       let  decoded = jwt.verify(req.body.token, process.env.SEDD_LOGIN);
+       decoded.data.estado =  req.body.estado
+       const validacion = await CoreCotizacion.validarConfirmacion(decoded.data)
+       const confirmacion = await CoreCotizacion.confimarQuo(decoded.data)
+       return res.status(200).json({ ok: true, data: confirmacion });
+        
+      } catch (error) {
+        console.log("error", error);
+        return res.status(400).json({ ok: false, error });
+      }
+
+    })
 
 
 
