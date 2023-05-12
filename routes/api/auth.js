@@ -72,7 +72,8 @@ class AuthRouter {
        decoded.data.estado =  req.body.estado
        const validacion = await CoreCotizacion.validarConfirmacion(decoded.data)
        const confirmacion = await CoreCotizacion.confimarQuo(decoded.data)
-       return res.status(200).json({ ok: true, data: confirmacion });
+       const paso_siguiente = await CoreCotizacion.paso2(confirmacion);
+       return res.status(200).json({ ok: true, data: confirmacion[0] });
         
       } catch (error) {
         console.log("error", error);

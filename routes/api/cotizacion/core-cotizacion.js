@@ -4,7 +4,10 @@ import mensajes from '../../../lib/helpers/mensajes';
 import Cotizaciones from '../../../lib/models/cotizacion/cotizacionSQL';
 import fs from 'fs';
 import * as CoreNotificacion from '../notificaciones/core-notificaciones';
+import HelperEmail  from './../../../lib/helpers/email_helper'
+import * as CoreEmail from '../../api/email/core-email';
 
+const cm = new HelperEmail()  
 
 export const validaActiveAllQuo = async (data)=>{
     let v;
@@ -1141,11 +1144,7 @@ export const getCotizacionConDestinatario = async (quo, data)=>{
 
 }
 
-export const confimarQuo = async (data)=>{
-    const quo  = await Cotizaciones.cambiarEstado(data.id, data.estado)   
-    if(!quo)  throw  { message : 'Error al confirmar las cotización'};
-    return quo  
-}
+
 
 export const validarConfirmacion = async (data)=>{
         console.log("data", data);
@@ -1160,4 +1159,36 @@ export const validarConfirmacion = async (data)=>{
             if(cotizacion.length == 0) throw  { message : 'Cotizacion no valida'};
 
             return cotizacion
+}
+
+export const confimarQuo = async (data)=>{
+    const quo  = await Cotizaciones.cambiarEstado(data.id, data.estado)   
+    if(!quo)  throw  { message : 'Error al confirmar las cotización'};
+    return quo  
+}
+
+export const NotificaNewCotizacion = async (data)=>{
+
+    const result = await getCotizacionQuoV2(data)
+    const token = await CoreEmail.generarToken(data)
+    const notificacion = await  CoreNotificacion.add(result[0], data)
+    await cm.sendQuotation(result[0], token, notificacion)  
+
+    return notificacion
+}
+
+export const paso2 = async (data)=>{
+    if(data.pago_previo == 1){
+        const result = await getCotizacionQuoV2(req.body)
+        const token = await CoreEmail.generarToken(req.body)
+        const notificacion = await  CoreNotificacion.add(result[0], req)
+        await cm.sendQuotationPago(result[0], token, notificacion)  
+
+    }
+    if(data.pago_previo == 0){
+
+    }
+
+    return 
+
 }

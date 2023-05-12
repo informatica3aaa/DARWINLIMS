@@ -23,5 +23,5 @@ export const actulizarEstado = async (id, estado , mensaje)=>{
     const resp = await Notificaciones.updateEstado(id, estado, JSON.stringify(mensaje));
     // console.log("resp", resp);
     if(!resp)  throw  { message : `Error no se logro actulizar el estado ${ resp}`};
-return resp;   
+    return resp;   
 }
