@@ -68,11 +68,12 @@ class AuthRouter {
     api.post('/confirmacion',async (req, res)=>{
     // const   CoreCotizacion = require ('../api/cotizacion/core-cotizacion')
       try {
+        req.body.modulo='cotizaciones'
        let  decoded = jwt.verify(req.body.token, process.env.SEDD_LOGIN);
        decoded.data.estado =  req.body.estado
        const validacion = await CoreCotizacion.validarConfirmacion(decoded.data)
        const confirmacion = await CoreCotizacion.confimarQuo(decoded.data)
-       const paso_siguiente = await CoreCotizacion.paso2(confirmacion);
+       const paso_siguiente = await CoreCotizacion.paso2(confirmacion[0], req);
        return res.status(200).json({ ok: true, data: confirmacion[0] });
         
       } catch (error) {

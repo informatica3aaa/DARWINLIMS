@@ -472,10 +472,10 @@ async newQuotationEnd(req, res){
             req.body.accion ='nueva_cotizacion_fin'
             req.body.modulo='cotizaciones'
             // console.log("req.bdoyd", req.body);
+            req.body.id=req.body.quotation_id;
           const  validacion = await CoreCotizacion.validaNewEnd(req.body);
           const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
-          const confirmacion = await CoreCotizacion.NotificaNewCotizacion(req.body)
-          console.log("conrmacion", confirmacion);
+          const confirmacion = await CoreCotizacion.NotificaNewCotizacion(req)
           return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  

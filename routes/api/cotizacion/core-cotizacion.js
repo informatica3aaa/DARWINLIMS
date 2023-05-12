@@ -1169,19 +1169,19 @@ export const confimarQuo = async (data)=>{
 
 export const NotificaNewCotizacion = async (data)=>{
 
-    const result = await getCotizacionQuoV2(data)
-    const token = await CoreEmail.generarToken(data)
+    const result = await getCotizacionQuoV2(data.body)
+    const token = await CoreEmail.generarToken(data.body)
     const notificacion = await  CoreNotificacion.add(result[0], data)
     await cm.sendQuotation(result[0], token, notificacion)  
 
     return notificacion
 }
 
-export const paso2 = async (data)=>{
+export const paso2 = async (data, body)=>{
     if(data.pago_previo == 1){
-        const result = await getCotizacionQuoV2(req.body)
-        const token = await CoreEmail.generarToken(req.body)
-        const notificacion = await  CoreNotificacion.add(result[0], req)
+        const result = await getCotizacionQuoV2(data)
+        const token = await CoreEmail.generarToken(body.id)
+        const notificacion = await  CoreNotificacion.add(result[0], body)
         await cm.sendQuotationPago(result[0], token, notificacion)  
 
     }

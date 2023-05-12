@@ -23,6 +23,7 @@ export const nuevaCotizacion = async (data)=>{
 
 
 export const generarToken = async (data)=>{
+    console.log("body", data);
     const time_token = parseInt(process.env.TIME_TOKEN_VALID);
     const token = jwt.sign({ data }, process.env.SEDD_LOGIN, { expiresIn: time_token});
 
