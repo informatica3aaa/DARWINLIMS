@@ -1176,21 +1176,26 @@ export const NotificaNewCotizacion = async (data)=>{
     return notificacion
 }
 
-export const paso2 = async (data, req)=>{
+export const aceptaOferta = async (data, req)=>{
     const result = await getCotizacionQuoV2(data)
     const token = await CoreEmail.generarToken(req.body.id)
     req.user ={ id:result[0].user_id}
     const notificacion = await  CoreNotificacion.add(result[0], req)
-    console.log("notificacion", notificacion);
     if(data.pago_previo == 1){
         await cm.sendQuotationPago(result[0], token, notificacion)  
 
     }
     if(data.pago_previo == 0){
         await cm.sendRequisition(result[0], token, notificacion)  
-
     }
 
     return notificacion
 
+}
+
+export const rechazoOferta = async (data, req)=>{
+    const result = await getCotizacionQuoV2(data)
+    req.user ={ id:result[0].user_id}
+    const notificacion = await  CoreNotificacion.add(result[0], req)
+    await cm.sendQuotationRechazo(result[0], notificacion)  
 }
