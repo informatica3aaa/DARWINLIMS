@@ -1147,7 +1147,6 @@ export const getCotizacionConDestinatario = async (quo, data)=>{
 
 
 export const validarConfirmacion = async (data)=>{
-        console.log("data", data);
             let v = await validateAll(data,{
             id:'required|integer',
             estado:'required|range:1,4'
@@ -1177,18 +1176,21 @@ export const NotificaNewCotizacion = async (data)=>{
     return notificacion
 }
 
-export const paso2 = async (data, body)=>{
+export const paso2 = async (data, req)=>{
+    const result = await getCotizacionQuoV2(data)
+    const token = await CoreEmail.generarToken(req.body.id)
+    req.user ={ id:result[0].user_id}
+    const notificacion = await  CoreNotificacion.add(result[0], req)
+    console.log("notificacion", notificacion);
     if(data.pago_previo == 1){
-        const result = await getCotizacionQuoV2(data)
-        const token = await CoreEmail.generarToken(body.id)
-        const notificacion = await  CoreNotificacion.add(result[0], body)
         await cm.sendQuotationPago(result[0], token, notificacion)  
 
     }
     if(data.pago_previo == 0){
+        await cm.sendRequisition(result[0], token, notificacion)  
 
     }
 
-    return 
+    return notificacion
 
 }
