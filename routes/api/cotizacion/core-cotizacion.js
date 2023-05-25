@@ -192,7 +192,7 @@ export const getCotizacionAllQuo = async (data)=>{
 export const getCotizacionDown = async (data)=>{
 
             let v = await validateAll(data, {
-            download:'required|string|in:doc,pdf'},mensajes)
+            download:'required|string|in:word,pdf'},mensajes)
             .then(d => {return  {ok: true, d}})
             .catch(e => { throw  { message : 'Datos de entrada para la busqueda de la cotización fuera de rango o no corresponde, revise su información'}});
 
@@ -1198,4 +1198,13 @@ export const rechazoOferta = async (data, req)=>{
     req.user ={ id:result[0].user_id}
     const notificacion = await  CoreNotificacion.add(result[0], req)
     await cm.sendQuotationRechazo(result[0], notificacion)  
+}
+
+
+export const cambiarEstadoNotificacion =async (id, estado)=>{
+    const cotizacion= await Cotizaciones.cambiarEstadoNotificacion(id, estado);
+    if(!cotizacion)  throw  { message : 'Error no se logro actualizar el estado-notificacion de la cotizacion'};
+
+return cotizacion;
+
 }

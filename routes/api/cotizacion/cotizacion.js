@@ -527,8 +527,8 @@ async dowloadQuotation(req, res){
 
                
             }
-            if(req.body.download == 'doc'){
-                return res.status(200).json({ ok: false ,data: result }); 
+            if(req.body.download == 'word'){
+                return res.status(200).json({ ok:true ,data: result }); 
             }
             
         } catch (error) {
