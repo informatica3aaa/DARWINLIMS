@@ -300,8 +300,8 @@ async getAllQuotations (req, res){
 async getAllQuotationsV1 (req, res){
         // console.log("aca:::.");
         try {
-            const validacion = await CoreCotizacion.validaActiveAllQuo(req.body);//[quotations]
-            const result = await CoreCotizacion.getCotizacionAllQuo(req.body);
+            // const validacion = await CoreCotizacion.validaActiveAllQuo(req.body);//[quotations]
+            const result = await CoreCotizacion.getCotizacionAllQuo2(req.body);
             const contador = await CoreCotizacion.getContadoresAllQuo(req.body) 
             return res.status(200).json({ ok: true, total_registros: contador, data: result }); 
         } catch (error) {

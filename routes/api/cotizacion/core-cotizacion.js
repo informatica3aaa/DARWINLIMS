@@ -188,6 +188,15 @@ export const getCotizacionAllQuo = async (data)=>{
      console.log(tool); 
     return tool;
 }
+export const getCotizacionAllQuo2 = async (data)=>{
+                 let tool = await Cotizaciones.getCotizacionesAll2(data);
+                console.log("data all", tool);
+                if(!tool)  throw  { message : `Error no se logra consultar por estado ${ data.active }, revise su información`};
+                if(tool.length == 0){ throw  { message : `Sin resultados para estado  ${ data.active }, revise su información`}};
+
+     console.log(tool); 
+    return tool;
+}
 
 export const getCotizacionDown = async (data)=>{
 
