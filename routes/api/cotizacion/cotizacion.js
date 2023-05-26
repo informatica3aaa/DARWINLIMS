@@ -52,6 +52,7 @@ const api = Router();
         api.post('/destinatarios', this.getDestinatarios)
         api.post('/destinatario/crear', this.creaDestinatario)
         api.post('/quo-status', this.quoStatus)
+        api.post('/clasico', this.clasico)
 
 
 
@@ -59,6 +60,18 @@ const api = Router();
         
         return api;
     };
+
+    async clasico (req, res){
+        console.log("re", req.body);
+        try {
+            const result = await CoreCotizacion.getServicioClasico(req.body.query)
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });
+            
+        }
+    }
+
 
 async quoStatus (req, res){
         try {

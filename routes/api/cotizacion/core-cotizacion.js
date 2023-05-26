@@ -1206,5 +1206,11 @@ export const cambiarEstadoNotificacion =async (id, estado)=>{
     if(!cotizacion)  throw  { message : 'Error no se logro actualizar el estado-notificacion de la cotizacion'};
 
 return cotizacion;
+}
+export const getServicioClasico =async (query)=>{
+    const cotizacion= await Cotizaciones.getServicioClasico(query);
+    if(!cotizacion)  throw  { message : 'Error no se logro actualizar el estado-notificacion de la cotizacion'};
+
+return cotizacion;
 
 }
