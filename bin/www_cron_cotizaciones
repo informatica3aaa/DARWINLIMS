@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+// use babel
+require('babel-register');
+require('./app_cron_cotizaciones.es6.js');
