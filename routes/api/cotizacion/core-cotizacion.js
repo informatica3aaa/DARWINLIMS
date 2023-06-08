@@ -659,7 +659,7 @@ export const validaNew = async (data)=>{
                 currency_id:'required|integer',
                 destinatario_id:'required|integer'             
                 },
-               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
+               mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("Error Validate:::", e); throw  { message : 'Datos de entrada para crear cotizacion nueva fuera de rango o no corresponde, revise su información'}});
        
        return v.ok;
 }
