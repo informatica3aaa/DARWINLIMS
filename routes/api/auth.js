@@ -71,6 +71,7 @@ class AuthRouter {
         req.body.modulo='cotizaciones'
        let  decoded = jwt.verify(req.body.token, process.env.SEDD_LOGIN);
        decoded.data.estado =  req.body.estado
+       decoded.data.token =req.body.token
        const validacion = await CoreCotizacion.validarConfirmacion(decoded.data)
        const confirmacion = await CoreCotizacion.confimarQuo(decoded.data)
        if(decoded.data.estado == 2){

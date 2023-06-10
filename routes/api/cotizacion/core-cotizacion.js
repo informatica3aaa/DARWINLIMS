@@ -1164,13 +1164,12 @@ export const validarConfirmacion = async (data)=>{
 
             let  cotizacion= await Cotizaciones.getCotizacionesId(data);
             if(!cotizacion)  throw  { message : 'Error no se logro validar las cotización pendiente, revise su información'};
-            if(cotizacion.length == 0) throw  { message : 'Cotizacion no valida'};
-
+            if(cotizacion.length == 0) throw  { message : 'Cotizacion no valida o ya fue ejecutada'};
             return cotizacion
 }
 
 export const confimarQuo = async (data)=>{
-    const quo  = await Cotizaciones.cambiarEstado(data.id, data.estado)   
+    const quo  = await Cotizaciones.cambiarEstado(data.id, data.estado,data.token)   
     if(!quo)  throw  { message : 'Error al confirmar las cotización'};
     return quo  
 }
