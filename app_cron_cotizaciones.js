@@ -13,7 +13,7 @@ class App {
 
 
     async updateCotizacionesDesiertas() {
-        schedule('0 0 * * * *', async function() {
+        schedule(process.env.CRON_COTIZACIONES, async function() {
             const rowsAfected = await Cotizaciones.updateCotizacionesDesiertas();
             console.log("Actualizando cotizaciones desiertas: ", rowsAfected);
             
