@@ -181,7 +181,7 @@ export const getCotizacionAllQuo = async (data)=>{
             }
             if(data.todas =='yes'){
                 tool = await Cotizaciones.getCotizacionesAll(data);
-                console.log("data all", tool);
+                // console.log("data all", tool);
                 if(!tool)  throw  { message : `Error no se logra consultar por estado ${ data.active }, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para estado  ${ data.active }, revise su información`}};
             }
@@ -190,7 +190,7 @@ export const getCotizacionAllQuo = async (data)=>{
 }
 export const getCotizacionAllQuo2 = async (data)=>{
                  let tool = await Cotizaciones.getCotizacionesAll2(data);
-                console.log("data all", tool);
+                // console.log("data all", tool);
                 if(!tool)  throw  { message : `Error no se logra consultar por estado ${ data.active }, revise su información`};
                 if(tool.length == 0){ throw  { message : `Sin resultados para estado  ${ data.active }, revise su información`}};
 
