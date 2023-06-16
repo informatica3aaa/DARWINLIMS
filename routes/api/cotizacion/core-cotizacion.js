@@ -665,14 +665,12 @@ export const validaNew = async (data)=>{
 }
 
 export const validaNewDetail = async (data)=>{
-    console.log("data:::", data);
     let v = await validateAll(data, {
                 quotation_id:'required|integer',
                 assay_id:'required|integer',
                 price:'required'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
-
        return v.ok;
 }
 

@@ -470,12 +470,12 @@ async newQuotation(req, res){
     }
 
 async newQuotationDetail(req, res){
-    console.log("req:::::::", req.body);
+
         try {
-            req.body.accion ='detalle_cotizacion'
-          const  validacion = await CoreCotizacion.validaNewDetail(req.body);
-          const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
-                return res.status(200).json({ ok: true, data: result }); 
+         req.body.accion ='detalle_cotizacion'
+         const  validacion = await CoreCotizacion.validaNewDetail(req.body);
+         const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
+          return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
         }  
