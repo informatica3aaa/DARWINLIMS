@@ -665,6 +665,7 @@ export const validaNew = async (data)=>{
 }
 
 export const validaNewDetail = async (data)=>{
+    console.log("data:::", data);
     let v = await validateAll(data, {
                 quotation_id:'required|integer',
                 assay_id:'required|integer',
