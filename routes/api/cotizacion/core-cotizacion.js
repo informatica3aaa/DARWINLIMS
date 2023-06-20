@@ -743,6 +743,7 @@ export const cotizacionAccion = async (data, usuario)=>{
             accion[0].analisis_asociado = analisis_asociado
         break;
         case 'detalle_cotizacion':
+            console.log("ACACA;;;;",data);
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
             if(!accion)  throw  { message : 'Error no se logro crear detalle de  cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información' };

@@ -470,10 +470,11 @@ async newQuotation(req, res){
     }
 
 async newQuotationDetail(req, res){
-
+        console.log("NUEVO DETALLE", req.body);
         try {
          req.body.accion ='detalle_cotizacion'
          const  validacion = await CoreCotizacion.validaNewDetail(req.body);
+         console.log("validacion::::", validacion);
          const result = await CoreCotizacion.cotizacionAccion(req.body,  req.user);
           return res.status(200).json({ ok: true, data: result }); 
         } catch (error) {
