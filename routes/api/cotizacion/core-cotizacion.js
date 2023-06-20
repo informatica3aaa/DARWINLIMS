@@ -743,7 +743,6 @@ export const cotizacionAccion = async (data, usuario)=>{
             accion[0].analisis_asociado = analisis_asociado
         break;
         case 'detalle_cotizacion':
-            console.log("ACACA;;;;",data);
             accion= await Cotizaciones.addDetallesCotizacion(data, usuario);
             if(!accion)  throw  { message : 'Error no se logro crear detalle de  cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro crear la nueva cotización, revise su información' };
@@ -771,7 +770,7 @@ export const cotizacionAccion = async (data, usuario)=>{
         break;
 
         default:
-            throw  { message : `No existe el tipo acción ${ data.accion}, revise su información`};
+            throw  { message : `No existe el tipo acción ${ data.accion }, revise su información`};
     }
     // console.log("action", accion);
     return accion;
@@ -1161,7 +1160,7 @@ export const validarConfirmacion = async (data)=>{
             },mensajes).then(d => {return  {ok: true, d}})
             .catch(e => { throw  { message : `Datos de ingreso no validos ${ JSON.stringify(e)}`}});
 
-            let  cotizacion= await Cotizaciones.getCotizacionesId(data);
+            let  cotizacion= await Cotizaciones.getCotizacionesIdToken(data);
             if(!cotizacion)  throw  { message : 'Error no se logro validar las cotización pendiente, revise su información'};
             if(cotizacion.length == 0) throw  { message : 'Cotizacion no valida o ya fue ejecutada'};
             return cotizacion
@@ -1185,7 +1184,8 @@ export const NotificaNewCotizacion = async (data)=>{
 
 export const aceptaOferta = async (data, req)=>{
     const result = await getCotizacionQuoV2(data)
-    const token = await CoreEmail.generarToken(req.body.id)
+    const token = await CoreEmail.generarToken(data.id)
+    console.log("token", token);
     req.user ={ id:result[0].user_id}
     const notificacion = await  CoreNotificacion.add(result[0], req)
     if(data.pago_previo == 1){
