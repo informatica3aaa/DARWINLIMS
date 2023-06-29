@@ -10,7 +10,6 @@ import Requisition from './requisitions';
 
 export const validaListar = async (data)=>{
 let v = await validateAll(data, {
-    active:'required|range:-1,2',
     offset:'required|integer',
     limit:'required|integer'   
     },
