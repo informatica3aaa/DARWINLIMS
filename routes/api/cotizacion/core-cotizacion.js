@@ -1219,5 +1219,11 @@ export const getServicioClasico =async (query)=>{
     if(!cotizacion)  throw  { message : 'Error no se logro actualizar el estado-notificacion de la cotizacion'};
 
 return cotizacion;
+}
+export const getCompanyCotizaciones =async ()=>{
+    const cotizacion= await Cotizaciones.ListarCompanys();
+    if(!cotizacion)  throw  { message : 'Error no se logro encontrar compañias'};
+
+return cotizacion;
 
 }

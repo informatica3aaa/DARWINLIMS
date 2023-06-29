@@ -53,6 +53,7 @@ const api = Router();
         api.post('/destinatario/crear', this.creaDestinatario)
         api.post('/quo-status', this.quoStatus)
         api.post('/clasico', this.clasico)
+        api.post('/aceptadas', this.quoAceptdas)
 
 
 
@@ -60,6 +61,18 @@ const api = Router();
         
         return api;
     };
+
+async quoAceptdas(req, res){
+    try {
+        const result = await CoreCotizacion.getCompanyCotizaciones()
+        return res.status(200).json({ ok: true, data: result }); 
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });
+        
+    }
+}
+
+
 
     async clasico (req, res){
         console.log("re", req.body);
