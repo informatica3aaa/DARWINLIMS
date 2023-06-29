@@ -144,3 +144,13 @@ export const validaQuo = async (data)=>{
     return cotizacion[0];
 
 }
+export const mailClientes = async (data)=>{
+
+    let cotizacion = await Requisitions.getMailClientes(data.id);
+            if(!cotizacion)  throw  { message : `Error al consultar por clientes, revise su información`};
+
+             if(cotizacion.length == 0)  throw  { message : `no existen clientes`};
+    
+    return cotizacion;
+
+}

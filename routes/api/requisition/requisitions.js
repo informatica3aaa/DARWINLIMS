@@ -9,8 +9,25 @@ class Requisition{
         api.post('/buscar', this.buscar)
         api.post('/filter', this.filtros)
         api.post('/add', this.add)
+        api.post('/mail', this.correoClientes)
         return api;
     };
+
+
+    async correoClientes(req, res) {
+
+        try {
+            let requi = await CoreRequisition.mailClientes(req.body)
+            return res.status(200).json({ ok: true, data: requi, }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+
+    }
+
+
+
 
     async listar(req, res) {
 
