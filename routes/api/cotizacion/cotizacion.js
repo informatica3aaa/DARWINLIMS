@@ -65,8 +65,9 @@ const api = Router();
 
     async quoByCompany(req, res){
         try {
+            const companies = await CoreCotizacion.getCompany(req.body)
             const result = await CoreCotizacion.ListarQuoByCompany(req.body)
-            return res.status(200).json({ ok: true, data: result }); 
+            return res.status(200).json({ ok: true, company : companies[0], data: result  }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });
             

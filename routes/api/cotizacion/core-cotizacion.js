@@ -1235,3 +1235,11 @@ export const ListarQuoByCompany =async (data)=>{
 return cotizacion;
 
 }
+
+export const getCompany =async (data)=>{
+    const cotizacion= await Cotizaciones.getCompaniaId(data.id);
+    if(!cotizacion)  throw  { message : 'Error no se logro encontrar compañias'};
+
+return cotizacion;
+
+}

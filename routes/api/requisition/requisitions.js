@@ -18,7 +18,6 @@ class Requisition{
             const validar = await CoreRequisition.validaListar(req.body);
             let contador = await CoreRequisition.contador(req.body)
             let requi = await CoreRequisition.getAll(req.body)
-            console.log("contador");
             return res.status(200).json({ ok: true, data: requi, cantidad: contador }); 
         } catch (error) {
             return res.status(200).json({ ok: false ,msg: error.message });  
