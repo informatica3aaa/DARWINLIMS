@@ -1227,3 +1227,11 @@ export const getCompanyCotizaciones =async ()=>{
 return cotizacion;
 
 }
+
+export const ListarQuoByCompany =async (id)=>{
+    const cotizacion= await Cotizaciones.ListarQuoByCompany(id);
+    if(!cotizacion)  throw  { message : 'Error no se logro encontrar compañias'};
+
+return cotizacion;
+
+}

@@ -54,6 +54,7 @@ const api = Router();
         api.post('/quo-status', this.quoStatus)
         api.post('/clasico', this.clasico)
         api.post('/aceptadas', this.quoAceptdas)
+        api.post('/company', this.quoByCompany)
 
 
 
@@ -61,6 +62,18 @@ const api = Router();
         
         return api;
     };
+
+    async quoByCompany(req, res){
+        try {
+            const result = await CoreCotizacion.ListarQuoByCompany(req.body)
+            return res.status(200).json({ ok: true, data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });
+            
+        }
+    }
+
+
 
 async quoAceptdas(req, res){
     try {
