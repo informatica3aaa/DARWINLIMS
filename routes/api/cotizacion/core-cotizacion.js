@@ -671,7 +671,15 @@ export const validaNewDetail = async (data)=>{
                 price:'required'
                 },
                mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada detalles de cotizacion fuera de rango o no corresponde, revise su información'}});
-       return v.ok;
+      
+      
+               const cont = await Cotizaciones.validarDetalleExiste(data);
+                // console.log("cont", cont);
+                if(cont.length > 0){
+                    throw  { message : 'Servicio Analitico ya existe en la cotización no puede repetirse'}
+                }
+            
+      return v.ok;
 }
 
 export const validaNewEnd = async (data)=>{
