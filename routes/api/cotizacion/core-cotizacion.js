@@ -704,6 +704,9 @@ export const cotizacionAccion = async (data, usuario)=>{
                 // if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
                 if(estado.length > 0){ 
                     let cambiarEstado = Cotizaciones.cambiaEstadoCotizacion(data, usuario)
+                    if(cambiarEstado){
+                       await NotificaNewCotizacionAprobada(data)
+                    }
                     if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
                     if(cambiarEstado.length ==0)  throw  { message : 'No se logro cambiar el estado de la cotización, revise su información'};
                 }
@@ -718,12 +721,18 @@ export const cotizacionAccion = async (data, usuario)=>{
                     // if(estado.length ==0)  throw  { message : 'No se logro consultar el estado de la cotización, revise su información'};
             if(estado.length == 1){ 
                 let cambiarEstado = Cotizaciones.cambiaEstadoCotizacion(data, usuario) 
+                if(cambiarEstado){
+                    await NotificaNewCotizacionAprobada(data)
+                 }
                 if(!cambiarEstado)  throw  { message : 'Error no al cambiar el estado de la cotización, revise su información'};
                 if(cambiarEstado.length ==0)  throw  { message : 'No se logro cambiar el estado de la cotización, revise su información'};
             }
         break;
         case 'rechazar':
             accion= await Cotizaciones.updateAccion(data, usuario);
+            if(accion){
+                await NotificaNewCotizacionAprobada(data)
+             }
             if(!accion)  throw  { message : 'Error no se logro rechazar la cotización, revise su información' };
             if(accion.length ==0)  throw  { message : 'No se logro rechazar la cotización, revise su información' };
         break;
@@ -1181,6 +1190,16 @@ export const confimarQuo = async (data)=>{
 }
 
 export const NotificaNewCotizacion = async (data)=>{
+
+    const result = await getCotizacionQuoV2(data.body)
+    const token = await CoreEmail.generarToken(data.body)
+    const notificacion = await  CoreNotificacion.add(result[0], data)
+    await cm.sendQuotationAccion(result[0], token, notificacion)  
+
+    return notificacion
+}
+
+export const NotificaNewCotizacionAprobada = async (data)=>{
 
     const result = await getCotizacionQuoV2(data.body)
     const token = await CoreEmail.generarToken(data.body)
