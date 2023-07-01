@@ -35,7 +35,6 @@ return requi;
 
 export const validaBuscar = async (data)=>{
     let v = await validateAll(data, {
-        active:'required|range:-1,2',
         id:'required|integer'  
         },
        mensajes).then(d => {return  {ok: true, d}}).catch(e => { console.log("errores:::", e); throw  { message : 'Datos de entrada fuera de rango o no corresponde, revise su información'}});
@@ -82,7 +81,6 @@ export const getUni = async (data)=>{
     
 export const validarFiltros = async (data)=>{
     let v = await validateAll(data, {
-        active:'required|range:-1,2',
         offset:'required|integer' ,
         limit:'required|integer' 
         },
@@ -92,13 +90,8 @@ export const validarFiltros = async (data)=>{
 }
 
 export const getFiltros = async (data)=>{
-    let where ='';
-        if(data.active == 2){
-            where += ` re.[active] in (0,1) `
-        }
-        if(data.active != 2){
-        where += ` re.[active] = ${ Number(data.active)}`
-    }
+    let where =` re.[active] = 1 `
+    
     
     if(data.documento) where += ` and re.[name]  like '%${data.documento}%'`
     if(data.cliente) where += ` and co.[name] '%${data.cliente}%'`
@@ -151,5 +144,41 @@ export const mailClientes = async (data)=>{
              if(cotizacion.length == 0)  throw  { message : `no existen clientes`};
     
     return cotizacion;
+
+}
+
+export const listarIngresos = async (data)=>{
+
+    let form = await Requisitions.getListarIngresos(data.offset, data.limit);
+            if(!form)  throw  { message : `Error al consultar por ingresos`};
+    
+    return form;
+
+}
+
+export const getListarIngresoByEstado = async (data)=>{
+
+    let form = await Requisitions.getListarIngresoByEstado(data.offset, data.limit, data.state_id);
+            if(!form)  throw  { message : `Error al consultar por ingresos`};
+    
+    return form;
+
+}
+
+export const contadorIngresos = async ()=>{
+
+    let form = await Requisitions.contadorIngresos();
+            if(!form)  throw  { message : `Error al consultar por cantidad ingresos`};
+    
+    return form[0].cantidad;
+
+}
+
+export const contadorIngresosByEstado = async (data)=>{
+
+    let form = await Requisitions.contadorIngresosByEstado(data.state_id);
+            if(!form)  throw  { message : `Error al consultar por cantidad ingresos`};
+    
+    return form[0].cantidad;
 
 }

@@ -5,11 +5,19 @@ class Bodega{
     constructor(){
         const api = Router();
 
-        api.post('/add',this.add); 
+       api.get('/muestras', this.getMuestras)
         return api;
     };
 
-    async add(req, res) {
+    async getMuestras(req, res) {
+
+        try {
+            let requi = await CoreBodega.mailClientes(req.body)
+            return res.status(200).json({ ok: true, data: requi, }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
 
     }
 

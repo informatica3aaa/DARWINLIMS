@@ -10,6 +10,8 @@ class Requisition{
         api.post('/filter', this.filtros)
         api.post('/add', this.add)
         api.post('/mail', this.correoClientes)
+        api.post('/ingresos', this.listarIngresos)
+        api.post('/ingresos/byestado', this.listarIngresosbyEstado)
         return api;
     };
 
@@ -80,6 +82,30 @@ class Requisition{
             
         }
     }
+
+    async listarIngresos(req, res) {
+        try {
+            const result = await CoreRequisition.listarIngresos(req.body);
+            const contador = await CoreRequisition.contadorIngresos();
+            
+            return res.status(200).json({ ok: true, cantidad: contador , data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+    }
+    async listarIngresosbyEstado(req, res) {
+        try {
+            const result = await CoreRequisition.getListarIngresoByEstado(req.body);
+            const contador = await CoreRequisition.contadorIngresosByEstado(req.body);
+            
+            return res.status(200).json({ ok: true, cantidad: contador , data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+    }
+
 
 
 }
