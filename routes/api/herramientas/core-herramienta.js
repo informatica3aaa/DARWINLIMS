@@ -626,3 +626,61 @@ export const filtrosServicios = async (data)=>{
 }
 
 export const getServicios = async (data)=>{}
+
+export const getBalanzas = async (data)=>{
+    let tool = await Herramienta.getBalanzas(data.offset, data.limit);
+    if(!tool)  throw  { message :  `Error no se logra consultar`};
+
+    return tool;
+}
+
+
+export const getBalanzasCont = async ()=>{
+    let tool = await Herramienta.getBalanzasCont();
+    if(!tool)  throw  { message :  `Error no se logra consultar`};
+    return tool[0].total;
+}
+
+export const balPatrones = async (data)=>{
+    let tool = await Herramienta.balPatrones(data.id);
+        if(!tool)  throw  { message :  `Error no se logra consultar`};
+
+    return tool;
+}
+
+export const balEditar = async (data)=>{
+    let tool = await Herramienta.balEditar(data);
+        if(!tool)  throw  { message :  `Error no se logra Editar`};
+
+    return tool;
+}
+
+export const balEliminar = async (data)=>{
+    let tool = await Herramienta.balEliminar(data.id);
+        if(!tool)  throw  { message :  `Error no se logra Eliminar`};
+
+    return tool;
+}
+
+export const balCalibracion = async (data)=>{
+    console.log("balCalibracion", data);
+    let tool = await Herramienta.balCalibracion(data.id, data.offset, data.limit);
+        if(!tool)  throw  { message :  `Error no se logra consultar por calibracion`};
+
+    return tool;
+}
+
+export const balCalibracionCont = async (data)=>{
+    let tool = await Herramienta.balCalibracionCont(data.id);
+    if(!tool)  throw  { message :  `Error no se logra contar`};
+    return tool[0].total;
+}
+
+
+export const balAdd = async (data)=>{
+    let tool = await Herramienta.balAdd(data);
+        if(!tool)  throw  { message :  `Error no se logra Editar`};
+
+    return tool;
+}
+

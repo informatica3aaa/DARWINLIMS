@@ -134,8 +134,89 @@ api.post('/comprobar', this.comprobar)
 api.post('/adjuntar', this.adjuntar)
 api.post('/descargar', this.descargar)
 api.post('/servicios', this.getServicios)
+api.post('/balanzas', this.getBalanzas)
+api.post('/balanzas/patron', this.balPatrones)
+api.post('/balanzas/editar', this.balEditar)
+api.post('/balanzas/eliminar', this.balEliminar)
+api.post('/balanzas/calibracion', this.balCalibracion)
+api.post('/balanzas/add', this.addBalanzas)
 return api;
 };
+
+
+
+async addBalanzas(req, res){
+    try {
+        const result = await CoreHerramienta.balAdd(req.body)
+        return res.status(200).json({ ok:true, data:result })
+    } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+}
+
+
+
+async balPatrones(req, res){
+    try {
+        const result = await CoreHerramienta.balPatrones(req.body)
+        return res.status(200).json({ ok:true, data:result })
+    } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+}
+
+async balEditar(req, res){
+    try {
+        const result = await CoreHerramienta.balEditar(req.body)
+        return res.status(200).json({ ok:true, data:result })
+    } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+}
+
+async balEliminar(req, res){
+    try {
+        const result = await CoreHerramienta.balEliminar(req.body)
+        return res.status(200).json({ ok:true, data:result })
+    } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+}
+
+async balCalibracion(req, res){
+    try {
+        const result = await CoreHerramienta.balCalibracion(req.body)
+        const contador = await CoreHerramienta.balCalibracionCont(req.body)
+        return res.status(200).json({ ok:true, cantidad :contador, data:result })
+    } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+}
+
+async getPatrones(req, res){
+    try {
+        const result = await CoreHerramienta.getBalanzas(req.body);
+        const contador = await CoreHerramienta.getBalanzasCont()
+        return res.status(200).json({ ok: true, cantidad :contador,  data: result });
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+    
+    }
+
+
+
+async getBalanzas(req, res){
+    try {
+        const result = await CoreHerramienta.getBalanzas(req.body);
+        const contador = await CoreHerramienta.getBalanzasCont()
+        return res.status(200).json({ ok: true, cantidad :contador,  data: result });
+    } catch (error) {
+        return res.status(200).json({ ok: false ,msg: error.message });   
+    }
+    
+    }
+
 
 async getServicios(req, res){
     try {
