@@ -140,10 +140,9 @@ api.post('/balanzas/editar', this.balEditar)
 api.post('/balanzas/eliminar', this.balEliminar)
 api.post('/balanzas/calibracion', this.balCalibracion)
 api.post('/balanzas/add', this.addBalanzas)
+
 return api;
 };
-
-
 
 async addBalanzas(req, res){
     try {

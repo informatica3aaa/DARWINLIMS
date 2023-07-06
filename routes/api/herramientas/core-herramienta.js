@@ -684,3 +684,66 @@ export const balAdd = async (data)=>{
     return tool;
 }
 
+export const getValores = async (data)=>{
+
+}
+
+export const getCurrencies = async ()=>{
+    const apikey = process.env.APIKEY_CMF
+    const anio = moment().format('YYYY');
+    const mes = moment().format('MM');
+    const dia = moment().format('DD');
+
+    let tool = await Herramienta.getCurrencies();
+    if(!tool)  throw  { message :  `Error no se consulatrr por las divisas`};
+    let currency;
+
+    for(let cu of tool){
+    switch(cu.id){
+        case 1:
+            // console.log("peso");
+        break;
+        
+        case 2:
+            const url_dolar = `${ process.env.API_CMF }/dolar?apikey=${apikey}&formato=json`;
+            const dolar = await axios.get(url_dolar)
+                                          .then(d => { return  {ok: true, d}})
+                                          .catch(e => {return  {ok: false, e}})
+
+        if(dolar.ok){
+           const temp=  dolar.d.data.Dolares[0].Valor.split('.');
+            await Herramienta.editCurrencies(cu.id, temp )
+        }
+
+        break;
+
+        case 3:
+            const url_uf = `${ process.env.API_CMF }/uf?apikey=${apikey}&formato=json`;
+            const uf = await axios.get(url_uf)
+                                          .then(d => { return  {ok: true, d}})
+                                          .catch(e => {return  {ok: false, e}})
+
+         if(uf.ok){
+            const tempu = uf.d.data.UFs[0].Valor.split('.');
+            let valor = tempu[0] + tempu[1]
+            await Herramienta.editCurrencies(cu.id, valor )
+         }
+        break;
+        
+        case 4:
+            const url_euro = `${ process.env.API_CMF }/euro?apikey=${apikey}&formato=json`;
+            const euro = await axios.get(url_euro)
+                                          .then(d => { return  {ok: true, d}})
+                                          .catch(e => {return  {ok: false, e}})
+         if(euro.ok){
+             console.log("fecha de Actulizacion:::::", euro.d.data.Euros[0].Fecha);
+             
+             const tempe =  euro.d.data.Euros[0].Valor.split('.')
+             await Herramienta.editCurrencies(cu.id, tempe)
+            }
+        break;
+       
+      }
+    }
+    console.log("actualizacion de divisas exitosa!!");
+}
