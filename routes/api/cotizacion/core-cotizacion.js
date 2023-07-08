@@ -753,10 +753,11 @@ export const cotizacionAccion = async (data, usuario)=>{
                 data_form.price= basic.cost
                 const detalles= await Cotizaciones.addDetallesCotizacion(data_form, usuario);
                 if(!detalles)  throw  { message : 'Error no se logro crear detalle basicos de  cotización, revise su información' };
-                if(detalles.length ==0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
+                console.log("detalles:::::::", detalles);
+                if(detalles.length == 0)  throw  { message : 'No se logro crear detalle basicos de cotización, revise su información' };
             }
             const analisis_asociado = await Cotizaciones.getDetallesCotizacion( accion[0].id)
-            // console.log("analisis_asoc", analisis_asociado);
+            console.log("analisis_asoc", analisis_asociado);
             accion[0].analisis_asociado = analisis_asociado
         break;
         case 'detalle_cotizacion':
