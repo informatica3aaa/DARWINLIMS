@@ -55,6 +55,7 @@ const api = Router();
         api.post('/clasico', this.clasico)
         api.post('/aceptadas', this.quoAceptdas)
         api.post('/company', this.quoByCompany)
+        api.post('/pendiente/:id', this.listarPendientesId)
 
 
 
@@ -62,6 +63,19 @@ const api = Router();
         
         return api;
     };
+
+    async listarPendientesId (req, res){
+        console.log("GET GET::::::::::::::", req.params)
+        try {
+            const result = await CoreCotizacion.getPendienteId(req.params);
+            return res.status(200).json({ ok: true,  data: result }); 
+        } catch (error) {
+            return res.status(200).json({ ok: false ,msg: error.message });  
+            
+        }
+    
+        }
+
 
     async quoByCompany(req, res){
         try {
@@ -89,7 +103,7 @@ async quoAceptdas(req, res){
 
 
     async clasico (req, res){
-        console.log("re", req.body);
+        // console.log("re", req.body);
         try {
             const result = await CoreCotizacion.getServicioClasico(req.body.query)
             return res.status(200).json({ ok: true, data: result }); 
